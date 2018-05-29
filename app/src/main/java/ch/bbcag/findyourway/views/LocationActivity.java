@@ -3,6 +3,8 @@ package ch.bbcag.findyourway.views;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import ch.bbcag.findyourway.R;
+
 public class LocationActivity extends AppCompatActivity {
 
     @Override
