@@ -16,7 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".views.LocationActivity"></activity>
+        <activity android:name=".views.LocationActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD0IqJlPkU8bXIMhZzsQqV2f129iR5fGMM" />
+
+        <activity android:name=".views.FavouriteActivity" />
+        <activity android:name=".views.HomeActivity"></activity>
     </application>
 
 </manifest>
