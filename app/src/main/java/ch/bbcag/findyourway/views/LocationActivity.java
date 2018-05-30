@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -17,11 +16,8 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 
-import java.util.List;
-
 import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.helper.TransportOpendataJsonParser;
-import ch.bbcag.findyourway.model.Connection;
 import ch.bbcag.findyourway.model.Stop;
 
 public class LocationActivity extends AppCompatActivity {
