@@ -8,11 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import ch.bbcag.findyourway.R;
 
 public class TabFavouriteFragment extends Fragment {
     private static final String TAG = "TabFavouriteFragment";
-
     public TabFavouriteFragment() {
     }
 

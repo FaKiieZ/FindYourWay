@@ -6,6 +6,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import ch.bbcag.findyourway.dal.FavouriteDataSource;
+import ch.bbcag.findyourway.model.Location;
 import ch.bbcag.findyourway.views.PagerAdapter;
 import ch.bbcag.findyourway.views.TabFavouriteFragment;
 import ch.bbcag.findyourway.views.TabHomeFragment;
@@ -15,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG  = "MainActivity";
     private PagerAdapter pagerAdapter;
     private ViewPager mViewPager;
+    private FavouriteDataSource dataSource;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_search_black_24dp); // icon for start tab
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_star_black_24dp); // icon for the favourite tab
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_home_black_24dp); // icon for the home tab
+
+        // testing database
+        Location testLocation = new Location();
+        dataSource = new FavouriteDataSource(this);
+        dataSource.open();
+        dataSource.close();
     }
 
     private void setupViewPager(ViewPager viewPager){

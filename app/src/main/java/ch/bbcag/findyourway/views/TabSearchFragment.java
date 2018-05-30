@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ch.bbcag.findyourway.R;
+import ch.bbcag.findyourway.dal.FavouriteDataSource;
+import ch.bbcag.findyourway.model.Location;
 
 public class TabSearchFragment extends android.support.v4.app.Fragment{
     private static final String TAG = "TabSearchFragment";
-
+    FavouriteDataSource dataSource;
     public TabSearchFragment() {
     }
 
