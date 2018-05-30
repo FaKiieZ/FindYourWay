@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import ch.bbcag.findyourway.views.PagerAdapter;
+import ch.bbcag.findyourway.views.TabFavouriteFragment;
+import ch.bbcag.findyourway.views.TabHomeFragment;
 import ch.bbcag.findyourway.views.TabSearchFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,8 +30,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager){
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
-        adapter.addFragmnet(new TabSearchFragment(), "Search");
-        adapter.addFragmnet(new TabSearchFragment(), "Favourite");
+        // add the tabs
+        adapter.addFragmnet(new TabSearchFragment(), "@drawable/ic_search_black_24dp");
+        adapter.addFragmnet(new TabFavouriteFragment(), "Favourite");
+        adapter.addFragmnet(new TabHomeFragment(), "Home");
         viewPager.setAdapter(adapter);
     }
 
