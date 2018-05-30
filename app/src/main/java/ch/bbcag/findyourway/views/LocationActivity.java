@@ -27,10 +27,11 @@ public class LocationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
+        getStopsByLocation("Bern");
     }
 
     public void getStopsByLocation(String station) {
-        String url = TRANSPORT_OPENDATA_STATIONBOARD_API_URL + "?station=Bern";
+        String url = TRANSPORT_OPENDATA_STATIONBOARD_API_URL + "?station=" + station;
         final ArrayAdapter<Stop> stopAdapter = new
                 ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1);
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());

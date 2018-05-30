@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Location {
-    private int Id;
+    private Integer Id;
     private int Type;
     private String Name;
     private Coordinates Coordinates;
@@ -15,13 +15,13 @@ public class Location {
 
     }
 
-    public Location(int id, int type, String name){
+    public Location(Integer id, int type, String name){
         setId(id);
         setType(type);
         setName(name);
     }
 
-    public int getId() {
+    public Integer getId() {
         return Id;
     }
 
@@ -29,7 +29,7 @@ public class Location {
         Id = id;
     }
 
-    public int getType() {
+    public Integer getType() {
         return Type;
     }
 
@@ -70,7 +70,12 @@ public class Location {
     }
 
     public String toString(){
+<<<<<<< HEAD
         return Name;
     }
 
+=======
+        return this.Name + " " + this.Distance + "m";
+    }
+>>>>>>> 5d19671eafdda2f101400eb841117fe72a376499
 }
