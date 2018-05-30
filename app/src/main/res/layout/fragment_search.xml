@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -9,13 +9,12 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="33"/>
+        android:layout_height="250dp"/>
 
     <ListView
         android:id="@+id/locationList"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="66"></ListView>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="250dp"></ListView>
 
-</LinearLayout>
+</FrameLayout>

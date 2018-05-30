@@ -16,6 +16,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONException;
 
@@ -26,8 +34,12 @@ import ch.bbcag.findyourway.helper.TransportOpendataJsonParser;
 import ch.bbcag.findyourway.model.Coordinates;
 import ch.bbcag.findyourway.model.Location;
 
-public class TabSearchFragment extends android.support.v4.app.Fragment {
+public class TabSearchFragment extends android.support.v4.app.Fragment implements OnMapReadyCallback {
     private static final String TRANSPORT_OPENDATA_LOCATIONS_API_URL = "http://transport.opendata.ch/v1/locations";
+
+    GoogleMap mGoogleMap;
+    MapView mMapView;
+    View mView;
 
     public TabSearchFragment() {
     }
@@ -35,14 +47,12 @@ public class TabSearchFragment extends android.support.v4.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        mView = inflater.inflate(R.layout.fragment_search, container, false);
 
-        Coordinates coordinates = new Coordinates();
-        coordinates.setX(46.947440);
-        coordinates.setY(7.452570);
+        Coordinates coordinates = new Coordinates(46.947440, 7.452570);
         getLocationsByCoordinates(coordinates);
 
-        return view;
+        return mView;
     }
 
     @Override
@@ -93,6 +103,33 @@ public class TabSearchFragment extends android.support.v4.app.Fragment {
         dialogBuilder.setMessage("Error").setTitle("Error");
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+
+        mMapView = (MapView) mView.findViewById(R.id.mapView);
+        if (mMapView != null){
+            mMapView.onCreate(null);
+            mMapView.onResume();
+            mMapView.getMapAsync(this);
+        }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap){
+        MapsInitializer.initialize(getContext());
+
+        mGoogleMap = googleMap;
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        LatLng coordinates = new LatLng(46.947440, 7.452570);
+
+        googleMap.addMarker(new MarkerOptions().position(coordinates));
+
+        CameraPosition cameraPosition = CameraPosition.builder().target(coordinates).zoom(16).build();
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 }
 

@@ -15,13 +15,13 @@ public class Location {
 
     }
 
-    public Location(int id, int type, String name){
+    public Location(Integer id, int type, String name){
         setId(id);
         setType(type);
         setName(name);
     }
 
-    public int getId() {
+    public Integer getId() {
         return Id;
     }
 

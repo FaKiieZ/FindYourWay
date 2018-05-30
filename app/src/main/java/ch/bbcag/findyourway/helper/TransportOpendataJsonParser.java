@@ -74,10 +74,11 @@ public class TransportOpendataJsonParser {
     }
 
     public static Coordinates createCoordinatesFromJsonString(String coordinatesJsonString) throws JSONException {
-        Coordinates coordinates = new Coordinates();
         JSONObject jsonObj = new JSONObject(coordinatesJsonString);
-        coordinates.setX(Double.parseDouble(jsonObj.getString("x")));
-        coordinates.setY(Double.parseDouble(jsonObj.getString("y")));
+        Double x = Double.parseDouble(jsonObj.getString("x"));
+        Double y = Double.parseDouble(jsonObj.getString("y"));
+        Coordinates coordinates = new Coordinates(x, y);
+
         return coordinates;
     }
 }
