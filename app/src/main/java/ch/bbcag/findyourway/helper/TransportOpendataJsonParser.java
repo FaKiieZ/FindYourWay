@@ -1,5 +1,7 @@
 package ch.bbcag.findyourway.helper;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,12 +65,17 @@ public class TransportOpendataJsonParser {
         Location location = new Location();
         JSONObject jsonObj = new JSONObject(locationJsonString);
         String id = jsonObj.getString("id");
-        if (id != null && id.length() > 0 && id != "null") {
-            location.setId(Integer.parseInt(id));
-            location.setName(jsonObj.getString("name"));
-            location.setCoordinates(createCoordinatesFromJsonString(jsonObj.getString("coordinate")));
-            location.setDistance(Integer.parseInt(jsonObj.getString("distance")));
+        try{
+            if (id != null && id.length() > 0 && id != "null") {
+                location.setId(Integer.parseInt(id));
+                location.setName(jsonObj.getString("name"));
+                location.setCoordinates(createCoordinatesFromJsonString(jsonObj.getString("coordinate")));
+                location.setDistance(Integer.parseInt(jsonObj.getString("distance")));
+            }
+        } catch (Exception ex){
+            Log.d("JSONParser: ", ex.getMessage());
         }
+
 
         return location;
     }
@@ -80,5 +87,20 @@ public class TransportOpendataJsonParser {
         Coordinates coordinates = new Coordinates(x, y);
 
         return coordinates;
+    }
+
+    public static List<Connection> createConnectionsFromJsonString(String connectionJsonString) throws JSONException {
+        List<Connection> list = new ArrayList<>();
+        JSONObject jsonObject = new JSONObject(connectionJsonString);
+        JSONArray stationsJson = jsonObject.getJSONArray("stationboard");
+        for(int i = 0; i < stationsJson.length(); i++){
+            Location from = createLocationFromJsonString(jsonObject.getJSONObject("station").toString());
+            JSONObject row = stationsJson.getJSONObject(i);
+            Location to = createLocationFromJsonString(row.getJSONArray("passList").getJSONObject(row.getJSONArray("passList").length() -1).toString());
+            Time duration = null;
+            String service = "";
+            list.add(new Connection(from, to, duration, service));
+        }
+        return list;
     }
 }

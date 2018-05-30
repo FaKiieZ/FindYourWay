@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,6 +21,7 @@ import java.util.List;
 import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.helper.TransportOpendataJsonParser;
 import ch.bbcag.findyourway.model.Connection;
+import ch.bbcag.findyourway.model.Location;
 
 public class StationDetailActivity extends AppCompatActivity {
     private static final String TRANSPORT_OPENDATA_STATIONBOARD_API_URL = "http://transport.opendata.ch/v1/stationboard?station=";
@@ -39,16 +41,21 @@ public class StationDetailActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             List<Connection> connections = TransportOpendataJsonParser.createConnectionsFromJsonString(response);
-                        } catch (JSONException e){
-                            generateAlertDialog();
-                        }
-                    }, new Response.ErrorListener(){
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
+                            connectionAdapter.addAll(connections);
+                            ListView connectionList = findViewById(R.id.list);
+                            connectionList.setAdapter(connectionAdapter);
+                            //progressBar.setVisibility(View.GONE);
+                        } catch (JSONException e) {
                             generateAlertDialog();
                         }
                     }
-                });
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                generateAlertDialog();
+            }
+        });
+        queue.add(stringRequest);
     }
 
     private void generateAlertDialog() {
