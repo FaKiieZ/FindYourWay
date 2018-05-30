@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Location {
-    private int Id;
+    private Integer Id;
     private int Type;
     private String Name;
     private Coordinates Coordinates;
     private int Distance;
     private List<Connection> Connections = new ArrayList<>();
 
-    public int getId() {
+    public Integer getId() {
         return Id;
     }
 
@@ -19,7 +19,7 @@ public class Location {
         Id = id;
     }
 
-    public int getType() {
+    public Integer getType() {
         return Type;
     }
 
@@ -57,5 +57,9 @@ public class Location {
 
     public void setConnections(List<Connection> connections) {
         Connections = connections;
+    }
+
+    public String toString(){
+        return this.Name + " " + this.Distance + "m";
     }
 }
