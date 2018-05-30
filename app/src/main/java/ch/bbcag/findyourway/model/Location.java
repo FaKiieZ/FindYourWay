@@ -8,7 +8,7 @@ public class Location {
     private int Type;
     private String Name;
     private Coordinates Coordinates;
-    private int Distance;
+    private Integer Distance;
     private List<Connection> Connections = new ArrayList<>();
 
     public Location(){
@@ -53,11 +53,11 @@ public class Location {
         Coordinates = coordinates;
     }
 
-    public int getDistance() {
+    public Integer getDistance() {
         return Distance;
     }
 
-    public void setDistance(int distance) {
+    public void setDistance(Integer distance) {
         Distance = distance;
     }
 
@@ -70,6 +70,9 @@ public class Location {
     }
 
     public String toString(){
+        if (getDistance() == null){
+            return this.Name;
+        }
         return this.Name + " " + this.Distance + "m";
     }
 }

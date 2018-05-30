@@ -117,6 +117,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
         }
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap){
         MapsInitializer.initialize(getContext());
