@@ -7,14 +7,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.util.List;
 
 import ch.bbcag.findyourway.R;
+import ch.bbcag.findyourway.dal.FavouriteDataSource;
+import ch.bbcag.findyourway.model.Location;
 
 public class TabFavouriteFragment extends Fragment {
     private static final String TAG = "TabFavouriteFragment";
     public TabFavouriteFragment() {
+
     }
 
     @Nullable
