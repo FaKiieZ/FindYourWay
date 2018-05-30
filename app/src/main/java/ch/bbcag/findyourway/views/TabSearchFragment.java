@@ -1,9 +1,11 @@
 package ch.bbcag.findyourway.views;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,7 +25,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -37,7 +38,6 @@ import java.util.List;
 
 import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.helper.TransportOpendataJsonParser;
-import ch.bbcag.findyourway.model.Coordinates;
 import ch.bbcag.findyourway.model.Location;
 
 public class TabSearchFragment extends android.support.v4.app.Fragment implements OnMapReadyCallback {
@@ -139,7 +139,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
 
         updateLocationUI();
 
-        getDeviceLocation();
+        getDeviceLocation(true);
     }
 
     private void getLocationPermission() {
@@ -196,7 +196,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
         }
     }
 
-    private void getDeviceLocation() {
+    private void getDeviceLocation(boolean setCamera) {
         /*
          * Get the best and most recent location of the device, which may be null in rare
          * cases when a location is not available.
@@ -207,17 +207,21 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                     android.location.Location lastKnownLocationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     if (lastKnownLocationGPS != null) {
                         lastLocation = lastKnownLocationGPS;
-                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                new LatLng(lastLocation.getLatitude(),
-                                        lastLocation.getLongitude()), 16));
+                        if (setCamera){
+                            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                    new LatLng(lastLocation.getLatitude(),
+                                            lastLocation.getLongitude()), 16));
+                        }
 
                         getLocationsByCoordinates(lastLocation);
                     } else {
                         android.location.Location loc =  locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
                         lastLocation = loc;
-                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                new LatLng(lastLocation.getLatitude(),
-                                        lastLocation.getLongitude()), 16));
+                        if (setCamera){
+                            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                    new LatLng(lastLocation.getLatitude(),
+                                            lastLocation.getLongitude()), 16));
+                        }
 
                         getLocationsByCoordinates(lastLocation);
                     }
@@ -228,6 +232,37 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
             }
         } catch(SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    public void onResume(){
+        super.onResume();
+
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(android.location.Location location) {
+                getDeviceLocation(false);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        if (mLocationPermissionGranted) {
+            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 15000, 10, locationListener);
         }
     }
 }
