@@ -68,4 +68,9 @@ public class Location {
     public void setConnections(List<Connection> connections) {
         Connections = connections;
     }
+
+    public String toString(){
+        return Name;
+    }
+
 }
