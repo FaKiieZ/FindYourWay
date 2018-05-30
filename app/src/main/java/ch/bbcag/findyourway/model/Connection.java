@@ -8,6 +8,19 @@ public class Connection {
     private Time Duration;
     private String Service;
 
+    private String platform;
+
+    public Connection() {
+
+    }
+
+    public Connection(Location from, Location to, Time duration, String service){
+        setFrom(from);
+        setTo(to);
+        setDuration(duration);
+        setService(service);
+    }
+
     public Location getFrom() {
         return From;
     }
@@ -39,4 +52,9 @@ public class Connection {
     public void setService(String service) {
         Service = service;
     }
+
+    public String getPlatform() { return platform; }
+
+    public void setPlatform(String platform) { this.platform = platform; }
+
 }
