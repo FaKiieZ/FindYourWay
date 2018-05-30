@@ -26,14 +26,17 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_search_black_24dp);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_star_black_24dp);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_home_black_24dp);
+
+        // set icons for the tabs
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_search_black_24dp); // icon for start tab
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_star_black_24dp); // icon for the favourite tab
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_home_black_24dp); // icon for the home tab
     }
 
     private void setupViewPager(ViewPager viewPager){
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
         // add the tabs
+        // title is empty, because icons are used
         adapter.addFragmnet(new TabSearchFragment(), "");
         adapter.addFragmnet(new TabFavouriteFragment(), "");
         adapter.addFragmnet(new TabHomeFragment(), "");

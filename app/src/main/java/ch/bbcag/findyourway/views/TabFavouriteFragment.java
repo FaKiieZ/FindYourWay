@@ -14,7 +14,6 @@ public class TabFavouriteFragment extends Fragment {
     private static final String TAG = "TabFavouriteFragment";
 
     public TabFavouriteFragment() {
-
     }
 
     @Nullable
