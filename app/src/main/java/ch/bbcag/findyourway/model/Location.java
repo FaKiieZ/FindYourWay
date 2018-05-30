@@ -70,12 +70,6 @@ public class Location {
     }
 
     public String toString(){
-<<<<<<< HEAD
-        return Name;
-    }
-
-=======
         return this.Name + " " + this.Distance + "m";
     }
->>>>>>> 5d19671eafdda2f101400eb841117fe72a376499
 }
