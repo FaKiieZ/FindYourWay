@@ -57,4 +57,7 @@ public class Connection {
 
     public void setPlatform(String platform) { this.platform = platform; }
 
+    public String toString() {
+        return From.getName() + " --> " + To.getName();
+    }
 }

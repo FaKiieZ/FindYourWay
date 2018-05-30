@@ -21,7 +21,6 @@ import java.util.List;
 import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.helper.TransportOpendataJsonParser;
 import ch.bbcag.findyourway.model.Connection;
-import ch.bbcag.findyourway.model.Location;
 
 public class StationDetailActivity extends AppCompatActivity {
     private static final String TRANSPORT_OPENDATA_STATIONBOARD_API_URL = "http://transport.opendata.ch/v1/stationboard?station=";
@@ -29,6 +28,8 @@ public class StationDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_station_detail);
+
+        getConnections(8507000, 10);
     }
 
     public void getConnections(int id,int limit){

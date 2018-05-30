@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -88,7 +90,17 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                             locationAdapter.addAll(locations);
                             ListView locationList = getView().findViewById(R.id.locationList);
                             locationList.setAdapter(locationAdapter);
-                            //progressBar.setVisibility(View.GONE);
+                            // click listener
+                            AdapterView.OnItemClickListener mListClickedHandler = new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Intent intent = new Intent(getContext(), StationDetailActivity.class);
+                                    Location selected = (Location)parent.getItemAtPosition(position);
+                                    intent.putExtra("locationId", selected.getId());
+                                    startActivity(intent);
+                                }
+                            };
+                            locationList.setOnItemClickListener(mListClickedHandler);
                         } catch (JSONException e) {
                             generateAlertDialog();
                         }

@@ -33,14 +33,31 @@ public class TransportOpendataJsonParser {
         stop.setStation(createLocationFromJsonString(jsonObj.getString("station")));
         DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         try {
-            stop.setArrival(new Time(formatter.parse(jsonObj.getString("arrival")).getTime()));
-            stop.setDeparture(new Time(formatter.parse(jsonObj.getString("departure")).getTime()));
+            String arrival = jsonObj.getString("arrival");
+            String departure = jsonObj.getString("departure");
+            if (arrival != "null"){
+                stop.setArrival(new Time(formatter.parse(arrival).getTime()));
+            }
+
+            if (departure != "null"){
+                stop.setDeparture(new Time(formatter.parse(departure).getTime()));
+            }
+
         } catch (ParseException ex){
 
         }
 
-        stop.setDelay(Integer.parseInt(jsonObj.getString("delay")));
-        stop.setPlatform(Integer.parseInt(jsonObj.getString("platform")));
+        String delay = jsonObj.getString("delay");
+
+        if (delay != "null"){
+            stop.setDelay(Integer.parseInt(delay));
+        }
+
+        String platform = jsonObj.getString("platform");
+
+        if (platform != "null"){
+            stop.setPlatform(Integer.parseInt(platform));
+        }
         return stop;
     }
 
@@ -70,7 +87,9 @@ public class TransportOpendataJsonParser {
                 location.setId(Integer.parseInt(id));
                 location.setName(jsonObj.getString("name"));
                 location.setCoordinates(createCoordinatesFromJsonString(jsonObj.getString("coordinate")));
-                location.setDistance(Integer.parseInt(jsonObj.getString("distance")));
+                if(jsonObj.getString("distance") != "null"){
+                    location.setDistance(Integer.parseInt(jsonObj.getString("distance")));
+                }
             }
         } catch (Exception ex){
             Log.d("JSONParser: ", ex.getMessage());
@@ -96,7 +115,8 @@ public class TransportOpendataJsonParser {
         for(int i = 0; i < stationsJson.length(); i++){
             Location from = createLocationFromJsonString(jsonObject.getJSONObject("station").toString());
             JSONObject row = stationsJson.getJSONObject(i);
-            Location to = createLocationFromJsonString(row.getJSONArray("passList").getJSONObject(row.getJSONArray("passList").length() -1).toString());
+            int index = row.getJSONArray("passList").length() -1;
+            Location to = createLocationFromJsonString(row.getJSONArray("passList").getJSONObject(index).getJSONObject("station").toString());
             Time duration = null;
             String service = "";
             list.add(new Connection(from, to, duration, service));
