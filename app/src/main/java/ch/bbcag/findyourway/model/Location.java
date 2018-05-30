@@ -11,7 +11,17 @@ public class Location {
     private int Distance;
     private List<Connection> Connections = new ArrayList<>();
 
-    public Integer getId() {
+    public Location(){
+
+    }
+
+    public Location(int id, int type, String name){
+        setId(id);
+        setType(type);
+        setName(name);
+    }
+
+    public int getId() {
         return Id;
     }
 
