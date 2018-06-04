@@ -316,7 +316,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
     }
 
     private void SetLocationType(String str, Location location){
-        String[] trains = {"I", "R", "S", "V"};
+        String[] trains = {"I", "R", "S", "V", "E"};
         String boat = "BAT";
 
         String firstLetter = str.substring(0, 1);

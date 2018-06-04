@@ -4,7 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".views.StationDetailActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/AppTheme" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="FindYourWay"
+            android:textAlignment="viewStart"
+            android:textAppearance="@style/TextAppearance.MediaRouter.Title"
+            android:layout_marginTop="12dp"
+            tools:layout_editor_absoluteX="16dp" />
+    </android.support.v7.widget.Toolbar>
+
+    <View android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/toolbar_dropshadow"/>
     <ListView
+        android:layout_marginTop="56dp"
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
