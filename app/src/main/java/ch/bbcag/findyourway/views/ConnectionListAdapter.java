@@ -38,9 +38,9 @@ public class ConnectionListAdapter extends ArrayAdapter<Connection> {
         TextView plattformNumber = (TextView)convertView.findViewById(R.id.textViewPlattformNumber);
         // set values
         number.setText(connection.getCategory() + connection.getNumber());
-        destination.setText(connection.getTo().getName());
+        destination.setText("Richtung " + connection.getTo().getName());
         time.setText(connection.getDeparture().toString());
-        if(connection.getPlatform() != ""){
+        if(connection.getPlatform() != null){
             plattformNumber.setText(connection.getPlatform());
         }
 
