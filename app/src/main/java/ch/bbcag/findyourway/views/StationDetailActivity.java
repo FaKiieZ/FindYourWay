@@ -2,6 +2,7 @@ package ch.bbcag.findyourway.views;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -29,7 +30,8 @@ public class StationDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_station_detail);
 
-        getConnections(8507000, 10);
+        int id = getIntent().getIntExtra("locationId", 0);
+        getConnections(id, 10);
     }
 
     public void getConnections(int id,int limit){
