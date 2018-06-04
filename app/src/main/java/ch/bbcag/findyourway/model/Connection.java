@@ -25,7 +25,6 @@ public class Connection {
     }
 
     public Connection(Location from, Location to, Time duration, String service, Date departure, String category, String number, String platform, String JsonString){
-
         setFrom(from);
         setTo(to);
         setDuration(duration);

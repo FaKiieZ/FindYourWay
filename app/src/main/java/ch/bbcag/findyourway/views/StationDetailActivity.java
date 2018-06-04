@@ -56,6 +56,7 @@ public class StationDetailActivity extends AppCompatActivity {
                                     Intent intent = new Intent(getBaseContext(), ConnectionDetail.class);
                                     Connection selected = (Connection)parent.getItemAtPosition(position);
                                     intent.putExtra("connection", selected.getJsonString());
+                                    intent.putExtra("stationId", selected.getFrom().getId());
                                     startActivity(intent);
                                 }
                             };
