@@ -5,12 +5,11 @@ import java.util.List;
 
 public class Location {
     private Integer Id;
-    private int Type;
+    private int Type; // 0: Zug, 1: Bus, 2: Schiff
     private String Name;
     private Coordinates Coordinates;
     private Integer Distance;
     private List<Connection> Connections = new ArrayList<>();
-    private boolean isBus = false;
 
     public Location(){
 
@@ -75,13 +74,5 @@ public class Location {
             return this.Name;
         }
         return this.Name + " " + this.Distance + "m";
-    }
-
-    public boolean isBus() {
-        return isBus;
-    }
-
-    public void setBus(boolean bus) {
-        isBus = bus;
     }
 }

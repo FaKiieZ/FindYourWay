@@ -32,6 +32,9 @@ public class StationDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_station_detail);
 
+        String name = getIntent().getStringExtra("locationName");
+        //findViewById(R.id)
+
         int id = getIntent().getIntExtra("locationId", 0);
         getConnections(id, 10);
     }

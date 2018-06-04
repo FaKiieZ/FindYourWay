@@ -36,6 +36,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
 
+import java.util.Arrays;
 import java.util.List;
 
 import ch.bbcag.findyourway.R;
@@ -100,9 +101,9 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                                                     List<Connection> connections = TransportOpendataJsonParser.createConnectionsFromJsonString(response);
                                                     if (connections.toArray().length > 0) {
                                                         Connection connection = (Connection) connections.toArray()[0];
-                                                        location.setBus(!isNumeric(connection.getPlatform()));
+                                                        SetLocationType(connection.getCategory(), location);
                                                     } else {
-                                                        location.setBus(true);
+                                                        locations.remove(location);
                                                     }
                                                     final LocationListAdapter locationAdapter = new LocationListAdapter(getContext(),locations);
                                                     ListView locationList = getView().findViewById(R.id.locationList);
@@ -114,6 +115,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                                                             Intent intent = new Intent(getContext(), StationDetailActivity.class);
                                                             Location selected = (Location)parent.getItemAtPosition(position);
                                                             intent.putExtra("locationId", selected.getId());
+                                                            intent.putExtra("locationName", selected.getName());
                                                             startActivity(intent);
                                                         }
                                                     };
@@ -313,17 +315,23 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
         }
     }
 
-    private boolean isNumeric(String str)
-    {
-        try
-        {
-            int i = Integer.parseInt(str);
+    private void SetLocationType(String str, Location location){
+        String[] trains = {"I", "R", "S", "V"};
+        String boat = "BAT";
+
+        String firstLetter = str.substring(0, 1);
+
+        if (Arrays.asList(trains).contains(firstLetter)){
+            location.setType(0);
+            return;
         }
-        catch(NumberFormatException nfe)
-        {
-            return false;
+        else if (str.startsWith(boat)){
+            location.setType(2);
+            return;
+        }else{
+            location.setType(1);
+            return;
         }
-        return true;
     }
 }
 

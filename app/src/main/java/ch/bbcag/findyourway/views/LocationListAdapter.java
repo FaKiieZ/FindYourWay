@@ -37,7 +37,9 @@ public class LocationListAdapter extends ArrayAdapter<Location> {
         // set values
         Drawable train = getContext().getResources().getDrawable(R.drawable.ic_train_black_24dp);
         Drawable bus = getContext().getResources().getDrawable(R.drawable.ic_directions_bus_black_24dp);
-        icon.setImageDrawable(location.isBus() ? bus : train);
+        Drawable boat = getContext().getResources().getDrawable(R.drawable.ic_directions_boat_black_24dp);
+        int type = location.getType();
+        icon.setImageDrawable(type == 0 ? train : type == 1 ? bus : boat);
         name.setText(location.getName());
         distance.setText(location.getDistance() + "m");
 
