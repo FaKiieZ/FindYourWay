@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import ch.bbcag.findyourway.model.Connection;
+import ch.bbcag.findyourway.model.ConnectionDetail;
 import ch.bbcag.findyourway.model.Coordinates;
 import ch.bbcag.findyourway.model.Location;
 import ch.bbcag.findyourway.model.Stop;
@@ -130,5 +131,23 @@ public class TransportOpendataJsonParser {
             list.add(new Connection(from, to, duration, service, departure, category, number, platform, row.toString()));
         }
         return list;
+    }
+
+    public static ConnectionDetail CreateConnectionDetailFromJsonString(String connectionString) throws JSONException{
+        JSONObject jsonObject = new JSONObject(connectionString);
+        List<Stop> passList = new ArrayList<>();
+        // create passlist
+        for(int z = 0; z < jsonObject.getJSONArray("passList").length(); z++){
+            String stop = jsonObject.getJSONArray("passList").get(z).toString();
+            passList.add(createStopFromJsonString(stop));
+        }
+        String category = jsonObject.getString("category");
+        String number = jsonObject.getString("number");
+        String to = jsonObject.getString("to");
+        String from = jsonObject.getJSONObject("stop").getJSONObject("station").getString("name");
+        String platform = jsonObject.getJSONObject("stop").getString("platform");
+        Date departure = new Date(Long.parseLong(jsonObject.getJSONObject("stop").getString("departureTimestamp")) * 1000L);
+        String arrival = passList.get(passList.size() -1).getArrivalTime();
+        return new ConnectionDetail(number, to, passList, from, platform, departure, arrival);
     }
 }
