@@ -5,13 +5,15 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class Connection {
+    private String JsonString;
     private Location From;
     private Location To;
     private Time Duration;
     private String Service;
-
+    private List<Stop> Stops;
     private String Category;
     private String Number;
     private Date Departure;
@@ -22,7 +24,7 @@ public class Connection {
 
     }
 
-    public Connection(Location from, Location to, Time duration, String service, Date departure, String category, String number){
+    public Connection(Location from, Location to, Time duration, String service, Date departure, String category, String number, String JsonString){
         setFrom(from);
         setTo(to);
         setDuration(duration);
@@ -30,6 +32,7 @@ public class Connection {
         setDeparture(departure);
         setCategory(category);
         setNumber(number);
+        setJsonString(JsonString);
     }
 
     public Location getFrom() {
@@ -82,6 +85,22 @@ public class Connection {
 
     public String getNumber() {
         return Number;
+    }
+
+    public String getJsonString() {
+        return JsonString;
+    }
+
+    public void setJsonString(String jsonString) {
+        JsonString = jsonString;
+    }
+
+    public List<Stop> getStops() {
+        return Stops;
+    }
+
+    public void setStops(List<Stop> stops) {
+        Stops = stops;
     }
 
     public void setNumber(String number) {
