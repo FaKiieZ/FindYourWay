@@ -35,16 +35,16 @@ public class ConnectionListAdapter extends ArrayAdapter<Connection> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.connection_listitem, parent, false);
         }
         // Lookup view
-//        ImageView icon = (ImageView)convertView.findViewById(R.id.imageViewIcons);
-        TextView number = (TextView)convertView.findViewById(R.id.textViewNumber);
-        TextView destination = (TextView)convertView.findViewById(R.id.textViewDestination);
-        TextView time = (TextView)convertView.findViewById(R.id.textViewTime);
-        TextView plattformNumber = (TextView)convertView.findViewById(R.id.textViewPlattformNumber);
-        TextView plattform = (TextView)convertView.findViewById(R.id.textViewPlattform);
+        ImageView icon = convertView.findViewById(R.id.imageViewDelay);
+        TextView number = convertView.findViewById(R.id.textViewNumber);
+        TextView destination = convertView.findViewById(R.id.textViewDestination);
+        TextView time = convertView.findViewById(R.id.textViewTime);
+        TextView plattformNumber = convertView.findViewById(R.id.textViewPlattformNumber);
+        TextView plattform = convertView.findViewById(R.id.textViewPlattform);
         // set values
-//        Drawable train = getContext().getResources().getDrawable(R.drawable.ic_train_black_24dp);
-//        Drawable bus = getContext().getResources().getDrawable(R.drawable.ic_directions_bus_black_24dp);
-//        icon.setImageDrawable(drawable);
+        //if (connection.getDelay() != 0 && connection.getDelay() != null){
+            icon.setVisibility(View.VISIBLE);
+        //}
         number.setText(connection.getCategory() + connection.getNumber());
         destination.setText("Richtung " + connection.getTo().getName());
         time.setText(connection.getDeparture());

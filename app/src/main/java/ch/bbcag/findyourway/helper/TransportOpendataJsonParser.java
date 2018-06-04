@@ -7,13 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Time;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import ch.bbcag.findyourway.model.Connection;
@@ -83,7 +78,7 @@ public class TransportOpendataJsonParser {
             if (id != null && id.length() > 0 && id != "null") {
                 location.setId(Integer.parseInt(id));
                 location.setName(jsonObj.getString("name"));
-                location.setCoordinates(createCoordinatesFromJsonString(jsonObj.getString("coordinate")));
+                location.setCoordinates(CreateCoordinatesFromJsonString(jsonObj.getString("coordinate")));
                 if(jsonObj.getString("distance") != "null"){
                     location.setDistance(Integer.parseInt(jsonObj.getString("distance")));
                 }
@@ -96,7 +91,7 @@ public class TransportOpendataJsonParser {
         return location;
     }
 
-    public static Coordinates createCoordinatesFromJsonString(String coordinatesJsonString) throws JSONException {
+    public static Coordinates CreateCoordinatesFromJsonString(String coordinatesJsonString) throws JSONException {
         JSONObject jsonObj = new JSONObject(coordinatesJsonString);
         Double x = Double.parseDouble(jsonObj.getString("x"));
         Double y = Double.parseDouble(jsonObj.getString("y"));
@@ -105,7 +100,7 @@ public class TransportOpendataJsonParser {
         return coordinates;
     }
 
-    public static List<Connection> createConnectionsFromJsonString(String connectionJsonString) throws JSONException {
+    public static List<Connection> CreateConnectionsFromJsonString(String connectionJsonString) throws JSONException {
         List<Connection> list = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(connectionJsonString);
         JSONArray stationsJson = jsonObject.getJSONArray("stationboard");
@@ -128,7 +123,15 @@ public class TransportOpendataJsonParser {
                 passList.add(createStopFromJsonString(stop));
             }
 
-            list.add(new Connection(from, to, duration, service, departure, category, number, platform, row.toString()));
+            String delayString = row.getJSONObject("stop").getString("delay");
+            Integer delay = 0;
+            if (delayString != "null"){
+                delay = Integer.parseInt(delayString);
+            }
+
+            Coordinates coordinates = CreateCoordinatesFromJsonString(row.getJSONObject("stop").getJSONObject("station").getJSONObject("coordinate").toString());
+
+            list.add(new Connection(from, to, duration, service, departure, category, number, platform, row.toString(), delay, coordinates));
         }
         return list;
     }

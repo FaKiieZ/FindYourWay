@@ -17,14 +17,17 @@ public class Connection {
     private String Category;
     private String Number;
     private Date Departure;
+    private Integer Delay;
 
     private String platform;
+
+    private Coordinates coordinates;
 
     public Connection() {
 
     }
 
-    public Connection(Location from, Location to, Time duration, String service, Date departure, String category, String number, String platform, String JsonString){
+    public Connection(Location from, Location to, Time duration, String service, Date departure, String category, String number, String platform, String JsonString, Integer delay, Coordinates coordinates){
         setFrom(from);
         setTo(to);
         setDuration(duration);
@@ -34,6 +37,8 @@ public class Connection {
         setNumber(number);
         setJsonString(JsonString);
         setPlatform(platform);
+        setDelay(delay);
+        setCoordinates(coordinates);
     }
 
     public Location getFrom() {
@@ -116,5 +121,21 @@ public class Connection {
 
     public void setDeparture(Date departure) {
         Departure = departure;
+    }
+
+    public Integer getDelay() {
+        return Delay;
+    }
+
+    public void setDelay(Integer delay) {
+        Delay = delay;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 }

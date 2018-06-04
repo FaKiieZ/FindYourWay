@@ -21,14 +21,24 @@
         android:id="@+id/textViewDestination"
         android:layout_width="198dp"
         android:layout_height="24dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:paddingTop="3.5dp"
         android:text="Richtung Burgdorf, Bahnhof"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewDelay"
         app:layout_constraintStart_toEndOf="@+id/textViewNumber"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewDelay"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="16dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_access_time_black_24dp" />
 
     <TextView
         android:id="@+id/textViewTime"
@@ -43,7 +53,7 @@
         android:id="@+id/textViewPlattformNumber"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
-        android:text=""
+        tools:text="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewDestination" />
 
@@ -52,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_marginEnd="2dp"
-        android:text=""
+        tools:text="Gl. "
         app:layout_constraintEnd_toStartOf="@+id/textViewPlattformNumber"
         app:layout_constraintTop_toBottomOf="@+id/textViewDestination" />
 
@@ -61,5 +71,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintGuide_begin="16dp" />
 </android.support.constraint.ConstraintLayout>

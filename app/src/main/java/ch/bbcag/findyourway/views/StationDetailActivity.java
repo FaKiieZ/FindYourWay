@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -50,7 +49,7 @@ public class StationDetailActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            List<Connection> connections = TransportOpendataJsonParser.createConnectionsFromJsonString(response);
+                            List<Connection> connections = TransportOpendataJsonParser.CreateConnectionsFromJsonString(response);
                             final ConnectionListAdapter connectionAdapter = new ConnectionListAdapter(getBaseContext(),connections);
                             //connectionAdapter.addAll(connections);
                             ListView connectionList = findViewById(R.id.list);
