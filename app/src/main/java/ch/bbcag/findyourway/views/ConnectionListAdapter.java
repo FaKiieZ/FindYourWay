@@ -36,12 +36,15 @@ public class ConnectionListAdapter extends ArrayAdapter<Connection> {
         TextView destination = (TextView)convertView.findViewById(R.id.textViewDestination);
         TextView time = (TextView)convertView.findViewById(R.id.textViewTime);
         TextView plattformNumber = (TextView)convertView.findViewById(R.id.textViewPlattformNumber);
+        TextView plattform = (TextView)convertView.findViewById(R.id.textViewPlattform);
         // set values
         number.setText(connection.getCategory() + connection.getNumber());
         destination.setText("Richtung " + connection.getTo().getName());
-        time.setText(connection.getDeparture().toString());
-        if(connection.getPlatform() != null){
+        time.setText(connection.getDeparture());
+        String plattformText = connection.getPlatform();
+        if(plattformText != null){
             plattformNumber.setText(connection.getPlatform());
+            plattform.setText(R.string.plattform);
         }
 
         return  convertView;
