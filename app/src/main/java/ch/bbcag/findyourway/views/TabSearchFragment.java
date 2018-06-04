@@ -98,8 +98,12 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                                             public void onResponse(String response) {
                                                 try{
                                                     List<Connection> connections = TransportOpendataJsonParser.createConnectionsFromJsonString(response);
-                                                    Connection connection = (Connection) connections.toArray()[0];
-                                                    location.setBus(connection.getPlatform() == "null");
+                                                    if (connections.toArray().length > 0) {
+                                                        Connection connection = (Connection) connections.toArray()[0];
+                                                        location.setBus(!isNumeric(connection.getPlatform()));
+                                                    } else {
+                                                        location.setBus(true);
+                                                    }
                                                     final LocationListAdapter locationAdapter = new LocationListAdapter(getContext(),locations);
                                                     ListView locationList = getView().findViewById(R.id.locationList);
                                                     locationList.setAdapter(locationAdapter);
@@ -307,6 +311,19 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
         if (mLocationPermissionGranted) {
             locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 15000, 10, locationListener);
         }
+    }
+
+    private boolean isNumeric(String str)
+    {
+        try
+        {
+            int i = Integer.parseInt(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
     }
 }
 
