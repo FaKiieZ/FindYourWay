@@ -22,7 +22,7 @@ public class Connection {
 
     }
 
-    public Connection(Location from, Location to, Time duration, String service, Date departure, String category, String number){
+    public Connection(Location from, Location to, Time duration, String service, Date departure, String category, String number, String platform){
         setFrom(from);
         setTo(to);
         setDuration(duration);
@@ -30,6 +30,7 @@ public class Connection {
         setDeparture(departure);
         setCategory(category);
         setNumber(number);
+        setPlatform(platform);
     }
 
     public Location getFrom() {

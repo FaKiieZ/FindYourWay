@@ -124,8 +124,9 @@ public class TransportOpendataJsonParser {
             String category = row.getString("category");
             String number = row.getString("number");
             String departureString = row.getJSONObject("stop").getString("departureTimestamp");
+            String platform = row.getJSONObject("stop").getString("platform");
             Date departure = new Date(Long.parseLong(departureString) * 1000L);
-            list.add(new Connection(from, to, duration, service, departure, category, number));
+            list.add(new Connection(from, to, duration, service, departure, category, number, platform));
         }
         return list;
     }

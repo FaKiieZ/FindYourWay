@@ -7,7 +7,7 @@ public class Stop {
     private Time Arrival;
     private Time Departure;
     private Integer Delay;
-    private int Platform;
+    private Integer Platform;
 
     public Location getStation() {
         return Station;
@@ -41,7 +41,7 @@ public class Stop {
         Delay = delay;
     }
 
-    public int getPlatform() {
+    public Integer getPlatform() {
         return Platform;
     }
 

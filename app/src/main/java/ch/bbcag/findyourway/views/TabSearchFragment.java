@@ -40,10 +40,13 @@ import java.util.List;
 
 import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.helper.TransportOpendataJsonParser;
+import ch.bbcag.findyourway.model.Connection;
 import ch.bbcag.findyourway.model.Location;
+import ch.bbcag.findyourway.model.Stop;
 
 public class TabSearchFragment extends android.support.v4.app.Fragment implements OnMapReadyCallback {
     private static final String TRANSPORT_OPENDATA_LOCATIONS_API_URL = "http://transport.opendata.ch/v1/locations";
+    private static final String TRANSPORT_OPENDATA_STATIONBOARD_API_URL = "http://transport.opendata.ch/v1/stationboard?limit=1&station=";
 
     private GoogleMap mGoogleMap;
     private MapView mMapView;
@@ -80,29 +83,49 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
 
     public void getLocationsByCoordinates(android.location.Location location) {
         String url = TRANSPORT_OPENDATA_LOCATIONS_API_URL + "?x=" + location.getLongitude() + "&y=" + location.getLatitude();
-        final ArrayAdapter<Location> locationAdapter = new
-                ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1);
-        RequestQueue queue = Volley.newRequestQueue(getContext());
+        final RequestQueue queue = Volley.newRequestQueue(getContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            List<Location> locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
-                            locationAdapter.addAll(locations);
-                            ListView locationList = getView().findViewById(R.id.locationList);
-                            locationList.setAdapter(locationAdapter);
-                            // click listener
-                            AdapterView.OnItemClickListener mListClickedHandler = new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Intent intent = new Intent(getContext(), StationDetailActivity.class);
-                                    Location selected = (Location)parent.getItemAtPosition(position);
-                                    intent.putExtra("locationId", selected.getId());
-                                    startActivity(intent);
-                                }
-                            };
-                            locationList.setOnItemClickListener(mListClickedHandler);
+                            final List<Location> locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
+                            for (final Location location : locations){
+                                String url = TRANSPORT_OPENDATA_STATIONBOARD_API_URL + location.getName();
+                                StringRequest stringRequest1 = new StringRequest(Request.Method.GET, url,
+                                        new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                try{
+                                                    List<Connection> connections = TransportOpendataJsonParser.createConnectionsFromJsonString(response);
+                                                    Connection connection = (Connection) connections.toArray()[0];
+                                                    location.setBus(connection.getPlatform() == "null");
+                                                    final LocationListAdapter locationAdapter = new LocationListAdapter(getContext(),locations);
+                                                    ListView locationList = getView().findViewById(R.id.locationList);
+                                                    locationList.setAdapter(locationAdapter);
+                                                    // click listener
+                                                    AdapterView.OnItemClickListener mListClickedHandler = new AdapterView.OnItemClickListener() {
+                                                        @Override
+                                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                            Intent intent = new Intent(getContext(), StationDetailActivity.class);
+                                                            Location selected = (Location)parent.getItemAtPosition(position);
+                                                            intent.putExtra("locationId", selected.getId());
+                                                            startActivity(intent);
+                                                        }
+                                                    };
+                                                    locationList.setOnItemClickListener(mListClickedHandler);
+                                                }
+                                                catch (JSONException e) {
+                                                    generateAlertDialog();
+                                                }
+                                            }
+                                        }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            generateAlertDialog();
+                                        }});
+                                queue.add(stringRequest1);
+                            }
                         } catch (JSONException e) {
                             generateAlertDialog();
                         }

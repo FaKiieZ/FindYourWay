@@ -15,20 +15,7 @@
         android:layout_marginTop="16dp"
         android:text="NFB 465"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/imageViewIcons"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageViewIcons"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toStartOf="@+id/textViewNumber"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_home_black_24dp" />
 
     <TextView
         android:id="@+id/textViewDestination"
