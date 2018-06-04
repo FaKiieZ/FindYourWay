@@ -55,6 +55,8 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
 
     private android.location.Location lastLocation;
 
+    private boolean firstTimeCallingLocation = true;
+
     public TabSearchFragment() {
     }
 
@@ -216,9 +218,10 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
         try {
             if (mLocationPermissionGranted) {
                 if (locationManager != null) {
-                    android.location.Location lastKnownLocationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    if (lastKnownLocationGPS != null) {
-                        lastLocation = lastKnownLocationGPS;
+                    android.location.Location passiveLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+                    if (passiveLocation != null) {
+                        android.location.Location loc =  passiveLocation;
+                        lastLocation = loc;
                         if (setCamera){
                             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(lastLocation.getLatitude(),
@@ -227,8 +230,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
 
                         getLocationsByCoordinates(lastLocation);
                     } else {
-                        android.location.Location loc =  locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-                        lastLocation = loc;
+                        lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);;
                         if (setCamera){
                             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(lastLocation.getLatitude(),
@@ -241,6 +243,8 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                     // standard location
                     lastLocation = null;
                 }
+
+                firstTimeCallingLocation = false;
             }
         } catch(SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
@@ -250,6 +254,10 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
     @SuppressLint("MissingPermission")
     public void onResume(){
         super.onResume();
+
+        if (firstTimeCallingLocation){
+            return;
+        }
 
         LocationListener locationListener = new LocationListener() {
             @Override
