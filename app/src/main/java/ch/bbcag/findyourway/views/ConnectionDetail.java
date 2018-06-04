@@ -2,6 +2,7 @@ package ch.bbcag.findyourway.views;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -29,6 +30,11 @@ public class ConnectionDetail extends AppCompatActivity {
     private void CreatePlan(ch.bbcag.findyourway.model.ConnectionDetail connectionDetail){
         TextView from = (TextView)findViewById(R.id.textViewFrom);
         TextView departure = (TextView)findViewById(R.id.textViewDeparture);
+
+        if(connectionDetail.getPassList().size() <= 1){
+            View line = (View)findViewById(R.id.line);
+            //line.
+        }
 
         departure.setText(connectionDetail.getDeparture());
         from.setText(connectionDetail.getFrom());
