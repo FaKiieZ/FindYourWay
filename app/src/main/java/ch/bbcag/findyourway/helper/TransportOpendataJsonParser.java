@@ -35,6 +35,7 @@ public class TransportOpendataJsonParser {
         try {
             String arrival = jsonObj.getString("arrival");
             String departure = jsonObj.getString("departure");
+
             if (arrival != "null"){
                 stop.setArrival(new Time(formatter.parse(arrival).getTime()));
             }
@@ -119,8 +120,10 @@ public class TransportOpendataJsonParser {
             Location to = createLocationFromJsonString(row.getJSONArray("passList").getJSONObject(index).getJSONObject("station").toString());
             Time duration = null;
             String service = "";
+            String category = row.getString("category");
+            String number = row.getString("number");
             Integer departure = Integer.parseInt(row.getJSONObject("stop").getString("departureTimestamp"));
-            list.add(new Connection(from, to, duration, service, departure));
+            list.add(new Connection(from, to, duration, service, departure, category, number));
         }
         return list;
     }

@@ -36,7 +36,7 @@ public class StationDetailActivity extends AppCompatActivity {
 
     public void getConnections(int id,int limit){
         String url = TRANSPORT_OPENDATA_STATIONBOARD_API_URL + id + "&limit=" + limit;
-        final ArrayAdapter<Connection> connectionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        //final ArrayAdapter<Connection> connectionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -44,7 +44,8 @@ public class StationDetailActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             List<Connection> connections = TransportOpendataJsonParser.createConnectionsFromJsonString(response);
-                            connectionAdapter.addAll(connections);
+                            final ConnectionListAdapter connectionAdapter = new ConnectionListAdapter(getBaseContext(),connections);
+                            //connectionAdapter.addAll(connections);
                             ListView connectionList = findViewById(R.id.list);
                             connectionList.setAdapter(connectionAdapter);
                             //progressBar.setVisibility(View.GONE);

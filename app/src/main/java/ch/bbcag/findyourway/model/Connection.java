@@ -10,19 +10,22 @@ public class Connection {
     private Time Duration;
     private String Service;
     private Integer Departure;
-
+    private String Category;
+    private String Number;
     private String platform;
 
     public Connection() {
 
     }
 
-    public Connection(Location from, Location to, Time duration, String service, Integer departure){
+    public Connection(Location from, Location to, Time duration, String service, Integer departure, String category, String number){
         setFrom(from);
         setTo(to);
         setDuration(duration);
         setService(service);
         setDeparture(departure);
+        setCategory(category);
+        setNumber(number);
     }
 
     public Location getFrom() {
@@ -63,6 +66,22 @@ public class Connection {
 
     public String toString() {
         return getDeparture().toString() + ": " + From.getName() + " --> " + To.getName();
+    }
+
+    public String getCategory() {
+        return Category;
+    }
+
+    public void setCategory(String category) {
+        Category = category;
+    }
+
+    public String getNumber() {
+        return Number;
+    }
+
+    public void setNumber(String number) {
+        Number = number;
     }
 
     public Date getDeparture() {
