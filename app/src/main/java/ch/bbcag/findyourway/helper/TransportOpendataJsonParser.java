@@ -32,24 +32,20 @@ public class TransportOpendataJsonParser {
         Stop stop = new Stop();
         JSONObject jsonObj = new JSONObject(stopJsonString);
         stop.setStation(createLocationFromJsonString(jsonObj.getString("station")));
-        DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        try {
             String arrival = jsonObj.getString("arrival");
             String departure = jsonObj.getString("departure");
 
             if (arrival != "null"){
-                stop.setArrival(new Time(formatter.parse(arrival).getTime()));
+                Date arrivalDate = new Date(Long.parseLong(jsonObj.getString("arrivalTimestamp")) * 1000L);
+                stop.setArrival(arrivalDate);
             }
 
             if (departure != "null"){
-                stop.setDeparture(new Time(formatter.parse(departure).getTime()));
+                Date departureDate = new Date(Long.parseLong(jsonObj.getString("departureTimestamp")) * 1000L);
+                stop.setDeparture(departureDate);
             }
 
-        } catch (ParseException ex){
-
-        }
-
-        String delay = jsonObj.getString("delay");
+    String delay = jsonObj.getString("delay");
 
         if (delay != "null"){
             stop.setDelay(Integer.parseInt(delay));
@@ -126,7 +122,14 @@ public class TransportOpendataJsonParser {
             String departureString = row.getJSONObject("stop").getString("departureTimestamp");
             String platform = row.getJSONObject("stop").getString("platform");
             Date departure = new Date(Long.parseLong(departureString) * 1000L);
-            list.add(new Connection(from, to, duration, service, departure, category, number, platform));
+            List<Stop> passList = new ArrayList<>();
+            // create passlist
+            for(int z = 0; z < row.getJSONArray("passList").length(); z++){
+                String stop = row.getJSONArray("passList").get(z).toString();
+                passList.add(createStopFromJsonString(stop));
+            }
+
+            list.add(new Connection(from, to, duration, service, departure, category, number, platform, row.toString()));
         }
         return list;
     }

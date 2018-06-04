@@ -1,11 +1,14 @@
 package ch.bbcag.findyourway.model;
 
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Stop {
     private Location Station;
-    private Time Arrival;
-    private Time Departure;
+    private Date Departure;
+    private Date Arrival;
     private Integer Delay;
     private Integer Platform;
 
@@ -17,20 +20,9 @@ public class Stop {
         Station = station;
     }
 
-    public Time getArrival() {
-        return Arrival;
-    }
-
-    public void setArrival(Time arrival) {
-        Arrival = arrival;
-    }
-
-    public Time getDeparture() {
-        return Departure;
-    }
-
-    public void setDeparture(Time departure) {
-        Departure = departure;
+    public String getDeparture() {
+        DateFormat df = new SimpleDateFormat("HH:mm");
+        return df.format(Departure);
     }
 
     public Integer getDelay() {
@@ -45,8 +37,22 @@ public class Stop {
         return Platform;
     }
 
+    public void setArrival(Date arrival) {
+        Arrival = arrival;
+    }
+
     public void setPlatform(int platform) {
         Platform = platform;
     }
+
+    public void setDeparture(Date departure) {
+        Departure = departure;
+    }
+
+    public String getArrivalTime() {
+        DateFormat df = new SimpleDateFormat("HH:mm");
+        return df.format(Arrival);
+    }
+
     // prognosis
 }

@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -48,6 +50,16 @@ public class StationDetailActivity extends AppCompatActivity {
                             //connectionAdapter.addAll(connections);
                             ListView connectionList = findViewById(R.id.list);
                             connectionList.setAdapter(connectionAdapter);
+                            AdapterView.OnItemClickListener mListClickedHandler = new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Intent intent = new Intent(getBaseContext(), ConnectionDetail.class);
+                                    Connection selected = (Connection)parent.getItemAtPosition(position);
+                                    intent.putExtra("connection", selected.getJsonString());
+                                    startActivity(intent);
+                                }
+                            };
+                            connectionList.setOnItemClickListener(mListClickedHandler);
                             //progressBar.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             generateAlertDialog();
