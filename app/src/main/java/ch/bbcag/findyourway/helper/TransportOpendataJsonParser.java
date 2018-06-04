@@ -32,30 +32,28 @@ public class TransportOpendataJsonParser {
         Stop stop = new Stop();
         JSONObject jsonObj = new JSONObject(stopJsonString);
         stop.setStation(createLocationFromJsonString(jsonObj.getString("station")));
-            String arrival = jsonObj.getString("arrival");
-            String departure = jsonObj.getString("departure");
+        String arrival = jsonObj.getString("arrival");
+        String departure = jsonObj.getString("departure");
 
-            if (arrival != "null"){
-                Date arrivalDate = new Date(Long.parseLong(jsonObj.getString("arrivalTimestamp")) * 1000L);
-                stop.setArrival(arrivalDate);
-            }
+        if (arrival != "null"){
+            Date arrivalDate = new Date(Long.parseLong(jsonObj.getString("arrivalTimestamp")) * 1000L);
+            stop.setArrival(arrivalDate);
+        }
 
-            if (departure != "null"){
-                Date departureDate = new Date(Long.parseLong(jsonObj.getString("departureTimestamp")) * 1000L);
-                stop.setDeparture(departureDate);
-            }
+        if (departure != "null"){
+            Date departureDate = new Date(Long.parseLong(jsonObj.getString("departureTimestamp")) * 1000L);
+            stop.setDeparture(departureDate);
+        }
 
-    String delay = jsonObj.getString("delay");
+        String delay = jsonObj.getString("delay");
 
         if (delay != "null"){
             stop.setDelay(Integer.parseInt(delay));
         }
 
         String platform = jsonObj.getString("platform");
+        stop.setPlatform(platform);
 
-        if (platform != "null"){
-            stop.setPlatform(Integer.parseInt(platform));
-        }
         return stop;
     }
 

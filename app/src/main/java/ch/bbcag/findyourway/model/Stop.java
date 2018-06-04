@@ -10,7 +10,7 @@ public class Stop {
     private Date Departure;
     private Date Arrival;
     private Integer Delay;
-    private Integer Platform;
+    private String Platform;
 
     public Location getStation() {
         return Station;
@@ -33,7 +33,7 @@ public class Stop {
         Delay = delay;
     }
 
-    public Integer getPlatform() {
+    public String getPlatform() {
         return Platform;
     }
 
@@ -41,7 +41,7 @@ public class Stop {
         Arrival = arrival;
     }
 
-    public void setPlatform(int platform) {
+    public void setPlatform(String platform) {
         Platform = platform;
     }
 
