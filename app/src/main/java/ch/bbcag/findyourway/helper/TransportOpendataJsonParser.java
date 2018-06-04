@@ -119,7 +119,8 @@ public class TransportOpendataJsonParser {
             Location to = createLocationFromJsonString(row.getJSONArray("passList").getJSONObject(index).getJSONObject("station").toString());
             Time duration = null;
             String service = "";
-            list.add(new Connection(from, to, duration, service));
+            Integer departure = Integer.parseInt(row.getJSONObject("stop").getString("departureTimestamp"));
+            list.add(new Connection(from, to, duration, service, departure));
         }
         return list;
     }
