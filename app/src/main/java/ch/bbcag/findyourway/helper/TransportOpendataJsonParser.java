@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -122,7 +123,8 @@ public class TransportOpendataJsonParser {
             String service = "";
             String category = row.getString("category");
             String number = row.getString("number");
-            Integer departure = Integer.parseInt(row.getJSONObject("stop").getString("departureTimestamp"));
+            String departureString = row.getJSONObject("stop").getString("departureTimestamp");
+            Date departure = new Date(Long.parseLong(departureString) * 1000L);
             list.add(new Connection(from, to, duration, service, departure, category, number));
         }
         return list;

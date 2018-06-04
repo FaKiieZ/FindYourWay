@@ -2,6 +2,8 @@ package ch.bbcag.findyourway.model;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Connection {
@@ -9,16 +11,18 @@ public class Connection {
     private Location To;
     private Time Duration;
     private String Service;
-    private Integer Departure;
+
     private String Category;
     private String Number;
+    private Date Departure;
+
     private String platform;
 
     public Connection() {
 
     }
 
-    public Connection(Location from, Location to, Time duration, String service, Integer departure, String category, String number){
+    public Connection(Location from, Location to, Time duration, String service, Date departure, String category, String number){
         setFrom(from);
         setTo(to);
         setDuration(duration);
@@ -65,7 +69,7 @@ public class Connection {
     public void setPlatform(String platform) { this.platform = platform; }
 
     public String toString() {
-        return getDeparture().toString() + ": " + From.getName() + " --> " + To.getName();
+        return getDeparture() + ": " + From.getName() + " --> " + To.getName();
     }
 
     public String getCategory() {
@@ -84,11 +88,13 @@ public class Connection {
         Number = number;
     }
 
-    public Date getDeparture() {
-        return new Date(new Timestamp(Departure).getTime());
+    public String getDeparture() {
+        DateFormat df = new SimpleDateFormat("HH:mm");
+
+        return df.format(Departure);
     }
 
-    public void setDeparture(Integer departure) {
+    public void setDeparture(Date departure) {
         Departure = departure;
     }
 }
