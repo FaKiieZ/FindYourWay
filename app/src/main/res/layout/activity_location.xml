@@ -1,33 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/AppTheme"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="FindYourWay"
-            android:textAlignment="viewStart"
-            android:textAppearance="@style/TextAppearance.MediaRouter.Title"
-            android:layout_marginTop="12dp"
-            tools:layout_editor_absoluteX="16dp" />
-    </android.support.v7.widget.Toolbar>
-
-    <View android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="@drawable/toolbar_dropshadow"/>
+    android:layout_width="match_parent"
+    tools:context=".views.LocationActivity">
 
     <ListView
         android:layout_width="match_parent"

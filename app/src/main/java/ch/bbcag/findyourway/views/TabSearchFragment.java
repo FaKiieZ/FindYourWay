@@ -311,7 +311,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
         };
 
         if (mLocationPermissionGranted) {
-            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 15000, 10, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 30000, 10, locationListener);
         }
     }
 
