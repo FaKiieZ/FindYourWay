@@ -114,24 +114,16 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
         String url = TRANSPORT_OPENDATA_LOCATIONS_API_URL + "?query=" + str;
         final RequestQueue queue = Volley.newRequestQueue(getContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            final List<Location> locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
-                            AutoCompleteTextView actv = getView().findViewById(R.id.locationDropdown);
-                            ArrayAdapter<Location> adapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, locations);
-                            actv.setAdapter(adapter);
-                        } catch (JSONException e) {
-                            generateAlertDialog();
-                        }
+                response -> {
+                    try {
+                        final List<Location> locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
+                        AutoCompleteTextView actv = getView().findViewById(R.id.locationDropdown);
+                        ArrayAdapter<Location> adapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, locations);
+                        actv.setAdapter(adapter);
+                    } catch (JSONException e) {
+                        generateAlertDialog();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                generateAlertDialog();
-            }
-        });
+                }, error -> generateAlertDialog());
         queue.add(stringRequest);
     }
 
