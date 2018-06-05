@@ -70,6 +70,8 @@ public class TabFavouriteFragment extends Fragment {
             Location selected = (Location) parent.getItemAtPosition(position);
             intent.putExtra("locationId", selected.getId());
             intent.putExtra("locationName", selected.getName());
+            intent.putExtra("locationType", selected.getType());
+            intent.putExtra("locationIsFavourite", selected.isFavourite());
             startActivity(intent);
         };
         listView.setOnItemClickListener(mListClickedHandler);

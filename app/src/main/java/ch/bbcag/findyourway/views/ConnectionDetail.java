@@ -13,6 +13,7 @@ import android.widget.TextView;
 import org.json.JSONException;
 import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.helper.TransportOpendataJsonParser;
+import ch.bbcag.findyourway.model.Stop;
 
 /***
  * Diese Klasse beinhaltet die Logik zum Anzeigen der Detailansicht, einer Verbindung.
@@ -87,8 +88,8 @@ public class ConnectionDetail extends AppCompatActivity {
         LinearLayout.LayoutParams TextLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpTopixel(getApplicationContext(), 14));
         TextView time = new TextView(this);
         time.setLayoutParams(TextLayout);
-        if(connectionDetail.getPassList().get(1).getDeparture() != null)
-            time.setText(connectionDetail.getPassList().get(1).getDeparture());
+        Stop firstStop = connectionDetail.getPassList().get(1);
+        if(firstStop.getDeparture() != null) time.setText(firstStop.getDeparture());
         time.setTextSize(12);
         time.setId(View.generateViewId());
         mConstraintLayout.addView(time);
