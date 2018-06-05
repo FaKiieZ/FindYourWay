@@ -8,13 +8,12 @@ import android.util.Log;
 /**
  * Die Klasse ist für die Bearbeitung der Datenbank zuständing. (Nur die Struktur und keine Datenmanipulation
  */
-public class FavouriteDbHelper extends SQLiteOpenHelper{
+public class HomeDbHelper extends SQLiteOpenHelper{
     // Instanzvariablen
-    private static final String DB_NAME = "favourite_location.db";
+    private static final String DB_NAME = "home_location.db";
     private static final int DB_VERSION = 1;
-    public static final String TABLE_NAME = "favourite_location";
+    public static final String TABLE_NAME = "home_location";
     private static final String COLUMN_ID = "id";
-    public static final String COLUMN_TYP = "type";
     public static final String COLUMN_LOCATIONID = "locationId";
     public static final String COLUMN_NAME = "name";
     private Context context;
@@ -22,11 +21,10 @@ public class FavouriteDbHelper extends SQLiteOpenHelper{
     private static final String SQL_CREATE =
             "CREATE TABLE " + TABLE_NAME +
                     "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_TYP + " INTEGER NOT NULL, " +
                     COLUMN_LOCATIONID + " INTEGER NOT NULL, "+
                     COLUMN_NAME + " TEXT NOT NULL);";
 
-    public FavouriteDbHelper(Context context) {
+    public HomeDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         this.context = context;
     }
