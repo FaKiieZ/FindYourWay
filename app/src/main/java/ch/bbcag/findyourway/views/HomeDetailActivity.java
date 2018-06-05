@@ -21,10 +21,12 @@ import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.helper.TransportOpendataJsonParser;
 import ch.bbcag.findyourway.model.Connection;
 
+/**
+ * Klasse dient dazu alle Verbindungen zwischen "from" und "to" zu suchen / Logik für View
+ */
 public class HomeDetailActivity extends AppCompatActivity {
 
     private static final String TRANSPORT_OPENDATA_STATIONBOARD_API_URL = "http://transport.opendata.ch/v1/connections?from=";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
