@@ -13,11 +13,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -74,6 +78,64 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
         return mView;
     }
 
+    private void setupLocationDropdown() {
+        AutoCompleteTextView actv = getView().findViewById(R.id.locationDropdown);
+        actv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 2){
+                    getLocationsByString(s.toString());
+                }
+            }
+        });
+
+        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), StationDetailActivity.class);
+                Location selected = (Location)parent.getItemAtPosition(position);
+                intent.putExtra("locationId", selected.getId());
+                intent.putExtra("locationName", selected.getName());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void getLocationsByString(String str){
+        String url = TRANSPORT_OPENDATA_LOCATIONS_API_URL + "?query=" + str;
+        final RequestQueue queue = Volley.newRequestQueue(getContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            final List<Location> locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
+                            AutoCompleteTextView actv = getView().findViewById(R.id.locationDropdown);
+                            ArrayAdapter<Location> adapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, locations);
+                            actv.setAdapter(adapter);
+                        } catch (JSONException e) {
+                            generateAlertDialog();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                generateAlertDialog();
+            }
+        });
+        queue.add(stringRequest);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +144,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
     }
 
 
-    public void getLocationsByCoordinates(android.location.Location location) {
+    private void getLocationsByCoordinates(android.location.Location location) {
         String url = TRANSPORT_OPENDATA_LOCATIONS_API_URL + "?x=" + location.getLongitude() + "&y=" + location.getLatitude();
         final RequestQueue queue = Volley.newRequestQueue(getContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -91,6 +153,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                     public void onResponse(String response) {
                         try {
                             final List<Location> locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
+                            mGoogleMap.clear();
                             for (final Location location : locations){
                                 AddMarkerOnMap(location);
                                 String url = TRANSPORT_OPENDATA_STATIONBOARD_API_URL + location.getName();
@@ -106,6 +169,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                                                     } else {
                                                         locations.remove(location);
                                                     }
+
                                                     final LocationListAdapter locationAdapter = new LocationListAdapter(getContext(),locations);
                                                     ListView locationList = getView().findViewById(R.id.locationList);
                                                     locationList.setAdapter(locationAdapter);
@@ -175,6 +239,8 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
             mMapView.onResume();
             mMapView.getMapAsync(this);
         }
+
+        setupLocationDropdown();
     }
 
 
@@ -257,22 +323,16 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                         android.location.Location loc =  passiveLocation;
                         lastLocation = loc;
                         if (setCamera){
-                            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(lastLocation.getLatitude(),
-                                            lastLocation.getLongitude()), 16));
+                            setCameraOnMap(lastLocation, 16);
                         }
-
-                        getLocationsByCoordinates(lastLocation);
                     } else {
                         lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);;
                         if (setCamera){
-                            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(lastLocation.getLatitude(),
-                                            lastLocation.getLongitude()), 16));
+                            setCameraOnMap(lastLocation, 16);
                         }
-
-                        getLocationsByCoordinates(lastLocation);
                     }
+
+                    getLocationsByCoordinates(lastLocation);
                 } else {
                     // standard location
                     lastLocation = null;
@@ -283,6 +343,12 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
         } catch(SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
+    }
+
+    private void setCameraOnMap(android.location.Location location, int zoom){
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                new LatLng(location.getLatitude(),
+                        location.getLongitude()), zoom));
     }
 
     @SuppressLint("MissingPermission")

@@ -42,9 +42,9 @@ public class ConnectionListAdapter extends ArrayAdapter<Connection> {
         TextView plattformNumber = convertView.findViewById(R.id.textViewPlattformNumber);
         TextView plattform = convertView.findViewById(R.id.textViewPlattform);
         // set values
-        //if (connection.getDelay() != 0 && connection.getDelay() != null){
+        if (connection.getDelay() != 0 && connection.getDelay() != null){
             icon.setVisibility(View.VISIBLE);
-        //}
+        }
         number.setText(connection.getCategory() + connection.getNumber());
         destination.setText("Richtung " + connection.getTo().getName());
         time.setText(connection.getDeparture());

@@ -30,12 +30,12 @@
         app:layout_constraintStart_toEndOf="@+id/textViewNumber"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/imageViewDelay"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginTop="16dp"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_access_time_black_24dp" />
