@@ -1,4 +1,4 @@
-package ch.bbcag.findyourway;
+package ch.bbcag.findyourway.views;
 
 import android.Manifest;
 import android.app.ActionBar;
@@ -22,6 +22,7 @@ import android.util.Log;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
+import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.dal.FavouriteDataSource;
 import ch.bbcag.findyourway.helper.CurrentLocationListener;
 import ch.bbcag.findyourway.helper.FavouriteDbHelper;
