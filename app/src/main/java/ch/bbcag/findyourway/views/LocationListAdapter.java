@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ public class LocationListAdapter extends ArrayAdapter<Location> {
         ImageView icon = convertView.findViewById(R.id.imageViewIcon);
         TextView name = convertView.findViewById(R.id.textViewName);
         TextView distance = convertView.findViewById(R.id.textViewDistance);
+        Button favButton = convertView.findViewById(R.id.favButton);
         // set values
         Drawable train = getContext().getResources().getDrawable(R.drawable.ic_train_black_24dp);
         Drawable bus = getContext().getResources().getDrawable(R.drawable.ic_directions_bus_black_24dp);
@@ -42,6 +44,12 @@ public class LocationListAdapter extends ArrayAdapter<Location> {
         icon.setImageDrawable(type == 0 ? train : type == 1 ? bus : boat);
         name.setText(location.getName());
         distance.setText(location.getDistance() + "m");
+        favButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         return convertView;
     }
