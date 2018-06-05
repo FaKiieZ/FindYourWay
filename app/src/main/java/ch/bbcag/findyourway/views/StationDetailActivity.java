@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -61,37 +62,26 @@ public class StationDetailActivity extends AppCompatActivity {
         //final ArrayAdapter<Connection> connectionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            List<Connection> connections = TransportOpendataJsonParser.CreateConnectionsFromJsonString(response);
-                            final ConnectionListAdapter connectionAdapter = new ConnectionListAdapter(getBaseContext(),connections);
-                            //connectionAdapter.addAll(connections);
-                            ListView connectionList = findViewById(R.id.list);
-                            connectionList.setAdapter(connectionAdapter);
-                            AdapterView.OnItemClickListener mListClickedHandler = new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Intent intent = new Intent(getBaseContext(), ConnectionDetail.class);
-                                    Connection selected = (Connection)parent.getItemAtPosition(position);
-                                    intent.putExtra("connection", selected.getJsonString());
-                                    intent.putExtra("stationId", selected.getFrom().getId());
-                                    startActivity(intent);
-                                }
-                            };
-                            connectionList.setOnItemClickListener(mListClickedHandler);
-                            //progressBar.setVisibility(View.GONE);
-                        } catch (JSONException e) {
-                            generateAlertDialog();
-                        }
+                response -> {
+                    try {
+                        List<Connection> connections = TransportOpendataJsonParser.CreateConnectionsFromJsonString(response);
+                        final ConnectionListAdapter connectionAdapter = new ConnectionListAdapter(getBaseContext(),connections);
+                        //connectionAdapter.addAll(connections);
+                        ListView connectionList = findViewById(R.id.list);
+                        connectionList.setAdapter(connectionAdapter);
+                        AdapterView.OnItemClickListener mListClickedHandler = (parent, view, position, id1) -> {
+                            Intent intent = new Intent(getBaseContext(), ConnectionDetail.class);
+                            Connection selected = (Connection)parent.getItemAtPosition(position);
+                            intent.putExtra("connection", selected.getJsonString());
+                            intent.putExtra("stationId", selected.getFrom().getId());
+                            startActivity(intent);
+                        };
+                        connectionList.setOnItemClickListener(mListClickedHandler);
+                        //progressBar.setVisibility(View.GONE);
+                    } catch (JSONException e) {
+                        generateAlertDialog();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                generateAlertDialog();
-            }
-        });
+                }, error -> generateAlertDialog());
         queue.add(stringRequest);
     }
 
@@ -99,11 +89,9 @@ public class StationDetailActivity extends AppCompatActivity {
         //progressBar.setVisibility(View.GONE);
         AlertDialog.Builder dialogBuilder;
         dialogBuilder = new AlertDialog.Builder(this);
-        dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // Closes this activity
-                finish();
-            }
+        dialogBuilder.setPositiveButton("Ok", (dialog, id) -> {
+            // Closes this activity
+            finish();
         });
         dialogBuilder.setMessage("Error").setTitle("Error");
         AlertDialog dialog = dialogBuilder.create();
