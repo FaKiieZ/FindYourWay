@@ -41,10 +41,11 @@
 
     <Button
         android:id="@+id/favButton"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:background="@drawable/fav_button"
         android:focusable="false"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
