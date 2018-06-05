@@ -101,15 +101,12 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
             }
         });
 
-        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), StationDetailActivity.class);
-                Location selected = (Location)parent.getItemAtPosition(position);
-                intent.putExtra("locationId", selected.getId());
-                intent.putExtra("locationName", selected.getName());
-                startActivity(intent);
-            }
+        actv.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intent = new Intent(getContext(), StationDetailActivity.class);
+            Location selected = (Location)parent.getItemAtPosition(position);
+            intent.putExtra("locationId", selected.getId());
+            intent.putExtra("locationName", selected.getName());
+            startActivity(intent);
         });
     }
 
