@@ -21,6 +21,10 @@ public class Stop {
     }
 
     public String getDeparture() {
+        if (Departure == null){
+            return null;
+        }
+
         DateFormat df = new SimpleDateFormat("HH:mm");
         return df.format(Departure);
     }

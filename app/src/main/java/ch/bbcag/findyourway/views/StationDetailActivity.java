@@ -24,6 +24,7 @@ import org.json.JSONException;
 import java.util.List;
 
 import ch.bbcag.findyourway.R;
+import ch.bbcag.findyourway.dal.FavouriteDataSource;
 import ch.bbcag.findyourway.helper.TransportOpendataJsonParser;
 import ch.bbcag.findyourway.model.Connection;
 
@@ -34,17 +35,44 @@ public class StationDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_station_detail);
 
+        int id = getIntent().getIntExtra("locationId", 0);
         String name = getIntent().getStringExtra("locationName");
+        int type = getIntent().getIntExtra("locationType", 0);
+        final boolean[] isFavourite = {getIntent().getBooleanExtra("locationIsFavourite", false)};
+        FavouriteDataSource fds = new FavouriteDataSource(this);
+
         TextView locationName = findViewById(R.id.locationName);
         locationName.setText(name);
 
-        int id = getIntent().getIntExtra("locationId", 0);
         getConnections(id, 20);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        // Favorisier Button Funktion
+        int iconFavButton = R.drawable.fav_button;
+        int iconFavButtonFull = R.drawable.fav_button_full;
+        Button favButton = findViewById(R.id.favButton);
+
+        favButton.setBackgroundResource(isFavourite[0] ? iconFavButtonFull : iconFavButton);
+
+        favButton.setOnClickListener(v -> {
+            if (isFavourite[0]) {
+                fds.open();
+                fds.deleteFavouriteLocation(id);
+                fds.close();
+                isFavourite[0] = false;
+                favButton.setBackgroundResource(iconFavButton);
+            }else{
+                fds.open();
+                fds.createFavouriteLocation(type, id, name);
+                fds.close();
+                isFavourite[0] = true;
+                favButton.setBackgroundResource(iconFavButtonFull);
+            }
+        });
     }
 
     @Override

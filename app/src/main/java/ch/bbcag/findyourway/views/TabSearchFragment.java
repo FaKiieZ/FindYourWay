@@ -101,13 +101,19 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
             }
         });
 
-        actv.setOnItemClickListener((parent, view, position, id) -> {
+        actv.setOnItemClickListener(createOnItemClickListenerForLocation());
+    }
+
+    private AdapterView.OnItemClickListener createOnItemClickListenerForLocation() {
+        return (parent, view, position, id) -> {
             Intent intent = new Intent(getContext(), StationDetailActivity.class);
             Location selected = (Location)parent.getItemAtPosition(position);
             intent.putExtra("locationId", selected.getId());
             intent.putExtra("locationName", selected.getName());
+            intent.putExtra("locationType", selected.getType());
+            intent.putExtra("locationIsFavourite", selected.isFavourite());
             startActivity(intent);
-        });
+        };
     }
 
     private void getLocationsByString(String str){
@@ -169,14 +175,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                                             locationList.setAdapter(locationListAdapter);
                                             locationListAdapter.notifyDataSetChanged();
                                             // click listener
-                                            AdapterView.OnItemClickListener mListClickedHandler = (parent, view1, position, id) -> {
-                                                Intent intent = new Intent(context, StationDetailActivity.class);
-                                                Location selected = (Location) parent.getItemAtPosition(position);
-                                                intent.putExtra("locationId", selected.getId());
-                                                intent.putExtra("locationName", selected.getName());
-                                                startActivity(intent);
-                                            };
-                                            locationList.setOnItemClickListener(mListClickedHandler);
+                                            locationList.setOnItemClickListener(createOnItemClickListenerForLocation());
                                         } catch (JSONException e) {
                                             generateAlertDialog();
                                         }
