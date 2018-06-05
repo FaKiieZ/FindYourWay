@@ -78,6 +78,7 @@ public class LocationListAdapter extends ArrayAdapter<Location> {
         }
         location.setFavourite(containsId(favLocations, location.getId()));
         favButton.setBackgroundResource(location.isFavourite() ? iconFavButtonFull : iconFavButton);
+        // Fügt die Funktion zum Favorisieren der Elemente hinzu
         favButton.setOnClickListener(v -> {
             if (location.isFavourite()) {
                 fds.open();

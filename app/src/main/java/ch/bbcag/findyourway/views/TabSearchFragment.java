@@ -3,7 +3,6 @@ package ch.bbcag.findyourway.views;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationListener;
@@ -26,8 +25,6 @@ import android.widget.ListView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -46,15 +43,17 @@ import java.util.List;
 import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.helper.TransportOpendataJsonParser;
 import ch.bbcag.findyourway.model.Connection;
-import ch.bbcag.findyourway.model.Coordinates;
 import ch.bbcag.findyourway.model.Location;
 
+/**
+ * Fragment für den Search-Tab
+ */
 public class TabSearchFragment extends android.support.v4.app.Fragment implements OnMapReadyCallback {
     private static final String TRANSPORT_OPENDATA_LOCATIONS_API_URL = "http://transport.opendata.ch/v1/locations";
     private static final String TRANSPORT_OPENDATA_STATIONBOARD_API_URL = "http://transport.opendata.ch/v1/stationboard?limit=1&station=";
 
     private GoogleMap mGoogleMap;
-    private MapView mMapView;
+    protected MapView mMapView;
     private View mView;
 
     private boolean mLocationPermissionGranted;
@@ -67,8 +66,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
 
     private LocationListAdapter locationListAdapter;
 
-    public TabSearchFragment() {
-    }
+    public TabSearchFragment() {}
 
     @Nullable
     @Override
@@ -95,30 +93,30 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 2){
+                if (s.length() > 2) {
                     getLocationsByString(s.toString());
                 }
             }
         });
 
         actv.setOnItemClickListener((parent, view, position, id) -> {
-            Intent intent = new Intent(getContext(), StationDetailActivity.class);
-            Location selected = (Location)parent.getItemAtPosition(position);
+            Intent intent = new Intent(getContext(), LocationDetailActivity.class);
+            Location selected = (Location) parent.getItemAtPosition(position);
             intent.putExtra("locationId", selected.getId());
             intent.putExtra("locationName", selected.getName());
             startActivity(intent);
         });
     }
 
-    private void getLocationsByString(String str){
+    private void getLocationsByString(String str) {
         String url = TRANSPORT_OPENDATA_LOCATIONS_API_URL + "?query=" + str;
         final RequestQueue queue = Volley.newRequestQueue(getContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
-                        final List<Location> locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
+                        final List < Location > locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
                         AutoCompleteTextView actv = getView().findViewById(R.id.locationDropdown);
-                        ArrayAdapter<Location> adapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, locations);
+                        ArrayAdapter < Location > adapter = new ArrayAdapter < > (getContext(), R.layout.support_simple_spinner_dropdown_item, locations);
                         actv.setAdapter(adapter);
                     } catch (JSONException e) {
                         generateAlertDialog();
@@ -136,7 +134,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
 
 
     private void getLocationsByCoordinates(android.location.Location location) {
-        if (getContext() == null || getView() == null){
+        if (getContext() == null || getView() == null) {
             return;
         }
 
@@ -148,15 +146,15 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
-                        final List<Location> locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
+                        final List < Location > locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
                         mGoogleMap.clear();
-                        for (final Location location1 : locations) {
+                        for (final Location location1: locations) {
                             AddMarkerOnMap(location1);
                             String url1 = TRANSPORT_OPENDATA_STATIONBOARD_API_URL + location1.getName();
                             StringRequest stringRequest1 = new StringRequest(Request.Method.GET, url1,
                                     response1 -> {
                                         try {
-                                            List<Connection> connections = TransportOpendataJsonParser.CreateConnectionsFromJsonString(response1);
+                                            List < Connection > connections = TransportOpendataJsonParser.CreateConnectionsFromJsonString(response1);
                                             if (connections.toArray().length > 0) {
                                                 Connection connection = (Connection) connections.toArray()[0];
                                                 SetLocationType(connection.getCategory(), location1);
@@ -170,7 +168,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                                             locationListAdapter.notifyDataSetChanged();
                                             // click listener
                                             AdapterView.OnItemClickListener mListClickedHandler = (parent, view1, position, id) -> {
-                                                Intent intent = new Intent(context, StationDetailActivity.class);
+                                                Intent intent = new Intent(context, LocationDetailActivity.class);
                                                 Location selected = (Location) parent.getItemAtPosition(position);
                                                 intent.putExtra("locationId", selected.getId());
                                                 intent.putExtra("locationName", selected.getName());
@@ -224,7 +222,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        if (getContext() == null){
+        if (getContext() == null) {
             return;
         }
 
@@ -245,12 +243,13 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
          * onRequestPermissionsResult.
          */
         if (ContextCompat.checkSelfPermission(getContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
         } else {
             ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    new String[] {
+                            android.Manifest.permission.ACCESS_FINE_LOCATION
+                    },
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
     }
@@ -261,10 +260,10 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                                            @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
         switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:
+            {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mLocationPermissionGranted = true;
                 }
             }
@@ -287,11 +286,15 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                 lastLocation = null;
                 getLocationPermission();
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
 
+    /**
+     * Holt die aktuelle Position des Gerätes, falls kein genauer Wert bestimmt werden kann => return null
+     * @param setCamera Bool ob Kameraposition der Map gesetzt werden soll
+     */
     private void getDeviceLocation(boolean setCamera) {
         /*
          * Get the best and most recent location of the device, which may be null in rare
@@ -302,14 +305,14 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                 if (locationManager != null) {
                     android.location.Location passiveLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
                     if (passiveLocation != null) {
-                        android.location.Location loc =  passiveLocation;
+                        android.location.Location loc = passiveLocation;
                         lastLocation = loc;
-                        if (setCamera){
+                        if (setCamera) {
                             setCameraOnMap(lastLocation, 16);
                         }
                     } else {
                         lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);;
-                        if (setCamera){
+                        if (setCamera) {
                             setCameraOnMap(lastLocation, 16);
                         }
                     }
@@ -322,22 +325,22 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
 
                 firstTimeCallingLocation = false;
             }
-        } catch(SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
 
-    private void setCameraOnMap(android.location.Location location, int zoom){
+    private void setCameraOnMap(android.location.Location location, int zoom) {
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(location.getLatitude(),
                         location.getLongitude()), zoom));
     }
 
     @SuppressLint("MissingPermission")
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
-        if (firstTimeCallingLocation){
+        if (firstTimeCallingLocation) {
             return;
         }
 
@@ -371,8 +374,8 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser){
-            if (locationListAdapter == null){
+        if (isVisibleToUser) {
+            if (locationListAdapter == null) {
                 return;
             }
 
@@ -380,23 +383,30 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
         }
     }
 
-    private void SetLocationType(String str, Location location){
-        String[] trains = {"I", "R", "S", "V", "E"};
+    /**
+     * Setzt den Type der Location anhand seines Präfix
+     * @param str Stations Name
+     * @param location Location auf dem der Type gesetzt werden soll
+     */
+    private void SetLocationType(String str, Location location) {
+        String[] trains = {
+                "I",
+                "R",
+                "S",
+                "V",
+                "E"
+        };
         String boat = "BAT";
 
         String firstLetter = str.substring(0, 1);
 
-        if (Arrays.asList(trains).contains(firstLetter)){
+        if (Arrays.asList(trains).contains(firstLetter)) {
             location.setType(0);
             return;
-        }
-        else if (str.startsWith(boat)){
+        } else if (str.startsWith(boat)) {
             location.setType(2);
-            return;
-        }else{
+        } else {
             location.setType(1);
-            return;
         }
     }
 }
-

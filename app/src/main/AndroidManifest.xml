@@ -30,7 +30,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD0IqJlPkU8bXIMhZzsQqV2f129iR5fGMM" />
 
-        <activity android:name=".views.StationDetailActivity" />
+        <activity android:name=".views.LocationDetailActivity" />
         <activity android:name=".views.ConnectionDetail" />
     </application>
 
