@@ -18,6 +18,9 @@ import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.dal.FavouriteDataSource;
 import ch.bbcag.findyourway.model.Location;
 
+/**
+ * Custom ArrayAdapter um Locations in einem ListView anzeigen zu können
+ */
 public class LocationListAdapter extends ArrayAdapter<Location> {
 
     private boolean IsLoaded = false;
@@ -33,6 +36,13 @@ public class LocationListAdapter extends ArrayAdapter<Location> {
         IsLoaded = false;
     }
 
+    /**
+     * Wendet das Layout auf den ListView an
+     * @param position Aktuelle Position im Array
+     * @param convertView View zum Anpassen
+     * @param parent Parent-Element
+     * @return Angepasster View
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -90,6 +100,10 @@ public class LocationListAdapter extends ArrayAdapter<Location> {
         return convertView;
     }
 
+    /**
+     * Holt alle favorisierten Locations aus der Datenbank
+     * @return List mit Locations
+     */
     private List<Location> getFavouriteLocations(){
         final FavouriteDataSource fds = new FavouriteDataSource(getContext());
 

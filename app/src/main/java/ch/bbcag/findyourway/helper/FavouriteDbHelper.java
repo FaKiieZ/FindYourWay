@@ -5,24 +5,26 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+/**
+ * Die Klasse ist für die Bearbeitung der Datenbank zuständing. (Nur die Struktur un keine Datenmanipulation
+ */
 public class FavouriteDbHelper extends SQLiteOpenHelper{
-    public static final String DB_NAME = "favourite_location.db";
-    public static final int DB_VERSION = 1;
+    // Instanzvariablen
+    private static final String DB_NAME = "favourite_location.db";
+    private static final int DB_VERSION = 1;
     public static final String TABLE_NAME = "favourite_location";
-    public static final String COLUMN_ID = "id";
+    private static final String COLUMN_ID = "id";
     public static final String COLUMN_TYP = "type";
     public static final String COLUMN_LOCATIONID = "locationId";
     public static final String COLUMN_NAME = "name";
-
+    private Context context;
     private static final String LOG_TAG = FavouriteDbHelper.class.getSimpleName();
-    public static final String SQL_CREATE =
+    private static final String SQL_CREATE =
             "CREATE TABLE " + TABLE_NAME +
                     "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_TYP + " INTEGER NOT NULL, " +
                     COLUMN_LOCATIONID + " INTEGER NOT NULL, "+
                     COLUMN_NAME + " TEXT NOT NULL);";
-
-    private Context context;
 
     public FavouriteDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

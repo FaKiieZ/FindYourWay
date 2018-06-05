@@ -31,7 +31,6 @@
             android:value="AIzaSyD0IqJlPkU8bXIMhZzsQqV2f129iR5fGMM" />
 
         <activity android:name=".views.StationDetailActivity" />
-        <activity android:name=".views.LocationActivity" />
         <activity android:name=".views.ConnectionDetail" />
     </application>
 

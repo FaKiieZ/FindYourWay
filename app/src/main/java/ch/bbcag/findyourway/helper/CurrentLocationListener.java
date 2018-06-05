@@ -7,7 +7,10 @@ import android.os.Bundle;
 import com.google.android.gms.location.LocationServices;
 
 import ch.bbcag.findyourway.model.Coordinates;
-
+//TODO comment this class
+/**
+ *
+ */
 public class CurrentLocationListener implements LocationListener {
     private Coordinates coordinates;
 

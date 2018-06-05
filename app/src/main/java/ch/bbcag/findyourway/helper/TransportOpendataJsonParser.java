@@ -17,51 +17,59 @@ import ch.bbcag.findyourway.model.Coordinates;
 import ch.bbcag.findyourway.model.Location;
 import ch.bbcag.findyourway.model.Stop;
 
+/**
+ * Dient zum Parsen einer JSON-Antwort der "TransportOpendata" API
+ */
 public class TransportOpendataJsonParser {
-    /*public static Connection createConnectionFromJsonString(String connectionJsonString) throws JSONException {
-        Connection connection = new Connection();
-        JSONObject jsonObj = new JSONObject(connectionJsonString);
-        connection.setFrom(createjsonObj.getString("from"));
-    }*/
 
+    /**
+     * Erstellt ein @see Stop Objekt anhand eines JSON-String
+     * @param stopJsonString JSON String
+     * @return Neu erzeugtes Stop-Objekt
+     * @throws JSONException Wirft JSONException beim Parsen des Strings
+     */
     public static Stop createStopFromJsonString(String stopJsonString) throws JSONException {
         Stop stop = new Stop();
         JSONObject jsonObj = new JSONObject(stopJsonString);
         stop.setStation(createLocationFromJsonString(jsonObj.getString("station")));
         String arrival = jsonObj.getString("arrival");
         String departure = jsonObj.getString("departure");
+        String delay = jsonObj.getString("delay");
+        String platform = jsonObj.getString("platform");
 
-        if (arrival != "null"){
+        if (arrival != "null") {
             Date arrivalDate = new Date(Long.parseLong(jsonObj.getString("arrivalTimestamp")) * 1000L);
             stop.setArrival(arrivalDate);
         }
 
-        if (departure != "null"){
+        if (departure != "null") {
             Date departureDate = new Date(Long.parseLong(jsonObj.getString("departureTimestamp")) * 1000L);
             stop.setDeparture(departureDate);
         }
 
-        String delay = jsonObj.getString("delay");
-
-        if (delay != "null"){
+        if (delay != "null") {
             stop.setDelay(Integer.parseInt(delay));
         }
 
-        String platform = jsonObj.getString("platform");
         stop.setPlatform(platform);
 
         return stop;
     }
 
-
-    public static List<Location> createLocationsFromJsonString(String locationJsonString) throws JSONException {
-        List<Location> locations = new ArrayList<>();
+    /**
+     * Erstellt eine Liste von Locations
+     * @param locationJsonString String einer Location(API)
+     * @return Liste mit Locations
+     * @throws JSONException Wirft JSONException beim Parsen des Strings
+     */
+    public static List <Location> createLocationsFromJsonString(String locationJsonString) throws JSONException {
+        List <Location> locations = new ArrayList < > ();
         JSONObject jsonObj = new JSONObject(locationJsonString);
         JSONArray stationsJson = jsonObj.getJSONArray("stations");
         for (int i = 0; i < stationsJson.length(); i++) {
             JSONObject row = stationsJson.getJSONObject(i);
             Location location = createLocationFromJsonString(row.toString());
-            if (location.getId() != null){
+            if (location.getId() != null) {
                 locations.add(location);
             }
         }
@@ -69,21 +77,26 @@ public class TransportOpendataJsonParser {
         return locations;
     }
 
-
-    public static Location createLocationFromJsonString(String locationJsonString) throws JSONException {
+    /**
+     * Erstellt ein Location-Objekt
+     * @param locationJsonString JSON Location-String
+     * @return  Location-Objekt
+     * @throws JSONException Wirft JSONException beim Parsen des Strings
+     */
+    private static Location createLocationFromJsonString(String locationJsonString) throws JSONException {
         Location location = new Location();
         JSONObject jsonObj = new JSONObject(locationJsonString);
         String id = jsonObj.getString("id");
-        try{
+        try {
             if (id != null && id.length() > 0 && id != "null") {
                 location.setId(Integer.parseInt(id));
                 location.setName(jsonObj.getString("name"));
                 location.setCoordinates(CreateCoordinatesFromJsonString(jsonObj.getString("coordinate")));
-                if(jsonObj.getString("distance") != "null"){
+                if (jsonObj.getString("distance") != "null") {
                     location.setDistance(Integer.parseInt(jsonObj.getString("distance")));
                 }
             }
-        } catch (Exception ex){
+        } catch (Exception ex) {
             Log.d("JSONParser: ", ex.getMessage());
         }
 
@@ -91,7 +104,7 @@ public class TransportOpendataJsonParser {
         return location;
     }
 
-    public static Coordinates CreateCoordinatesFromJsonString(String coordinatesJsonString) throws JSONException {
+    private static Coordinates CreateCoordinatesFromJsonString(String coordinatesJsonString) throws JSONException {
         JSONObject jsonObj = new JSONObject(coordinatesJsonString);
         Double x = Double.parseDouble(jsonObj.getString("x"));
         Double y = Double.parseDouble(jsonObj.getString("y"));
@@ -100,14 +113,20 @@ public class TransportOpendataJsonParser {
         return coordinates;
     }
 
-    public static List<Connection> CreateConnectionsFromJsonString(String connectionJsonString) throws JSONException {
-        List<Connection> list = new ArrayList<>();
+    /**
+     * Erstellt eine List von Connection anhand eines Stationboard-String
+     * @param connectionJsonString JSON Stationboard-String
+     * @return List mit Connection-Objekte
+     * @throws JSONException Wirft JSONException beim Parsen des Strings
+     */
+    public static List <Connection> CreateConnectionsFromJsonString(String connectionJsonString) throws JSONException {
+        List <Connection> list = new ArrayList < > ();
         JSONObject jsonObject = new JSONObject(connectionJsonString);
         JSONArray stationsJson = jsonObject.getJSONArray("stationboard");
-        for(int i = 0; i < stationsJson.length(); i++){
+        for (int i = 0; i < stationsJson.length(); i++) {
             Location from = createLocationFromJsonString(jsonObject.getJSONObject("station").toString());
             JSONObject row = stationsJson.getJSONObject(i);
-            int index = row.getJSONArray("passList").length() -1;
+            int index = row.getJSONArray("passList").length() - 1;
             Location to = createLocationFromJsonString(row.getJSONArray("passList").getJSONObject(index).getJSONObject("station").toString());
             Time duration = null;
             String service = "";
@@ -116,16 +135,16 @@ public class TransportOpendataJsonParser {
             String departureString = row.getJSONObject("stop").getString("departureTimestamp");
             String platform = row.getJSONObject("stop").getString("platform");
             Date departure = new Date(Long.parseLong(departureString) * 1000L);
-            List<Stop> passList = new ArrayList<>();
+            List < Stop > passList = new ArrayList < > ();
             // create passlist
-            for(int z = 0; z < row.getJSONArray("passList").length(); z++){
+            for (int z = 0; z < row.getJSONArray("passList").length(); z++) {
                 String stop = row.getJSONArray("passList").get(z).toString();
                 passList.add(createStopFromJsonString(stop));
             }
 
             String delayString = row.getJSONObject("stop").getString("delay");
             Integer delay = 0;
-            if (delayString != "null"){
+            if (delayString != "null") {
                 delay = Integer.parseInt(delayString);
             }
 
@@ -136,11 +155,17 @@ public class TransportOpendataJsonParser {
         return list;
     }
 
-    public static ConnectionDetail CreateConnectionDetailFromJsonString(String connectionString) throws JSONException{
+    /**
+     * Erstellt ein ConnectionDetail-Objekt
+     * @param connectionString JSON String einer Connection
+     * @return ConnectionDetail-Objekt
+     * @throws JSONException
+     */
+    public static ConnectionDetail CreateConnectionDetailFromJsonString(String connectionString) throws JSONException {
         JSONObject jsonObject = new JSONObject(connectionString);
-        List<Stop> passList = new ArrayList<>();
+        List < Stop > passList = new ArrayList < > ();
         // create passlist
-        for(int z = 0; z < jsonObject.getJSONArray("passList").length(); z++){
+        for (int z = 0; z < jsonObject.getJSONArray("passList").length(); z++) {
             String stop = jsonObject.getJSONArray("passList").get(z).toString();
             passList.add(createStopFromJsonString(stop));
         }
@@ -150,7 +175,7 @@ public class TransportOpendataJsonParser {
         String from = jsonObject.getJSONObject("stop").getJSONObject("station").getString("name");
         String platform = jsonObject.getJSONObject("stop").getString("platform");
         Date departure = new Date(Long.parseLong(jsonObject.getJSONObject("stop").getString("departureTimestamp")) * 1000L);
-        String arrival = passList.get(passList.size() -1).getArrivalTime();
+        String arrival = passList.get(passList.size() - 1).getArrivalTime();
         return new ConnectionDetail(number, to, passList, from, platform, departure, arrival);
     }
 }
