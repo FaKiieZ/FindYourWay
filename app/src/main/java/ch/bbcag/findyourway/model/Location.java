@@ -10,6 +10,7 @@ public class Location {
     private Coordinates Coordinates;
     private Integer Distance;
     private List<Connection> Connections = new ArrayList<>();
+    private boolean IsFavourite;
 
     public Location(){
 
@@ -74,5 +75,13 @@ public class Location {
             return this.Name;
         }
         return this.Name + " " + this.Distance + "m";
+    }
+
+    public boolean isFavourite() {
+        return IsFavourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        IsFavourite = favourite;
     }
 }

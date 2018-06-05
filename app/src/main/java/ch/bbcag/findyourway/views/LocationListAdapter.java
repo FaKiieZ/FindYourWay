@@ -1,6 +1,7 @@
 package ch.bbcag.findyourway.views;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import ch.bbcag.findyourway.R;
+import ch.bbcag.findyourway.dal.FavouriteDataSource;
 import ch.bbcag.findyourway.model.Location;
 
 public class LocationListAdapter extends ArrayAdapter<Location> {
@@ -26,28 +28,52 @@ public class LocationListAdapter extends ArrayAdapter<Location> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Location location = getItem(position);
+        final FavouriteDataSource fds = new FavouriteDataSource(getContext());
+        final Location location = getItem(position);
         // check view
         if(convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.location_listitem, parent, false);
         }
+
         // Lookup view
         ImageView icon = convertView.findViewById(R.id.imageViewIcon);
         TextView name = convertView.findViewById(R.id.textViewName);
         TextView distance = convertView.findViewById(R.id.textViewDistance);
-        Button favButton = convertView.findViewById(R.id.favButton);
+        final Button favButton = convertView.findViewById(R.id.favButton);
+
+        // Load favourites
+        fds.open();
+        List<Location> favlocations = fds.getAllFavouriteLocations();
+        fds.close();
+
         // set values
         Drawable train = getContext().getResources().getDrawable(R.drawable.ic_train_black_24dp);
         Drawable bus = getContext().getResources().getDrawable(R.drawable.ic_directions_bus_black_24dp);
         Drawable boat = getContext().getResources().getDrawable(R.drawable.ic_directions_boat_black_24dp);
+        final int iconFavButton = R.drawable.fav_button;
+        final int iconFavButtonFull = R.drawable.fav_button_full;
         int type = location.getType();
         icon.setImageDrawable(type == 0 ? train : type == 1 ? bus : boat);
         name.setText(location.getName());
         distance.setText(location.getDistance() + "m");
+        location.setFavourite(favlocations.contains(location));
+        favButton.setBackgroundResource(location.isFavourite() ? iconFavButtonFull : iconFavButton);
         favButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (location.isFavourite()) {
+                    fds.open();
+                    fds.createFavouriteLocation(location.getType(), location.getId());
+                    fds.close();
+                    location.setFavourite(false);
+                    favButton.setBackgroundResource(iconFavButton);
+                }else{
+                    fds.open();
+                    fds.deleteFavouriteLocation(location.getId());
+                    fds.close();
+                    location.setFavourite(true);
+                    favButton.setBackgroundResource(iconFavButtonFull);
+                }
             }
         });
 

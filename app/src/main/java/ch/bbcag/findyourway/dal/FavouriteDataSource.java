@@ -12,9 +12,8 @@ import ch.bbcag.findyourway.model.Location;
 public class FavouriteDataSource {
     private static final String LOG_TAG = FavouriteDataSource.class.getSimpleName();
     private String[] columns = {
-      FavouriteDbHelper.COLUMN_ID,
       FavouriteDbHelper.COLUMN_TYP,
-      FavouriteDbHelper.COLUMN_NAME
+      FavouriteDbHelper.COLUMN_LOCATIONID
     };
 
     private SQLiteDatabase database;
@@ -32,23 +31,26 @@ public class FavouriteDataSource {
         dbHelper.close();
     }
 
-    public void createFavouriteLocation(int id, int type, String name){
+    public void createFavouriteLocation(int type, int locationId){
         ContentValues values = new ContentValues();
-        values.put(FavouriteDbHelper.COLUMN_ID, id);
         values.put(FavouriteDbHelper.COLUMN_TYP, type);
-        values.put(FavouriteDbHelper.COLUMN_NAME, name);
+        values.put(FavouriteDbHelper.COLUMN_LOCATIONID, locationId);
 
         long insertId = database.insert(FavouriteDbHelper.TABLE_NAME, null, values);
+    }
+
+    public void deleteFavouriteLocation(Integer id){
+        database.delete(FavouriteDbHelper.TABLE_NAME, FavouriteDbHelper.COLUMN_LOCATIONID + " = ?", new String[]{id.toString()});
     }
 
     private Location cursorToFavouriteLocation(Cursor cursor) {
         int _id = cursor.getColumnIndex(FavouriteDbHelper.COLUMN_ID);
         int _type = cursor.getColumnIndex(FavouriteDbHelper.COLUMN_TYP);
-        int _name = cursor.getColumnIndex(FavouriteDbHelper.COLUMN_NAME);
+        int _locationId = cursor.getColumnIndex(FavouriteDbHelper.COLUMN_LOCATIONID);
 
         int id = cursor.getInt(_id);
         int type = cursor.getInt(_type);
-        String name = cursor.getString(_name);
+        String name = cursor.getString(_locationId);
 
         Location location = new Location(id, type, name);
         return  location;
@@ -56,7 +58,7 @@ public class FavouriteDataSource {
 
     public List<Location> getAllFavouriteLocations() {
         List<Location> locationList = new ArrayList<>();
-
+        dbHelper.dropDatabase();
         Cursor cursor = database.query(FavouriteDbHelper.TABLE_NAME, columns, null, null, null,null, null);
         cursor.moveToFirst();
         Location location;

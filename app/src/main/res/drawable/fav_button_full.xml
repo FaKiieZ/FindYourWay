@@ -9,5 +9,5 @@
         </shape>
     </item>
     <!-- And your drawable -->
-    <item android:drawable="@drawable/ic_star_border_black_24dp" />
+    <item android:drawable="@drawable/ic_star_black_24dp" />
 </ripple>
