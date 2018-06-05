@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,7 +38,10 @@ public class HomeDetailActivity extends AppCompatActivity {
         int to = getIntent().getIntExtra("toId", 0);
         String fromName = getIntent().getStringExtra("fromName");
         String toName = getIntent().getStringExtra("toName");
-        
+
+        TextView locationName = (TextView)findViewById(R.id.locationName);
+        locationName.setText(fromName + " nach " + toName);
+
         getConnections(from, to);
         
     }
