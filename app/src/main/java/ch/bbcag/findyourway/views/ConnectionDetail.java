@@ -42,6 +42,9 @@ public class ConnectionDetail extends AppCompatActivity {
 
         TextView from = (TextView)findViewById(R.id.textViewFrom);
         TextView departure = (TextView)findViewById(R.id.textViewDeparture);
+        TextView locationName = (TextView)findViewById(R.id.locationName);
+        locationName.setText(connectionDetail.getFrom() + " nach " + connectionDetail.getTo());
+
 
         if(connectionDetail.getPassList().size() <= 1){
             View line = (View)findViewById(R.id.line);
