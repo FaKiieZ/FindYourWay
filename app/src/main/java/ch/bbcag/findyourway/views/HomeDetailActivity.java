@@ -85,7 +85,6 @@ public class HomeDetailActivity extends AppCompatActivity {
     }
 
     private void generateAlertDialog() {
-        //progressBar.setVisibility(View.GONE);
         AlertDialog.Builder dialogBuilder;
         dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setPositiveButton("Ok", (dialog, id) -> {
