@@ -50,7 +50,7 @@ public class ConnectionDetail extends AppCompatActivity {
         else {
             View line = (View)findViewById(R.id.line);
             line.getLayoutParams().height = 0;
-            line.getLayoutParams().height = (dpTopixel(getApplicationContext(),(float)33.55) * connectionDetail.getPassList().size() -2);
+            //line.getLayoutParams().height = dpTopixel(getApplicationContext(),(float)0);
 
 
             // create first dot
@@ -100,6 +100,8 @@ public class ConnectionDetail extends AppCompatActivity {
 
 
             // create destination stop
+            line.getLayoutParams().height = line.getLayoutParams().height + dpTopixel(getApplicationContext(),(float)50);
+
             ImageView endDot = new ImageView(this);
             LinearLayout.LayoutParams endDotLayout = new LinearLayout.LayoutParams(dpTopixel(getApplicationContext(), 16), dpTopixel(getApplicationContext(), 16));
             endDot.setLayoutParams(endDotLayout);
@@ -141,13 +143,22 @@ public class ConnectionDetail extends AppCompatActivity {
 
         }
 
+        if(connectionDetail.getPlatform() != null && connectionDetail.getPlatform() != "null"){
+            from.setText(connectionDetail.getFrom() + ", Gl. " + connectionDetail.getPlatform());
+        }
+        else {
+            from.setText(connectionDetail.getFrom());
+        }
         departure.setText(connectionDetail.getDeparture());
-        from.setText(connectionDetail.getFrom());
+
 
 
     }
 
     private void CreateDots(int id, int count, ch.bbcag.findyourway.model.ConnectionDetail connectionDetails){
+        View line = (View)findViewById(R.id.line);
+        line.getLayoutParams().height = line.getLayoutParams().height + dpTopixel(getApplicationContext(),(float)36);
+
         ConstraintLayout mConstraintLayout  = (ConstraintLayout)findViewById(R.id.mainConstraint);
         ConstraintSet set = new ConstraintSet();
 
