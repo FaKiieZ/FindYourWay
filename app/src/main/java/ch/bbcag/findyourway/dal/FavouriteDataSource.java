@@ -9,6 +9,9 @@ import java.util.List;
 import ch.bbcag.findyourway.helper.FavouriteDbHelper;
 import ch.bbcag.findyourway.model.Location;
 
+/**
+ *
+ */
 public class FavouriteDataSource {
     private static final String LOG_TAG = FavouriteDataSource.class.getSimpleName();
     private String[] columns = {
