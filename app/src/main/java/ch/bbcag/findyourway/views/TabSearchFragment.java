@@ -115,6 +115,10 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
     }
 
     private void getLocationsByString(String str) {
+        if (getView() == null || getContext() == null){
+            return;
+        }
+
         String url = TRANSPORT_OPENDATA_LOCATIONS_API_URL + "?query=" + str;
         final RequestQueue queue = Volley.newRequestQueue(getContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

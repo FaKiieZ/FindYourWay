@@ -118,7 +118,7 @@ public class ConnectionDetail extends AppCompatActivity {
         CreateDots(dot.getId(), 2, connectionDetail);
 
         // Verlänger die Line um noch den Endpunkt hinzuzufügen
-        line.getLayoutParams().height = line.getLayoutParams().height + dpTopixel(getApplicationContext(),(float)50);
+        line.getLayoutParams().height = line.getLayoutParams().height + dpTopixel(getApplicationContext(),(float)52);
         // Erstelle den Endpunkt auf der Linie
         ImageView endDot = new ImageView(this);
         LinearLayout.LayoutParams endDotLayout = new LinearLayout.LayoutParams(dpTopixel(getApplicationContext(), 16), dpTopixel(getApplicationContext(), 16));
@@ -188,7 +188,7 @@ public class ConnectionDetail extends AppCompatActivity {
     private void CreateDots(int id, int count, ch.bbcag.findyourway.model.ConnectionDetail connectionDetails){
         // Verlängert die Linie für jeden Durchgang um 36dp
         View line = (View)findViewById(R.id.line);
-        line.getLayoutParams().height = line.getLayoutParams().height + dpTopixel(getApplicationContext(),(float)36);
+        line.getLayoutParams().height = line.getLayoutParams().height + dpTopixel(getApplicationContext(),(float)36.5);
 
         // Holt das ConstraintLayout
         ConstraintLayout mConstraintLayout  = (ConstraintLayout)findViewById(R.id.mainConstraint);

@@ -21,11 +21,15 @@
         android:id="@+id/textViewDestination"
         android:layout_width="230dp"
         android:layout_height="24dp"
+        android:layout_marginStart="120dp"
         android:layout_marginTop="16dp"
         android:paddingTop="3.5dp"
         android:text="Richtung Burgdorf, Bahnhof"
         app:layout_constraintEnd_toStartOf="@+id/imageViewDelay"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:ellipsize="end"
+        android:maxLines="1"/>
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/imageViewDelay"
