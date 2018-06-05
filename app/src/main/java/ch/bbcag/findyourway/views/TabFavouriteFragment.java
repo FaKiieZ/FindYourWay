@@ -1,5 +1,6 @@
 package ch.bbcag.findyourway.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -56,5 +58,15 @@ public class TabFavouriteFragment extends Fragment {
         dataSource.close();
         LocationListAdapter locationArrayAdapter = new LocationListAdapter(getContext(), locationList);
         listView.setAdapter(locationArrayAdapter);
+        locationArrayAdapter.notifyDataSetChanged();
+
+        AdapterView.OnItemClickListener mListClickedHandler = (parent, view1, position, id) -> {
+            Intent intent = new Intent(getContext(), StationDetailActivity.class);
+            Location selected = (Location) parent.getItemAtPosition(position);
+            intent.putExtra("locationId", selected.getId());
+            intent.putExtra("locationName", selected.getName());
+            startActivity(intent);
+        };
+        listView.setOnItemClickListener(mListClickedHandler);
     }
 }

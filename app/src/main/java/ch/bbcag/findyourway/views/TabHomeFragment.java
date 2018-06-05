@@ -49,8 +49,6 @@ public class TabHomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_home, container, false);
-        Coordinates coordinates = new Coordinates(46.947440, 7.452570);
-        getLocationsByCoordinates(coordinates);
         return mView;
     }
 
@@ -60,9 +58,17 @@ public class TabHomeFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            Coordinates coordinates = new Coordinates(46.947440, 7.452570);
+            getLocationsByCoordinates(coordinates);
+        }
+    }
 
     public void getLocationsByCoordinates(Coordinates coordinates) {
-        if (getView() == null){
+        if (getView() == null || getContext() == null){
             return;
         }
 
