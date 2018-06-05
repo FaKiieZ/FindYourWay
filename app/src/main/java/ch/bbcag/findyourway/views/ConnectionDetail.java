@@ -87,7 +87,8 @@ public class ConnectionDetail extends AppCompatActivity {
         LinearLayout.LayoutParams TextLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpTopixel(getApplicationContext(), 14));
         TextView time = new TextView(this);
         time.setLayoutParams(TextLayout);
-        time.setText(connectionDetail.getPassList().get(1).getDeparture());
+        if(connectionDetail.getPassList().get(1).getDeparture() != null)
+            time.setText(connectionDetail.getPassList().get(1).getDeparture());
         time.setTextSize(12);
         time.setId(View.generateViewId());
         mConstraintLayout.addView(time);
@@ -203,7 +204,8 @@ public class ConnectionDetail extends AppCompatActivity {
             LinearLayout.LayoutParams TextLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpTopixel(getApplicationContext(), 15));
             TextView time = new TextView(this);
             time.setLayoutParams(TextLayout);
-            time.setText(connectionDetails.getPassList().get(count).getDeparture());
+            if(connectionDetails.getPassList().get(count).getDeparture() != null)
+                time.setText(connectionDetails.getPassList().get(count).getDeparture());
             time.setTextSize(12);
             time.setId(View.generateViewId());
             mConstraintLayout.addView(time);

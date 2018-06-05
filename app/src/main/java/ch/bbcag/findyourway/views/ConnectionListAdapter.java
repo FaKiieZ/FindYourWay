@@ -49,8 +49,10 @@ public class ConnectionListAdapter extends ArrayAdapter < Connection > {
         if (connection.getDelay() != 0 && connection.getDelay() != null) {
             icon.setVisibility(View.VISIBLE);
         }
-        number.setText(connection.getCategory() + connection.getNumber());
-        destination.setText("Richtung " + connection.getTo().getName());
+        String numberText = connection.getCategory() + connection.getNumber();
+        number.setText(numberText);
+        String destinationText = "Richtung " + connection.getTo().getName();
+        destination.setText(destinationText);
         time.setText(connection.getDeparture());
         String plattformText = connection.getPlatform();
         if (plattformText != "null") {
