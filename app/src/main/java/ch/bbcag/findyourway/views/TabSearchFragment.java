@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -33,6 +32,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONException;
 
@@ -42,8 +42,8 @@ import java.util.List;
 import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.helper.TransportOpendataJsonParser;
 import ch.bbcag.findyourway.model.Connection;
+import ch.bbcag.findyourway.model.Coordinates;
 import ch.bbcag.findyourway.model.Location;
-import ch.bbcag.findyourway.model.Stop;
 
 public class TabSearchFragment extends android.support.v4.app.Fragment implements OnMapReadyCallback {
     private static final String TRANSPORT_OPENDATA_LOCATIONS_API_URL = "http://transport.opendata.ch/v1/locations";
@@ -92,13 +92,14 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                         try {
                             final List<Location> locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
                             for (final Location location : locations){
+                                AddMarkerOnMap(location);
                                 String url = TRANSPORT_OPENDATA_STATIONBOARD_API_URL + location.getName();
                                 StringRequest stringRequest1 = new StringRequest(Request.Method.GET, url,
                                         new Response.Listener<String>() {
                                             @Override
                                             public void onResponse(String response) {
                                                 try{
-                                                    List<Connection> connections = TransportOpendataJsonParser.createConnectionsFromJsonString(response);
+                                                    List<Connection> connections = TransportOpendataJsonParser.CreateConnectionsFromJsonString(response);
                                                     if (connections.toArray().length > 0) {
                                                         Connection connection = (Connection) connections.toArray()[0];
                                                         SetLocationType(connection.getCategory(), location);
@@ -145,6 +146,10 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
         queue.add(stringRequest);
     }
 
+    private void AddMarkerOnMap(Location location) {
+        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.getCoordinates().getX(), location.getCoordinates().getY())).title(location.getName()));
+    }
+
     private void generateAlertDialog() {
         //progressBar.setVisibility(View.GONE);
         AlertDialog.Builder dialogBuilder;
@@ -164,7 +169,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mMapView = (MapView) mView.findViewById(R.id.mapView);
+        mMapView = mView.findViewById(R.id.mapView);
         if (mMapView != null) {
             mMapView.onCreate(null);
             mMapView.onResume();
@@ -311,12 +316,12 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
         };
 
         if (mLocationPermissionGranted) {
-            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 15000, 10, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 30000, 10, locationListener);
         }
     }
 
     private void SetLocationType(String str, Location location){
-        String[] trains = {"I", "R", "S", "V"};
+        String[] trains = {"I", "R", "S", "V", "E"};
         String boat = "BAT";
 
         String firstLetter = str.substring(0, 1);
