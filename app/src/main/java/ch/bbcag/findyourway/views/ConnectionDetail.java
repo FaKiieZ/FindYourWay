@@ -222,10 +222,12 @@ public class ConnectionDetail extends AppCompatActivity {
             name.setLayoutParams(Test);
 
             String locationText;
-            if(connectionDetails.getPassList().get(count).getPlatform() != null && connectionDetails.getPassList().get(count).getPlatform() != "null")
+            if(connectionDetails.getPassList().get(count).getPlatform() != null && connectionDetails.getPassList().get(count).getPlatform() != "null"){
                 locationText = connectionDetails.getPassList().get(count).getStation() + ", Gl. " + connectionDetails.getPassList().get(count).getPlatform();
-            else
+            }
+            else {
                 locationText = connectionDetails.getPassList().get(count).getStation().getName();
+            }
             name.setText(locationText);
             name.setTextSize(12);
             name.setId(View.generateViewId());
