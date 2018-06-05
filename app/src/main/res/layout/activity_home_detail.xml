@@ -5,5 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".views.HomeDetailActivity">
+    <TextView
+        android:id="@+id/locationName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.Widget.AppCompat.ExpandedMenu.Item"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Bern, Bahnhof" />
 
+    <Button
+        android:id="@+id/favButton"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="16dp"
+
+        android:layout_marginTop="8dp"
+        android:background="@drawable/fav_button"
+        android:focusable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/toolbar_dropshadow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/locationName" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toTopOf="@id/view" />
 </android.support.constraint.ConstraintLayout>
