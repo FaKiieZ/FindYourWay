@@ -195,6 +195,7 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
                             ListView locationList = view.findViewById(R.id.locationList);
                             locationList.setAdapter(locationListAdapter);
                             locationListAdapter.notifyDataSetChanged();
+                            locationList.setOnItemClickListener(createOnItemClickListenerForLocation());
                         }
                     } catch (JSONException e) {
                         generateAlertDialog();
@@ -404,6 +405,7 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
         if (home != null){
             autoCompleteTextView.setText(home.getName());
             autoCompleteTextView.dismissDropDown();
+            this.from = home;
         }
     }
 
