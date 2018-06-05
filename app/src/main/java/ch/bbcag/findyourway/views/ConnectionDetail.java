@@ -146,10 +146,13 @@ public class ConnectionDetail extends AppCompatActivity {
         TextView nameDestination = new TextView(this);
         nameDestination.setLayoutParams(endLayout);
         String destinationText;
-        if(connectionDetail.getPassList().get(connectionDetail.getPassList().size()-1).getPlatform() != null)
-            destinationText = connectionDetail.getTo() + ", Gl. " + connectionDetail.getPassList().get(connectionDetail.getPassList().size()-1).getPlatform();
-        else
+        Stop lastStop = connectionDetail.getPassList().get(connectionDetail.getPassList().size()-1);
+        if(lastStop.getPlatform() != null && lastStop.getPlatform() != "null") {
+            destinationText = connectionDetail.getTo() + ", Gl. " + lastStop.getPlatform();
+        }
+        else {
             destinationText = connectionDetail.getTo();
+        }
         nameDestination.setText(destinationText);
         nameDestination.setTextSize(14);
         nameDestination.setId(View.generateViewId());
