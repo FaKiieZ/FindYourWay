@@ -147,12 +147,15 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
 
 
     private void getLocationsByCoordinates(android.location.Location location) {
-        if (getContext() == null){
+        if (getContext() == null || getView() == null){
             return;
         }
 
+        Context context = getContext();
+        View view = getView();
+
         String url = TRANSPORT_OPENDATA_LOCATIONS_API_URL + "?x=" + location.getLongitude() + "&y=" + location.getLatitude();
-        final RequestQueue queue = Volley.newRequestQueue(getContext());
+        final RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
@@ -172,13 +175,13 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                                                 locations.remove(location1);
                                             }
 
-                                            locationListAdapter = new LocationListAdapter(getContext(), locations);
-                                            ListView locationList = getView().findViewById(R.id.locationList);
+                                            locationListAdapter = new LocationListAdapter(context, locations);
+                                            ListView locationList = view.findViewById(R.id.locationList);
                                             locationList.setAdapter(locationListAdapter);
                                             locationListAdapter.notifyDataSetChanged();
                                             // click listener
-                                            AdapterView.OnItemClickListener mListClickedHandler = (parent, view, position, id) -> {
-                                                Intent intent = new Intent(getContext(), StationDetailActivity.class);
+                                            AdapterView.OnItemClickListener mListClickedHandler = (parent, view1, position, id) -> {
+                                                Intent intent = new Intent(context, StationDetailActivity.class);
                                                 Location selected = (Location) parent.getItemAtPosition(position);
                                                 intent.putExtra("locationId", selected.getId());
                                                 intent.putExtra("locationName", selected.getName());

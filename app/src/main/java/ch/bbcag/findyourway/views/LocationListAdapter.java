@@ -22,9 +22,12 @@ public class LocationListAdapter extends ArrayAdapter<Location> {
 
     private boolean IsLoaded = false;
     private List<Location> FavLocations;
+    private Context context;
 
     public LocationListAdapter(Context context, List<Location> locations){
         super(context, 0, locations);
+
+        this.context = context;
     }
 
     @Override
@@ -36,11 +39,11 @@ public class LocationListAdapter extends ArrayAdapter<Location> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        final FavouriteDataSource fds = new FavouriteDataSource(getContext());
+        final FavouriteDataSource fds = new FavouriteDataSource(this.context);
         final Location location = getItem(position);
         // check view
         if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.location_listitem, parent, false);
+            convertView = LayoutInflater.from(this.context).inflate(R.layout.location_listitem, parent, false);
         }
 
         // Lookup view
@@ -52,9 +55,9 @@ public class LocationListAdapter extends ArrayAdapter<Location> {
         List<Location> favLocations = getFavouriteLocations();
 
         // set values
-        Drawable train = getContext().getResources().getDrawable(R.drawable.ic_train_black_24dp);
-        Drawable bus = getContext().getResources().getDrawable(R.drawable.ic_directions_bus_black_24dp);
-        Drawable boat = getContext().getResources().getDrawable(R.drawable.ic_directions_boat_black_24dp);
+        Drawable train = context.getResources().getDrawable(R.drawable.ic_train_black_24dp);
+        Drawable bus = context.getResources().getDrawable(R.drawable.ic_directions_bus_black_24dp);
+        Drawable boat = context.getResources().getDrawable(R.drawable.ic_directions_boat_black_24dp);
         final int iconFavButton = R.drawable.fav_button;
         final int iconFavButtonFull = R.drawable.fav_button_full;
         int type = location.getType();
@@ -65,33 +68,30 @@ public class LocationListAdapter extends ArrayAdapter<Location> {
         }
         location.setFavourite(containsId(favLocations, location.getId()));
         favButton.setBackgroundResource(location.isFavourite() ? iconFavButtonFull : iconFavButton);
-        favButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (location.isFavourite()) {
-                    fds.open();
-                    fds.deleteFavouriteLocation(location.getId());
-                    fds.close();
-                    location.setFavourite(false);
-                    favButton.setBackgroundResource(iconFavButton);
-                }else{
-                    fds.open();
-                    fds.createFavouriteLocation(location.getType(), location.getId(), location.getName());
-                    fds.close();
-                    location.setFavourite(true);
-                    favButton.setBackgroundResource(iconFavButtonFull);
-                }
-
-                IsLoaded = false;
-                getFavouriteLocations();
+        favButton.setOnClickListener(v -> {
+            if (location.isFavourite()) {
+                fds.open();
+                fds.deleteFavouriteLocation(location.getId());
+                fds.close();
+                location.setFavourite(false);
+                favButton.setBackgroundResource(iconFavButton);
+            }else{
+                fds.open();
+                fds.createFavouriteLocation(location.getType(), location.getId(), location.getName());
+                fds.close();
+                location.setFavourite(true);
+                favButton.setBackgroundResource(iconFavButtonFull);
             }
+
+            IsLoaded = false;
+            getFavouriteLocations();
         });
 
         return convertView;
     }
 
     private List<Location> getFavouriteLocations(){
-        final FavouriteDataSource fds = new FavouriteDataSource(getContext());
+        final FavouriteDataSource fds = new FavouriteDataSource(context);
 
         if (IsLoaded){
             return FavLocations;
