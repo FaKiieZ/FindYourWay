@@ -41,13 +41,12 @@
 
     <Button
         android:id="@+id/favButton"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:background="@drawable/fav_button"
+        android:focusable="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:focusable="false"/>
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
