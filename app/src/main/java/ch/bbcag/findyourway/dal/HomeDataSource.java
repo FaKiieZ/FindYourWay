@@ -7,25 +7,25 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.List;
 import ch.bbcag.findyourway.helper.FavouriteDbHelper;
+import ch.bbcag.findyourway.helper.HomeDbHelper;
 import ch.bbcag.findyourway.model.Location;
 
 /**
  * Diese Klasse dient zum Arbeiten mit der SQLite Datenbank
  */
-public class FavouriteDataSource {
+public class HomeDataSource {
 
-    private static final String LOG_TAG = FavouriteDataSource.class.getSimpleName();
+    private static final String LOG_TAG = HomeDataSource.class.getSimpleName();
     private String[] columns = {
-            FavouriteDbHelper.COLUMN_TYP,
-            FavouriteDbHelper.COLUMN_LOCATIONID,
-            FavouriteDbHelper.COLUMN_NAME
+            HomeDbHelper.COLUMN_LOCATIONID,
+            HomeDbHelper.COLUMN_NAME
     };
 
     private SQLiteDatabase database;
-    private FavouriteDbHelper dbHelper;
+    private HomeDbHelper dbHelper;
 
-    public FavouriteDataSource(Context context) {
-        dbHelper = new FavouriteDbHelper(context);
+    public HomeDataSource(Context context) {
+        dbHelper = new HomeDbHelper(context);
     }
 
     public void open() {
@@ -38,21 +38,19 @@ public class FavouriteDataSource {
 
     /**
      * Erstellt einen neuen Eintrag in der Datenbank
-     * @param type Speichert den Typ der Station [0: Zug, 1: Bus, 2: Schiff]
      * @param locationId ID der Location, um Abfragen über die API zu tätigen
      * @param name Speichert den Displayname für diese Location
      */
-    public void createFavouriteLocation(int type, int locationId, String name) {
+    public void createHomeLocation(int locationId, String name) {
         ContentValues values = new ContentValues();
         values.put(FavouriteDbHelper.COLUMN_LOCATIONID, locationId);
-        values.put(FavouriteDbHelper.COLUMN_TYP, type);
         values.put(FavouriteDbHelper.COLUMN_NAME, name);
 
         long insertId = database.insert(dbHelper.TABLE_NAME, null, values);
     }
 
     public void deleteFavouriteLocation(Integer id) {
-        database.delete(dbHelper.TABLE_NAME, dbHelper.COLUMN_LOCATIONID + " = ?", new String[] {
+        database.delete(FavouriteDbHelper.TABLE_NAME, dbHelper.COLUMN_LOCATIONID + " = ?", new String[] {
                 id.toString()
         });
     }
@@ -64,14 +62,14 @@ public class FavouriteDataSource {
      */
     private Location cursorToFavouriteLocation(Cursor cursor) {
         int _locationId = cursor.getColumnIndex(dbHelper.COLUMN_LOCATIONID);
-        int _type = cursor.getColumnIndex(dbHelper.COLUMN_TYP);
         int _name = cursor.getColumnIndex(dbHelper.COLUMN_NAME);
 
         int locationId = cursor.getInt(_locationId);
-        int type = cursor.getInt(_type);
         String name = cursor.getString(_name);
 
-        Location location = new Location(locationId, type, name);
+        Location location = new Location();
+        location.setId(locationId);
+        location.setName(name);
         return location;
     }
 
@@ -79,8 +77,8 @@ public class FavouriteDataSource {
      * Lädt alle gespeicherten Locations aus der Datenbank
      * @return Liste mit allen Location-Objekten
      */
-    public List < Location > getAllFavouriteLocations() {
-        List < Location > locationList = new ArrayList < > ();
+    public List <Location> getAllHomeLocations() {
+        List <Location> locationList = new ArrayList < > ();
         Cursor cursor = database.query(dbHelper.TABLE_NAME, columns, null, null, null, null, null);
         cursor.moveToFirst();
         Location location;
