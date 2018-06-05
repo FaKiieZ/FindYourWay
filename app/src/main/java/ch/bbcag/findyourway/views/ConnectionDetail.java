@@ -143,8 +143,14 @@ public class ConnectionDetail extends AppCompatActivity {
 
         }
 
+        if(connectionDetail.getPlatform() != null && connectionDetail.getPlatform() != "null"){
+            from.setText(connectionDetail.getFrom() + ", Gl. " + connectionDetail.getPlatform());
+        }
+        else {
+            from.setText(connectionDetail.getFrom());
+        }
         departure.setText(connectionDetail.getDeparture());
-        from.setText(connectionDetail.getFrom());
+
 
 
     }

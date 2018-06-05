@@ -68,15 +68,6 @@
             app:layout_constraintStart_toEndOf="@+id/imageViewPoint"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textViewPlattform"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:text="Gl. 2"
-            app:layout_constraintStart_toEndOf="@+id/textViewFrom"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView6"
