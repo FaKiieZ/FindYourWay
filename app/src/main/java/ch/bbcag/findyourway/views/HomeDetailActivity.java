@@ -35,6 +35,8 @@ public class HomeDetailActivity extends AppCompatActivity {
         
         int from = getIntent().getIntExtra("fromId", 0);
         int to = getIntent().getIntExtra("toId", 0);
+        String fromName = getIntent().getStringExtra("fromName");
+        String toName = getIntent().getStringExtra("toName");
         
         getConnections(from, to);
         
