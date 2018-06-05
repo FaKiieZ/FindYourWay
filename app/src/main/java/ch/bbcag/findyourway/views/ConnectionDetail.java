@@ -144,7 +144,12 @@ public class ConnectionDetail extends AppCompatActivity {
         // Erstellt den TextView für den Ankunftsort
         TextView nameDestination = new TextView(this);
         nameDestination.setLayoutParams(endLayout);
-        nameDestination.setText(connectionDetail.getTo());
+        String destinationText;
+        if(connectionDetail.getPassList().get(connectionDetail.getPassList().size()-1).getPlatform() != null)
+            destinationText = connectionDetail.getTo() + ", Gl. " + connectionDetail.getPassList().get(connectionDetail.getPassList().size()-1).getPlatform();
+        else
+            destinationText = connectionDetail.getTo();
+        nameDestination.setText(destinationText);
         nameDestination.setTextSize(14);
         nameDestination.setId(View.generateViewId());
         mConstraintLayout.addView(nameDestination);
@@ -214,7 +219,13 @@ public class ConnectionDetail extends AppCompatActivity {
             LinearLayout.LayoutParams Test = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpTopixel(getApplicationContext(), 14));
             TextView name = new TextView(this);
             name.setLayoutParams(Test);
-            name.setText(connectionDetails.getPassList().get(count).getStation().getName());
+
+            String locationText;
+            if(connectionDetails.getPassList().get(count).getPlatform() != null)
+                locationText = connectionDetails.getPassList().get(count).getStation() + ", Gl. " + connectionDetails.getPassList().get(count).getPlatform();
+            else
+                locationText = connectionDetails.getPassList().get(count).getStation().getName();
+            name.setText(locationText);
             name.setTextSize(12);
             name.setId(View.generateViewId());
             mConstraintLayout.addView(name);
