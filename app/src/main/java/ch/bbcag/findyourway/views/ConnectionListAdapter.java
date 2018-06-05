@@ -49,7 +49,24 @@ public class ConnectionListAdapter extends ArrayAdapter < Connection > {
         if (connection.getDelay() != 0 && connection.getDelay() != null) {
             icon.setVisibility(View.VISIBLE);
         }
-        String numberText = connection.getCategory() + connection.getNumber();
+        //String numberText =  connection.getCategory() + connection.getNumber();
+        String[] prefixes = {"RE", "R", "ICE", "EC", "IC"};
+        boolean foundPrefix = false;
+        for (String prefix : prefixes){
+            if(prefix.equals(connection.getCategory())){
+                foundPrefix = true;
+                break;
+            }
+        }
+
+        String numberText;
+        if(foundPrefix){
+            numberText = connection.getNumber();
+        }
+        else {
+            numberText = connection.getCategory() + connection.getNumber();
+        }
+
         number.setText(numberText);
         String destinationText = "Richtung " + connection.getTo().getName();
         destination.setText(destinationText);
