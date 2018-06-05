@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.HomeConnectionDetailActivity">
+    <TextView
+        android:id="@+id/locationName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.Widget.AppCompat.ExpandedMenu.Item"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:ellipsize="end"
+        android:maxLines="1"
+        tools:text="Bern, Bahnhof" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/toolbar_dropshadow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/locationName" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:paddingBottom="10dp">
+
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mainConstraint"
+            tools:context=".views.ConnectionDetail"
+            app:layout_constraintTop_toTopOf="@id/view">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="69dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewPoint"
+                app:srcCompat="@drawable/ic_radio_button_checked_black_24dp" />
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="1dp"
+                android:layout_height="322dp"
+                android:layout_marginStart="76dp"
+                android:layout_marginTop="22dp"
+                android:background="@color/colorPrimaryDark"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewDeparture"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="4dp"
+                android:text="14:32"
+                android:visibility="visible"
+                app:layout_constraintEnd_toStartOf="@+id/line"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageViewPoint"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="9dp"
+                app:layout_constraintBottom_toTopOf="@+id/line"
+                app:layout_constraintEnd_toEndOf="@+id/line"
+                app:layout_constraintHorizontal_bias="0.14"
+                app:layout_constraintStart_toEndOf="@+id/textViewDeparture"
+                app:srcCompat="@drawable/ic_brightness_1_black_24dp" />
+
+            <TextView
+                android:id="@+id/textViewFrom"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="Burgdorf, Bahnhof"
+                app:layout_constraintStart_toEndOf="@+id/imageViewPoint"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="14dp"
+                android:layout_marginEnd="2dp"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:text=""
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>
