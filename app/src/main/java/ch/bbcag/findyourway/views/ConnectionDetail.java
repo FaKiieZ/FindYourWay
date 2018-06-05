@@ -220,7 +220,7 @@ public class ConnectionDetail extends AppCompatActivity {
             mConstraintLayout.addView(time);
 
             // Erstellt den TextView für den Abfahrtsort
-            LinearLayout.LayoutParams Test = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpTopixel(getApplicationContext(), 14));
+            LinearLayout.LayoutParams Test = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpTopixel(getApplicationContext(), 16));
             TextView name = new TextView(this);
             name.setLayoutParams(Test);
 
