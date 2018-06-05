@@ -173,6 +173,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                                                     final LocationListAdapter locationAdapter = new LocationListAdapter(getContext(),locations);
                                                     ListView locationList = getView().findViewById(R.id.locationList);
                                                     locationList.setAdapter(locationAdapter);
+                                                    locationAdapter.notifyDataSetChanged();
                                                     // click listener
                                                     AdapterView.OnItemClickListener mListClickedHandler = new AdapterView.OnItemClickListener() {
                                                         @Override
