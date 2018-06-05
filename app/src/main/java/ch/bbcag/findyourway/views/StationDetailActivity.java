@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -38,9 +39,24 @@ public class StationDetailActivity extends AppCompatActivity {
 
         int id = getIntent().getIntExtra("locationId", 0);
         getConnections(id, 20);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
-    public void getConnections(int id,int limit){
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+       switch (item.getItemId()){
+           case android.R.id.home:
+               onBackPressed();
+           default:
+               return  super.onOptionsItemSelected(item);
+       }
+    }
+
+    public void getConnections(int id, int limit){
         String url = TRANSPORT_OPENDATA_STATIONBOARD_API_URL + id + "&limit=" + limit;
         //final ArrayAdapter<Connection> connectionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         RequestQueue queue = Volley.newRequestQueue(this);

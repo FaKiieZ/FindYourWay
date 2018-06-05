@@ -1,11 +1,13 @@
 package ch.bbcag.findyourway.views;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,13 +28,28 @@ public class ConnectionDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection_detail);
-
         String JsonConnection = getIntent().getStringExtra("connection");
         try {
             ch.bbcag.findyourway.model.ConnectionDetail connection = TransportOpendataJsonParser.CreateConnectionDetailFromJsonString(JsonConnection);
             CreatePlan(connection);
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+            default:
+                return  super.onOptionsItemSelected(item);
         }
     }
 

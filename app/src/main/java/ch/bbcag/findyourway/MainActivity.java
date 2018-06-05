@@ -1,6 +1,7 @@
 package ch.bbcag.findyourway;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.ContentValues;
@@ -49,20 +50,11 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
         tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorPrimaryDark));
 
-        
         // set icons for the tabs
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_search_black_24dp); // icon for start tab
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_star_black_24dp); // icon for the favourite tab
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_home_black_24dp); // icon for the home tab
 
-        // testing database
-//        Location testLocation = new Location();
-//        dataSource = new FavouriteDataSource(this);
-//        dataSource.open();
-//        dataSource.createFavouriteLocation(2,1,"Bern Bahnhof");
-//        int count = dataSource.getAllFavouriteLocations().size();
-//        Log.d("DEBUG", "Anzahl" + count);
-//        dataSource.close();
     }
 
     private void setupViewPager(ViewPager viewPager){
