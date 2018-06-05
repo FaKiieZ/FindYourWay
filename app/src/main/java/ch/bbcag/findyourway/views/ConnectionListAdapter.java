@@ -53,7 +53,7 @@ public class ConnectionListAdapter extends ArrayAdapter < Connection > {
         String[] prefixes = {"RE", "R", "ICE", "EC", "IC"};
         boolean foundPrefix = false;
         for (String prefix : prefixes){
-            if(prefix.equals(connection.getCategory())){
+            if(connection.getNumber().startsWith(prefix)){
                 foundPrefix = true;
                 break;
             }
