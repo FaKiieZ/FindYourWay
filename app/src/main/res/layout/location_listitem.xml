@@ -46,7 +46,8 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/fav_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:focusable="false"/>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
