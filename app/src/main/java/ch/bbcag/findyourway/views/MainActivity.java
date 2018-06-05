@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import ch.bbcag.findyourway.R;
+import ch.bbcag.findyourway.helper.FavouriteDbHelper;
+import ch.bbcag.findyourway.helper.HomeDbHelper;
 
 /**
  * MainAcitivty für diese Applikation
@@ -21,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = findViewById(R.id.container);
         setupViewPager(mViewPager);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
         tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorPrimaryDark));
 
@@ -29,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_search_black_24dp); // icon for start tab
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_star_black_24dp); // icon for the favourite tab
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_home_black_24dp); // icon for the home tab
-
     }
 
     private void setupViewPager(ViewPager viewPager) {

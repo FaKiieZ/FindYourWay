@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.List;
-import ch.bbcag.findyourway.helper.FavouriteDbHelper;
 import ch.bbcag.findyourway.helper.HomeDbHelper;
 import ch.bbcag.findyourway.model.Location;
 
@@ -43,16 +42,14 @@ public class HomeDataSource {
      */
     public void createHomeLocation(int locationId, String name) {
         ContentValues values = new ContentValues();
-        values.put(FavouriteDbHelper.COLUMN_LOCATIONID, locationId);
-        values.put(FavouriteDbHelper.COLUMN_NAME, name);
+        values.put(dbHelper.COLUMN_LOCATIONID, locationId);
+        values.put(dbHelper.COLUMN_NAME, name);
 
         long insertId = database.insert(dbHelper.TABLE_NAME, null, values);
     }
 
-    public void deleteFavouriteLocation(Integer id) {
-        database.delete(FavouriteDbHelper.TABLE_NAME, dbHelper.COLUMN_LOCATIONID + " = ?", new String[] {
-                id.toString()
-        });
+    public void deleteAll() {
+        database.delete(dbHelper.TABLE_NAME, "", new String[]{});
     }
 
     /**
@@ -60,7 +57,7 @@ public class HomeDataSource {
      * @param cursor
      * @return
      */
-    private Location cursorToFavouriteLocation(Cursor cursor) {
+    private Location cursorToHomeLocation(Cursor cursor) {
         int _locationId = cursor.getColumnIndex(dbHelper.COLUMN_LOCATIONID);
         int _name = cursor.getColumnIndex(dbHelper.COLUMN_NAME);
 
@@ -84,7 +81,7 @@ public class HomeDataSource {
         Location location;
 
         while (!cursor.isAfterLast()) {
-            location = cursorToFavouriteLocation(cursor);
+            location = cursorToHomeLocation(cursor);
             locationList.add(location);
             cursor.moveToNext();
         }

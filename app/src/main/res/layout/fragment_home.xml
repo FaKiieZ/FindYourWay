@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.TabHomeFragment">
+    android:weightSum="1">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="250dp"/>
+        android:layout_height="200dp" />
+
+    <AutoCompleteTextView
+        android:id="@+id/locationDropdown"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="200dp"
+        android:hint="@string/search"
+        android:focusedByDefault="false"/>
 
     <ListView
         android:id="@+id/locationList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"></ListView>
+        android:layout_marginTop="250dp" />
 
 </FrameLayout>
