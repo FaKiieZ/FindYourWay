@@ -67,6 +67,7 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
     private LocationListAdapter locationListAdapter;
     private HomeDataSource homeDataSource;
     private AutoCompleteTextView autoCompleteTextView;
+    private Location from;
 
     public TabHomeFragment() {}
 
@@ -103,17 +104,30 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
             }
         });
 
-        autoCompleteTextView.setOnItemClickListener(createOnItemClickListenerForLocation());
+        autoCompleteTextView.setOnItemClickListener(createOnItemClickListenerForDropdown());
     }
 
-    // TODO: Change this
-    private AdapterView.OnItemClickListener createOnItemClickListenerForLocation() {
+    private AdapterView.OnItemClickListener createOnItemClickListenerForDropdown() {
         return (parent, view, position, id) -> {
             Location selected = (Location)parent.getItemAtPosition(position);
             homeDataSource.open();
             homeDataSource.deleteAll();
             homeDataSource.createHomeLocation(selected.getId(), selected.getName());
             homeDataSource.close();
+
+            this.from = selected;
+        };
+    }
+
+    private AdapterView.OnItemClickListener createOnItemClickListenerForLocation() {
+        return (parent, view, position, id) -> {
+            Intent intent = new Intent(getContext(), HomeDetailActivity.class);
+            Location selected = (Location)parent.getItemAtPosition(position);
+            intent.putExtra("fromId", from.getId());
+            intent.putExtra("toId", selected.getId());
+            intent.putExtra("fromName", from.getName());
+            intent.putExtra("toName", selected.getName());
+            startActivity(intent);
         };
     }
 
@@ -380,6 +394,7 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
                 return;
             }
 
+            setHome();
             locationListAdapter.notifyDataSetChanged();
         }
     }
