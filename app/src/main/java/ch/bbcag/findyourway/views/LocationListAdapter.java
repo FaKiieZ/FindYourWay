@@ -60,7 +60,9 @@ public class LocationListAdapter extends ArrayAdapter<Location> {
         int type = location.getType();
         icon.setImageDrawable(type == 0 ? train : type == 1 ? bus : boat);
         name.setText(location.getName());
-        distance.setText(location.getDistance() + "m");
+        if (location.getDistance() != null){
+            distance.setText(location.getDistance() + "m");
+        }
         location.setFavourite(containsId(favLocations, location.getId()));
         favButton.setBackgroundResource(location.isFavourite() ? iconFavButtonFull : iconFavButton);
         favButton.setOnClickListener(new View.OnClickListener() {

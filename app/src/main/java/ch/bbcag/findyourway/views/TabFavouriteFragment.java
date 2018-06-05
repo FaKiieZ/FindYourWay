@@ -33,12 +33,28 @@ public class TabFavouriteFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        setDataSource();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            setDataSource();
+        }
+    }
+
+    private void setDataSource(){
+        if (getContext() == null){
+            return;
+        }
+
         FavouriteDataSource dataSource = new FavouriteDataSource(getActivity());
+        ListView listView = view.findViewById(R.id.list);
         dataSource.open();
-        ListView listView = (ListView) view.findViewById(R.id.list);
         List<Location> locationList = dataSource.getAllFavouriteLocations();
         dataSource.close();
-        ArrayAdapter<Location> locationArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_checked, locationList);
+        LocationListAdapter locationArrayAdapter = new LocationListAdapter(getContext(), locationList);
         listView.setAdapter(locationArrayAdapter);
     }
 }

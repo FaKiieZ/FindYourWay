@@ -62,30 +62,26 @@ public class TabHomeFragment extends Fragment implements OnMapReadyCallback {
 
 
     public void getLocationsByCoordinates(Coordinates coordinates) {
+        if (getView() == null){
+            return;
+        }
+
         String url = TRANSPORT_OPENDATA_LOCATIONS_API_URL + "?x=" + coordinates.getX() + "&y=" + coordinates.getY();
         final ArrayAdapter<Location> locationAdapter = new
                 ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1);
         RequestQueue queue = Volley.newRequestQueue(getContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            List<Location> locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
-                            locationAdapter.addAll(locations);
-                            ListView locationList = getView().findViewById(R.id.locationList);
-                            locationList.setAdapter(locationAdapter);
-                            //progressBar.setVisibility(View.GONE);
-                        } catch (JSONException e) {
-                            generateAlertDialog();
-                        }
+                response -> {
+                    try {
+                        List<Location> locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
+                        locationAdapter.addAll(locations);
+                        ListView locationList = getView().findViewById(R.id.locationList);
+                        locationList.setAdapter(locationAdapter);
+                        //progressBar.setVisibility(View.GONE);
+                    } catch (JSONException e) {
+                        generateAlertDialog();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                generateAlertDialog();
-            }
-        });
+                }, error -> generateAlertDialog());
         queue.add(stringRequest);
     }
 
@@ -93,11 +89,9 @@ public class TabHomeFragment extends Fragment implements OnMapReadyCallback {
         //progressBar.setVisibility(View.GONE);
         AlertDialog.Builder dialogBuilder;
         dialogBuilder = new AlertDialog.Builder(getContext());
-        dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // Closes this activity
-                getActivity().finish();
-            }
+        dialogBuilder.setPositiveButton("Ok", (dialog, id) -> {
+            // Closes this activity
+            getActivity().finish();
         });
         dialogBuilder.setMessage("Error").setTitle("Error");
         AlertDialog dialog = dialogBuilder.create();
@@ -108,7 +102,7 @@ public class TabHomeFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        mMapView = (MapView) mView.findViewById(R.id.mapView);
+        mMapView = mView.findViewById(R.id.mapView);
         if (mMapView != null){
             mMapView.onCreate(null);
             mMapView.onResume();
@@ -119,6 +113,10 @@ public class TabHomeFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap){
+        if (getContext() == null){
+            return;
+        }
+
         MapsInitializer.initialize(getContext());
 
         mGoogleMap = googleMap;

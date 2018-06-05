@@ -65,6 +65,8 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
 
     private boolean firstTimeCallingLocation = true;
 
+    private LocationListAdapter locationListAdapter;
+
     public TabSearchFragment() {
     }
 
@@ -145,69 +147,54 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
 
 
     private void getLocationsByCoordinates(android.location.Location location) {
+        if (getContext() == null){
+            return;
+        }
+
         String url = TRANSPORT_OPENDATA_LOCATIONS_API_URL + "?x=" + location.getLongitude() + "&y=" + location.getLatitude();
         final RequestQueue queue = Volley.newRequestQueue(getContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            final List<Location> locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
-                            mGoogleMap.clear();
-                            for (final Location location : locations){
-                                AddMarkerOnMap(location);
-                                String url = TRANSPORT_OPENDATA_STATIONBOARD_API_URL + location.getName();
-                                StringRequest stringRequest1 = new StringRequest(Request.Method.GET, url,
-                                        new Response.Listener<String>() {
-                                            @Override
-                                            public void onResponse(String response) {
-                                                try{
-                                                    List<Connection> connections = TransportOpendataJsonParser.CreateConnectionsFromJsonString(response);
-                                                    if (connections.toArray().length > 0) {
-                                                        Connection connection = (Connection) connections.toArray()[0];
-                                                        SetLocationType(connection.getCategory(), location);
-                                                    } else {
-                                                        locations.remove(location);
-                                                    }
-
-                                                    final LocationListAdapter locationAdapter = new LocationListAdapter(getContext(),locations);
-                                                    ListView locationList = getView().findViewById(R.id.locationList);
-                                                    locationList.setAdapter(locationAdapter);
-                                                    locationAdapter.notifyDataSetChanged();
-                                                    // click listener
-                                                    AdapterView.OnItemClickListener mListClickedHandler = new AdapterView.OnItemClickListener() {
-                                                        @Override
-                                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                                            Intent intent = new Intent(getContext(), StationDetailActivity.class);
-                                                            Location selected = (Location)parent.getItemAtPosition(position);
-                                                            intent.putExtra("locationId", selected.getId());
-                                                            intent.putExtra("locationName", selected.getName());
-                                                            startActivity(intent);
-                                                        }
-                                                    };
-                                                    locationList.setOnItemClickListener(mListClickedHandler);
-                                                }
-                                                catch (JSONException e) {
-                                                    generateAlertDialog();
-                                                }
+                response -> {
+                    try {
+                        final List<Location> locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
+                        mGoogleMap.clear();
+                        for (final Location location1 : locations) {
+                            AddMarkerOnMap(location1);
+                            String url1 = TRANSPORT_OPENDATA_STATIONBOARD_API_URL + location1.getName();
+                            StringRequest stringRequest1 = new StringRequest(Request.Method.GET, url1,
+                                    response1 -> {
+                                        try {
+                                            List<Connection> connections = TransportOpendataJsonParser.CreateConnectionsFromJsonString(response1);
+                                            if (connections.toArray().length > 0) {
+                                                Connection connection = (Connection) connections.toArray()[0];
+                                                SetLocationType(connection.getCategory(), location1);
+                                            } else {
+                                                locations.remove(location1);
                                             }
-                                        }, new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
+
+                                            locationListAdapter = new LocationListAdapter(getContext(), locations);
+                                            ListView locationList = getView().findViewById(R.id.locationList);
+                                            locationList.setAdapter(locationListAdapter);
+                                            locationListAdapter.notifyDataSetChanged();
+                                            // click listener
+                                            AdapterView.OnItemClickListener mListClickedHandler = (parent, view, position, id) -> {
+                                                Intent intent = new Intent(getContext(), StationDetailActivity.class);
+                                                Location selected = (Location) parent.getItemAtPosition(position);
+                                                intent.putExtra("locationId", selected.getId());
+                                                intent.putExtra("locationName", selected.getName());
+                                                startActivity(intent);
+                                            };
+                                            locationList.setOnItemClickListener(mListClickedHandler);
+                                        } catch (JSONException e) {
                                             generateAlertDialog();
-                                        }});
-                                queue.add(stringRequest1);
-                            }
-                        } catch (JSONException e) {
-                            generateAlertDialog();
+                                        }
+                                    }, error -> generateAlertDialog());
+                            queue.add(stringRequest1);
                         }
+                    } catch (JSONException e) {
+                        generateAlertDialog();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                generateAlertDialog();
-            }
-        });
+                }, error -> generateAlertDialog());
         queue.add(stringRequest);
     }
 
@@ -219,11 +206,9 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
         //progressBar.setVisibility(View.GONE);
         AlertDialog.Builder dialogBuilder;
         dialogBuilder = new AlertDialog.Builder(getContext());
-        dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // Closes this activity
-                getActivity().finish();
-            }
+        dialogBuilder.setPositiveButton("Ok", (dialog, id) -> {
+            // Closes this activity
+            getActivity().finish();
         });
         dialogBuilder.setMessage("Error").setTitle("Error");
         AlertDialog dialog = dialogBuilder.create();
@@ -247,6 +232,10 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        if (getContext() == null){
+            return;
+        }
+
         MapsInitializer.initialize(getContext());
 
         mGoogleMap = googleMap;
@@ -384,6 +373,18 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
 
         if (mLocationPermissionGranted) {
             locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 30000, 10, locationListener);
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            if (locationListAdapter == null){
+                return;
+            }
+
+            locationListAdapter.notifyDataSetChanged();
         }
     }
 
