@@ -30,7 +30,7 @@ public class ConnectionDetailActivity extends AppCompatActivity {
         try {
             progressBar.setVisibility(View.VISIBLE);
             ch.bbcag.findyourway.model.ConnectionDetail connection = TransportOpendataJsonParser.createConnectionDetailFromJsonString(JsonConnection);
-            CreatePlan(connection);
+            createPlan(connection);
             progressBar.setVisibility(View.GONE);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -62,7 +62,7 @@ public class ConnectionDetailActivity extends AppCompatActivity {
      * Diese Funktion erstellt einen Plan mit allen Zwischenhalte einer Verbindung.
      * @param connectionDetail ConnectionDetailActivity von dem ein Plan erstellt werden soll.
      */
-    private void CreatePlan(ch.bbcag.findyourway.model.ConnectionDetail connectionDetail){
+    private void createPlan(ch.bbcag.findyourway.model.ConnectionDetail connectionDetail){
         // ConstraintLayout um Constraints aus dem Code heraus zu setzten.
         ConstraintLayout mConstraintLayout  = (ConstraintLayout)findViewById(R.id.mainConstraint);
         ConstraintSet set = new ConstraintSet();
@@ -137,7 +137,7 @@ public class ConnectionDetailActivity extends AppCompatActivity {
         set.applyTo(mConstraintLayout);
 
         // Erstellt alle Zwischenstops auf der Linie
-        CreateDots(dot.getId(), 2, connectionDetail);
+        createDots(dot.getId(), 2, connectionDetail);
 
         // Verlänger die Line um noch den Endpunkt hinzuzufügen
         line.getLayoutParams().height = line.getLayoutParams().height + dpTopixel(getApplicationContext(),(float)52);
@@ -207,7 +207,7 @@ public class ConnectionDetailActivity extends AppCompatActivity {
      * @param count Counter für die Liste aller Zwischenhalte
      * @param connectionDetails Objekt um die Informationen zu setzten
      */
-    private void CreateDots(int id, int count, ch.bbcag.findyourway.model.ConnectionDetail connectionDetails){
+    private void createDots(int id, int count, ch.bbcag.findyourway.model.ConnectionDetail connectionDetails){
         // Verlängert die Linie für jeden Durchgang um 36dp
         View line = (View)findViewById(R.id.line);
         line.getLayoutParams().height = line.getLayoutParams().height + dpTopixel(getApplicationContext(),(float)36.5);
@@ -280,7 +280,7 @@ public class ConnectionDetailActivity extends AppCompatActivity {
             count++;
 
             // rekursiver Aufruf
-            CreateDots(dot.getId(), count, connectionDetails);
+            createDots(dot.getId(), count, connectionDetails);
         }
     }
 
