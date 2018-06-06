@@ -1,7 +1,6 @@
 package ch.bbcag.findyourway.views;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -19,12 +18,10 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.helper.TransportOpendataJsonParser;
-import ch.bbcag.findyourway.model.Connection;
 import ch.bbcag.findyourway.model.HomeConnectionDetail;
 
 /**

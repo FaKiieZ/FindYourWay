@@ -44,7 +44,7 @@ import ch.bbcag.findyourway.model.Connection;
 import ch.bbcag.findyourway.model.Location;
 
 /**
- * Fragment für den Search-Tab
+ * Fragment für den Home-Tab
  */
 public class TabHomeFragment extends android.support.v4.app.Fragment implements OnMapReadyCallback {
     private static final String TRANSPORT_OPENDATA_LOCATIONS_API_URL = "http://transport.opendata.ch/v1/locations";
