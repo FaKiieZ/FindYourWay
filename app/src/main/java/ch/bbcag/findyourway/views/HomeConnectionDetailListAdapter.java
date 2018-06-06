@@ -65,7 +65,7 @@ public class HomeConnectionDetailListAdapter extends ArrayAdapter<HomeConnection
 
         String destinationText = "Richtung " + connection.getTo().getStation().getName();
         destination.setText(destinationText);
-        time.setText(connection.getDurationTotal());
+        time.setText("Dauer: " + connection.getDurationTotal());
         String platformText = connection.getFrom().getPlatform();
         if (platformText != "null") {
             plattformNumber.setText(connection.getFrom().getPlatform());
