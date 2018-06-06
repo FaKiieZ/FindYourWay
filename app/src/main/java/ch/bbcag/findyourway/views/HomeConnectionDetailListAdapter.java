@@ -49,9 +49,12 @@ public class HomeConnectionDetailListAdapter extends ArrayAdapter<HomeConnection
         if(connection.getSections() != null){
 
             for (String prefix : prefixes){
-                if(connection.getSections().get(0).getNumber().startsWith(prefix)){
-                    foundPrefix = true;
-                    break;
+                String sectionNumber = connection.getSections().get(0).getNumber();
+                if (sectionNumber != null){
+                    if(sectionNumber.startsWith(prefix)){
+                        foundPrefix = true;
+                        break;
+                    }
                 }
             }
 

@@ -212,8 +212,9 @@ public class TransportOpendataJsonParser {
         String walkJsonString = sectionJson.getString("walk");
         if (walkJsonString != "null") {
             JSONObject walkJson = sectionJson.getJSONObject("walk");
-            if (walkJson != null){
-                walkDuration = walkJson.getInt("duration");
+            String walkDurationString = walkJson.getString("duration");
+            if (walkDurationString != "null"){
+                walkDuration = Integer.parseInt(walkDurationString);
             }
         }
 
