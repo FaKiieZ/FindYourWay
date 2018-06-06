@@ -38,6 +38,7 @@ public class HomeConnectionDetailListAdapter extends ArrayAdapter<HomeConnection
         TextView number = convertView.findViewById(R.id.textViewNumber);
         TextView destination = convertView.findViewById(R.id.textViewDestination);
         TextView time = convertView.findViewById(R.id.textViewTime);
+        TextView departure = convertView.findViewById(R.id.textViewDeparture);
         TextView plattformNumber = convertView.findViewById(R.id.textViewPlattformNumber);
         TextView plattform = convertView.findViewById(R.id.textViewPlattform);
 
@@ -66,13 +67,9 @@ public class HomeConnectionDetailListAdapter extends ArrayAdapter<HomeConnection
         String destinationText = "Richtung " + connection.getTo().getStation().getName();
         destination.setText(destinationText);
         time.setText("Dauer: " + connection.getDurationTotal());
-        String platformText = connection.getFrom().getPlatform();
-        if (platformText != "null") {
-            plattformNumber.setText(connection.getFrom().getPlatform());
-            plattform.setText(R.string.plattform);
-        }
+        departure.setText(connection.getFrom().getDeparture());
+        plattform.setText(connection.getTo().getArrivalTime());
 
         return convertView;
-
     }
 }
