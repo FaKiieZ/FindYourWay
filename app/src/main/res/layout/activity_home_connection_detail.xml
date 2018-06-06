@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/locationName"
         android:layout_width="match_parent"
-        android:layout_height="21dp"
+        android:layout_height="23dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:ellipsize="end"
@@ -18,7 +18,7 @@
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="S44 Bern, Bahnhof nach Thun" />
+        tools:text="S44 Berng, Bahnhof nach Thun" />
 
     <View
         android:id="@+id/view"
