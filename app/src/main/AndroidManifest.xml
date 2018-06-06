@@ -34,7 +34,8 @@
 
         <activity android:name=".views.LocationDetailActivity" />
         <activity android:name=".views.ConnectionDetail" />
-        <activity android:name=".views.HomeDetailActivity"></activity>
+        <activity android:name=".views.HomeDetailActivity" />
+        <activity android:name=".views.HomeConnectionDetailActivity"></activity>
     </application>
 
 </manifest>
