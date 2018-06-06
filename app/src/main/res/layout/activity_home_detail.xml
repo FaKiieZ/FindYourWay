@@ -15,6 +15,8 @@
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:ellipsize="end"
+        android:maxLines="1"
         tools:text="Bern, Bahnhof" />
 
     <View
