@@ -44,7 +44,11 @@ public class HomeDetailActivity extends AppCompatActivity {
         locationName.setText(fromName + " nach " + toName);
 
         getConnections(from, to);
-        
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     /**
