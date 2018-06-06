@@ -9,13 +9,15 @@ public class HomeConnectionDetail {
     private String DurationTotal;
     private Integer Transfers;
     private List<HomeConnection> Sections;
+    private String JsonString;
 
-    public HomeConnectionDetail(Stop from, Stop to, String durationTotal, Integer transfers, List<HomeConnection> sections) {
+    public HomeConnectionDetail(Stop from, Stop to, String durationTotal, Integer transfers, List<HomeConnection> sections, String json) {
         From = from;
         To = to;
         DurationTotal = durationTotal;
         Transfers = transfers;
         Sections = sections;
+        JsonString = json;
     }
 
     public Stop getFrom() {
@@ -57,4 +59,6 @@ public class HomeConnectionDetail {
     public void setTransfer(Integer transfer) {
         Transfers = transfer;
     }
+
+    public String getJSON() {return JsonString;}
 }
