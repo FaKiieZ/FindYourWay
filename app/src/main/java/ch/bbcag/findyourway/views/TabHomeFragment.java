@@ -67,7 +67,7 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
     private LocationListAdapter locationListAdapter;
     private HomeDataSource homeDataSource;
     private AutoCompleteTextView autoCompleteTextView;
-    private Location from;
+    private Location to;
 
     public TabHomeFragment() {}
 
@@ -115,7 +115,7 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
             homeDataSource.createHomeLocation(selected.getId(), selected.getName());
             homeDataSource.close();
 
-            this.from = selected;
+            this.to = selected;
         };
     }
 
@@ -123,10 +123,10 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
         return (parent, view, position, id) -> {
             Intent intent = new Intent(getContext(), HomeDetailActivity.class);
             Location selected = (Location)parent.getItemAtPosition(position);
-            intent.putExtra("fromId", from.getId());
-            intent.putExtra("toId", selected.getId());
-            intent.putExtra("fromName", from.getName());
-            intent.putExtra("toName", selected.getName());
+            intent.putExtra("fromId", selected.getId());
+            intent.putExtra("toId", to.getId());
+            intent.putExtra("fromName", selected.getName());
+            intent.putExtra("toName", to.getName());
             startActivity(intent);
         };
     }
@@ -405,7 +405,7 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
         if (home != null){
             autoCompleteTextView.setText(home.getName());
             autoCompleteTextView.dismissDropDown();
-            this.from = home;
+            this.to = home;
         }
     }
 
