@@ -81,6 +81,7 @@ public class FavouriteDataSource {
      */
     public List < Location > getAllFavouriteLocations() {
         List < Location > locationList = new ArrayList < > ();
+        //dbHelper.dropDatabase();
         Cursor cursor = database.query(dbHelper.TABLE_NAME, columns, null, null, null, null, null);
         cursor.moveToFirst();
         Location location;
