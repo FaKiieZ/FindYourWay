@@ -4,13 +4,13 @@ import java.util.Date;
 import java.util.List;
 
 public class HomeConnectionDetail {
-    private Location From;
-    private Location To;
-    private Integer DurationTotal;
+    private Stop From;
+    private Stop To;
+    private String DurationTotal;
     private Integer Transfers;
     private List<HomeConnection> Sections;
 
-    public HomeConnectionDetail(Location from, Location to, Integer durationTotal, Integer transfers, List<HomeConnection> sections) {
+    public HomeConnectionDetail(Stop from, Stop to, String durationTotal, Integer transfers, List<HomeConnection> sections) {
         From = from;
         To = to;
         DurationTotal = durationTotal;
@@ -18,19 +18,19 @@ public class HomeConnectionDetail {
         Sections = sections;
     }
 
-    public Location getFrom() {
+    public Stop getFrom() {
         return From;
     }
 
-    public void setFrom(Location from) {
+    public void setFrom(Stop from) {
         From = from;
     }
 
-    public Location getTo() {
+    public Stop getTo() {
         return To;
     }
 
-    public void setTo(Location to) {
+    public void setTo(Stop to) {
         To = to;
     }
 
@@ -42,11 +42,11 @@ public class HomeConnectionDetail {
         Sections = sections;
     }
 
-    public Integer getDurationTotal() {
+    public String getDurationTotal() {
         return DurationTotal;
     }
 
-    public void setDurationTotal(Integer durationTotal) {
+    public void setDurationTotal(String durationTotal) {
         DurationTotal = durationTotal;
     }
 

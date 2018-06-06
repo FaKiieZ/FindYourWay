@@ -171,9 +171,9 @@ public class TransportOpendataJsonParser {
         JSONArray connectionsJson = jsonObject.getJSONArray("connections");
         for (int i = 0; i < connectionsJson.length(); i++) {
             JSONObject row = connectionsJson.getJSONObject(i);
-            Location from = createLocationFromJsonString(row.getString("from"));
-            Location to = createLocationFromJsonString(row.getString("to"));
-            Integer duration = row.getInt("duration");
+            Stop from = createStopFromJsonString(row.getString("from"));
+            Stop to = createStopFromJsonString(row.getString("to"));
+            String duration = row.getString("duration");
             Integer transfers = row.getInt("transfers");
             List<HomeConnection> sectionList = new ArrayList<>();
             JSONArray sectionsJson = row.getJSONArray("sections");
@@ -190,19 +190,32 @@ public class TransportOpendataJsonParser {
 
     public static HomeConnection createHomeConnectionFromJsonString(String sectionJsonString) throws JSONException {
         JSONObject sectionJson = new JSONObject(sectionJsonString);
-        JSONObject journeyJson = sectionJson.getJSONObject("journey");
-        String category = journeyJson.getString("category");
-        String number = journeyJson.getString("number");
-        String to = journeyJson.getString("to");
-        // create passlist
+        String journeyJsonString = sectionJson.getString("journey");
+        String category = null;
+        String number = null;
+        String to = null;
         List<Stop> passList = new ArrayList<>();
-        JSONArray passListJson = journeyJson.getJSONArray("passList");
-        for (int z = 0; z < passListJson.length(); z++) {
-            String stop = passListJson.get(z).toString();
-            passList.add(createStopFromJsonString(stop));
+        if (journeyJsonString != "null"){
+            JSONObject journeyJson = sectionJson.getJSONObject("journey");
+            category = journeyJson.getString("category");
+            number = journeyJson.getString("number");
+            to = journeyJson.getString("to");
+            // create passlist
+            JSONArray passListJson = journeyJson.getJSONArray("passList");
+            for (int z = 0; z < passListJson.length(); z++) {
+                String stop = passListJson.get(z).toString();
+                passList.add(createStopFromJsonString(stop));
+            }
         }
-        JSONObject walkJson = sectionJson.getJSONObject("walk");
-        Integer walkDuration = walkJson.getInt("duration");
+
+        Integer walkDuration = null;
+        String walkJsonString = sectionJson.getString("walk");
+        if (walkJsonString != "null") {
+            JSONObject walkJson = sectionJson.getJSONObject("walk");
+            if (walkJson != null){
+                walkDuration = walkJson.getInt("duration");
+            }
+        }
 
         return new HomeConnection(category, number, to, passList, walkDuration);
     }

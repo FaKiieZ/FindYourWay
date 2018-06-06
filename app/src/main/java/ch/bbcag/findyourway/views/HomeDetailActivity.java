@@ -15,6 +15,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ch.bbcag.findyourway.R;
@@ -74,7 +75,7 @@ public class HomeDetailActivity extends AppCompatActivity {
             response -> {
                 try {
                     List<HomeConnectionDetail> connections = TransportOpendataJsonParser.createDetailHomeConnectionFromJsonString(response);
-                    final ConnectionListAdapter connectionListAdapter = new ConnectionListAdapter(getBaseContext(), connections);
+                    final ConnectionListAdapter connectionListAdapter = new ConnectionListAdapter(getBaseContext(), new ArrayList<>());
                     ListView connectionListView = findViewById(R.id.list);
                     connectionListView.setAdapter(connectionListAdapter);
                     AdapterView.OnItemClickListener mListClickListener = (parent, view, position, id) -> {
