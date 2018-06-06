@@ -10,10 +10,9 @@
     <TextView
         android:id="@+id/textViewNumber"
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_marginStart="8dp"
+        android:layout_height="26dp"
         android:layout_marginTop="16dp"
-        android:text="NFB 465"
+        android:text="NFg 465"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="parent" />
 

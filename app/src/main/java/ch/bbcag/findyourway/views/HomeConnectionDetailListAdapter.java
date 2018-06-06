@@ -47,22 +47,25 @@ public class HomeConnectionDetailListAdapter extends ArrayAdapter<HomeConnection
         boolean foundPrefix = false;
         String numberText = "Wert nicht vorhanden";
         if(connection.getSections() != null){
-
-            for (String prefix : prefixes){
-                String sectionNumber = connection.getSections().get(0).getNumber();
-                if (sectionNumber != null){
-                    if(sectionNumber.startsWith(prefix)){
-                        foundPrefix = true;
-                        break;
+            if (connection.getSections().get(0).getCategory() == null && connection.getSections().get(0).getNumber() == null){
+                numberText = "Fussweg";
+            }else{
+                for (String prefix : prefixes){
+                    String sectionNumber = connection.getSections().get(0).getNumber();
+                    if (sectionNumber != null){
+                        if(sectionNumber.startsWith(prefix)){
+                            foundPrefix = true;
+                            break;
+                        }
                     }
                 }
-            }
 
-            if(foundPrefix){
-                numberText = connection.getSections().get(0).getNumber();
-            }
-            else {
-                numberText = connection.getSections().get(0).getCategory() + connection.getSections().get(0).getNumber();
+                if(foundPrefix){
+                    numberText = connection.getSections().get(0).getNumber();
+                }
+                else {
+                    numberText = connection.getSections().get(0).getCategory() + connection.getSections().get(0).getNumber();
+                }
             }
         }
         number.setText(numberText);

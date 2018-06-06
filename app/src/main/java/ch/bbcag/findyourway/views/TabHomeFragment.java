@@ -132,18 +132,21 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
     }
 
     private void getLocationsByString(String str) {
-        if (getView() == null || getContext() == null){
+        View view = getView();
+        Context context = getContext();
+
+        if (view == null || context == null){
             return;
         }
 
         String url = TRANSPORT_OPENDATA_LOCATIONS_API_URL + "?query=" + str;
-        final RequestQueue queue = Volley.newRequestQueue(getContext());
+        final RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
                         final List<Location> locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
-                        AutoCompleteTextView actv = getView().findViewById(R.id.locationDropdown);
-                        ArrayAdapter<Location> adapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, locations);
+                        AutoCompleteTextView actv = view.findViewById(R.id.locationDropdown);
+                        ArrayAdapter<Location> adapter = new ArrayAdapter<>(context, R.layout.support_simple_spinner_dropdown_item, locations);
                         actv.setAdapter(adapter);
                     } catch (JSONException e) {
                         generateAlertDialog();
