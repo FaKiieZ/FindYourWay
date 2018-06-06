@@ -41,7 +41,7 @@ public class HomeConnectionDetailActivity extends AppCompatActivity {
             }
 
 
-            CreatePlan(connection);
+            createPlan(connection);
         } catch (JSONException e){
             e.printStackTrace();
         }
@@ -70,7 +70,7 @@ public class HomeConnectionDetailActivity extends AppCompatActivity {
      * Erstellt einen Plan der gesamten Reise/Connection
      * @param connection Objekt der Verbindung
      */
-    private void CreatePlan(HomeConnectionDetail connection){
+    private void createPlan(HomeConnectionDetail connection){
         // hole die Line
         View line = (View)findViewById(R.id.line);
         // Hole das ContraintLayout und erstelle ein neues Constraintset
@@ -88,15 +88,15 @@ public class HomeConnectionDetailActivity extends AppCompatActivity {
 //
         int parentId = line.getId();
         for(int i = 0; i < connection.getSections().size()-1; i++){
-            parentId = CreateSection(connection, i, parentId);
+            parentId = createSection(connection, i, parentId);
         }
 
     }
 
-    private int CreateSection(HomeConnectionDetail connectionDetail, int sectionIndex, int parentElement){
+    private int createSection(HomeConnectionDetail connectionDetail, int sectionIndex, int parentElement){
         ConstraintLayout mConstraintLayout  = (ConstraintLayout)findViewById(R.id.mainConstraint);
         View line = new View(this);
-        line.getLayoutParams().width = dpTopixel(getApplication(), 3);
+        line.getLayoutParams().width = dpToPixel(getApplication(), 3);
         line.getLayoutParams().height = 10;
         line.setId(View.generateViewId());
         line.setBackgroundResource(R.color.colorPrimaryDark);
@@ -104,7 +104,7 @@ public class HomeConnectionDetailActivity extends AppCompatActivity {
         return line.getId();
     }
 
-    private void CreateStops(int id, int count, HomeConnectionDetail connection, int parentId){
+    private void createStops(int id, int count, HomeConnectionDetail connection, int parentId){
         //TODO create stops
     }
 
@@ -114,7 +114,7 @@ public class HomeConnectionDetailActivity extends AppCompatActivity {
      * @param dp Anzahl DP
      * @return  Anzahl Pixel
      */
-    public static int dpTopixel(Context c, float dp) {
+    public static int dpToPixel(Context c, float dp) {
         float density = c.getResources().getDisplayMetrics().density;
         float pixel = dp * density;
         return (int)pixel;

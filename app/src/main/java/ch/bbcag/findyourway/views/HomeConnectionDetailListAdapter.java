@@ -34,12 +34,10 @@ public class HomeConnectionDetailListAdapter extends ArrayAdapter<HomeConnection
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.connection_listitem, parent, false);
         }
         // Lookup view
-        ImageView icon = convertView.findViewById(R.id.imageViewDelay);
         TextView number = convertView.findViewById(R.id.textViewNumber);
         TextView destination = convertView.findViewById(R.id.textViewDestination);
         TextView time = convertView.findViewById(R.id.textViewTime);
         TextView departure = convertView.findViewById(R.id.textViewDeparture);
-        TextView plattformNumber = convertView.findViewById(R.id.textViewPlattformNumber);
         TextView plattform = convertView.findViewById(R.id.textViewPlattform);
 
         // set values

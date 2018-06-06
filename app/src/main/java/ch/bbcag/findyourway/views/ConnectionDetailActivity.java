@@ -95,19 +95,19 @@ public class ConnectionDetailActivity extends AppCompatActivity {
 
         // Erstellen den Startpunkt auf der Linie
         ImageView dot = new ImageView(this);
-        LinearLayout.LayoutParams dotLayout = new LinearLayout.LayoutParams(dpTopixel(getApplicationContext(), 15), dpTopixel(getApplicationContext(), 15));
+        LinearLayout.LayoutParams dotLayout = new LinearLayout.LayoutParams(dpToPixel(getApplicationContext(), 15), dpToPixel(getApplicationContext(), 15));
         dot.setLayoutParams(dotLayout);
         dot.setBackgroundResource(R.drawable.ic_radio_button_checked_black_24dp);
         dot.setId(View.generateViewId());
         mConstraintLayout.addView(dot);
         // Constraints zum Startpunkt hinzufügen
         set.clone(mConstraintLayout);
-        set.connect(dot.getId(), ConstraintSet.LEFT, mConstraintLayout.getId(), ConstraintSet.LEFT, dpTopixel(getApplicationContext(), 69));
-        set.connect(dot.getId(), ConstraintSet.TOP, findViewById(R.id.imageViewPoint).getId(), ConstraintSet.BOTTOM, dpTopixel(getApplicationContext(), 24));
+        set.connect(dot.getId(), ConstraintSet.LEFT, mConstraintLayout.getId(), ConstraintSet.LEFT, dpToPixel(getApplicationContext(), 69));
+        set.connect(dot.getId(), ConstraintSet.TOP, findViewById(R.id.imageViewPoint).getId(), ConstraintSet.BOTTOM, dpToPixel(getApplicationContext(), 24));
         set.applyTo(mConstraintLayout);
 
         // Erstellen die Startzeit der Verbindung
-        LinearLayout.LayoutParams TextLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpTopixel(getApplicationContext(), 14));
+        LinearLayout.LayoutParams TextLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpToPixel(getApplicationContext(), 14));
         TextView time = new TextView(this);
         time.setLayoutParams(TextLayout);
         Stop firstStop = connectionDetail.getPassList().get(1);
@@ -117,7 +117,7 @@ public class ConnectionDetailActivity extends AppCompatActivity {
         mConstraintLayout.addView(time);
 
         // Erstellen den Namen des Startpunktes
-        LinearLayout.LayoutParams Test = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpTopixel(getApplicationContext(), 14));
+        LinearLayout.LayoutParams Test = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpToPixel(getApplicationContext(), 14));
         TextView name = new TextView(this);
         name.setLayoutParams(Test);
         name.setText(connectionDetail.getPassList().get(1).getStation().getName());
@@ -127,35 +127,35 @@ public class ConnectionDetailActivity extends AppCompatActivity {
 
         // Setzt die Constraints für die Abfahrtszeit und den Abfahrtsort
         set.clone(mConstraintLayout);
-        set.connect(time.getId(), ConstraintSet.RIGHT, dot.getId(), ConstraintSet.LEFT, dpTopixel(getApplicationContext(), 2));
-        set.connect(time.getId(), ConstraintSet.TOP, dot.getId(), ConstraintSet.TOP, dpTopixel(getApplicationContext(), 0));
+        set.connect(time.getId(), ConstraintSet.RIGHT, dot.getId(), ConstraintSet.LEFT, dpToPixel(getApplicationContext(), 2));
+        set.connect(time.getId(), ConstraintSet.TOP, dot.getId(), ConstraintSet.TOP, dpToPixel(getApplicationContext(), 0));
         set.applyTo(mConstraintLayout);
 
         set.clone(mConstraintLayout);
-        set.connect(name.getId(), ConstraintSet.LEFT, dot.getId(), ConstraintSet.RIGHT, dpTopixel(getApplicationContext(), 2));
-        set.connect(name.getId(), ConstraintSet.TOP, dot.getId(), ConstraintSet.TOP, dpTopixel(getApplicationContext(), 0));
+        set.connect(name.getId(), ConstraintSet.LEFT, dot.getId(), ConstraintSet.RIGHT, dpToPixel(getApplicationContext(), 2));
+        set.connect(name.getId(), ConstraintSet.TOP, dot.getId(), ConstraintSet.TOP, dpToPixel(getApplicationContext(), 0));
         set.applyTo(mConstraintLayout);
 
         // Erstellt alle Zwischenstops auf der Linie
         CreateDots(dot.getId(), 2, connectionDetail);
 
         // Verlänger die Line um noch den Endpunkt hinzuzufügen
-        line.getLayoutParams().height = line.getLayoutParams().height + dpTopixel(getApplicationContext(),(float)52);
+        line.getLayoutParams().height = line.getLayoutParams().height + dpToPixel(getApplicationContext(),(float)52);
         // Erstelle den Endpunkt auf der Linie
         ImageView endDot = new ImageView(this);
-        LinearLayout.LayoutParams endDotLayout = new LinearLayout.LayoutParams(dpTopixel(getApplicationContext(), 16), dpTopixel(getApplicationContext(), 16));
+        LinearLayout.LayoutParams endDotLayout = new LinearLayout.LayoutParams(dpToPixel(getApplicationContext(), 16), dpToPixel(getApplicationContext(), 16));
         endDot.setLayoutParams(endDotLayout);
         endDot.setBackgroundResource(R.drawable.ic_brightness_1_black_24dp);
         endDot.setId(View.generateViewId());
         mConstraintLayout.addView(endDot);
         // Setzt die Constraints
         set.clone(mConstraintLayout);
-        set.connect(endDot.getId(), ConstraintSet.LEFT, mConstraintLayout.getId(), ConstraintSet.LEFT, dpTopixel(getApplicationContext(), 69));
-        set.connect(endDot.getId(), ConstraintSet.TOP, line.getId(), ConstraintSet.BOTTOM, dpTopixel(getApplicationContext(), 0));
+        set.connect(endDot.getId(), ConstraintSet.LEFT, mConstraintLayout.getId(), ConstraintSet.LEFT, dpToPixel(getApplicationContext(), 69));
+        set.connect(endDot.getId(), ConstraintSet.TOP, line.getId(), ConstraintSet.BOTTOM, dpToPixel(getApplicationContext(), 0));
         set.applyTo(mConstraintLayout);
 
         // Layout für die TextViews des Endpunktes
-        LinearLayout.LayoutParams endLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpTopixel(getApplicationContext(), 20));
+        LinearLayout.LayoutParams endLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpToPixel(getApplicationContext(), 20));
         // Erstellt den TextView für die Ankunftszeit
         TextView endTime = new TextView(this);
         endTime.setLayoutParams(endLayout);
@@ -182,13 +182,13 @@ public class ConnectionDetailActivity extends AppCompatActivity {
 
         // Setzt die Constraints für die beiden TextViews
         set.clone(mConstraintLayout);
-        set.connect(endTime.getId(), ConstraintSet.RIGHT, endDot.getId(), ConstraintSet.LEFT, dpTopixel(getApplicationContext(), 4));
-        set.connect(endTime.getId(), ConstraintSet.TOP, endDot.getId(), ConstraintSet.TOP, dpTopixel(getApplicationContext(), 0));
+        set.connect(endTime.getId(), ConstraintSet.RIGHT, endDot.getId(), ConstraintSet.LEFT, dpToPixel(getApplicationContext(), 4));
+        set.connect(endTime.getId(), ConstraintSet.TOP, endDot.getId(), ConstraintSet.TOP, dpToPixel(getApplicationContext(), 0));
         set.applyTo(mConstraintLayout);
 
         set.clone(mConstraintLayout);
-        set.connect(nameDestination.getId(), ConstraintSet.LEFT, endDot.getId(), ConstraintSet.RIGHT, dpTopixel(getApplicationContext(), 4));
-        set.connect(nameDestination.getId(), ConstraintSet.TOP, endDot.getId(), ConstraintSet.TOP, dpTopixel(getApplicationContext(), 0));
+        set.connect(nameDestination.getId(), ConstraintSet.LEFT, endDot.getId(), ConstraintSet.RIGHT, dpToPixel(getApplicationContext(), 4));
+        set.connect(nameDestination.getId(), ConstraintSet.TOP, endDot.getId(), ConstraintSet.TOP, dpToPixel(getApplicationContext(), 0));
         set.applyTo(mConstraintLayout);
 
         // Wenn der Wert "Platform" nicht vorhanden ist, wird er nicht geschrieben
@@ -210,7 +210,7 @@ public class ConnectionDetailActivity extends AppCompatActivity {
     private void CreateDots(int id, int count, ch.bbcag.findyourway.model.ConnectionDetail connectionDetails){
         // Verlängert die Linie für jeden Durchgang um 36dp
         View line = (View)findViewById(R.id.line);
-        line.getLayoutParams().height = line.getLayoutParams().height + dpTopixel(getApplicationContext(),(float)36.5);
+        line.getLayoutParams().height = line.getLayoutParams().height + dpToPixel(getApplicationContext(),(float)36.5);
 
         // Holt das ConstraintLayout
         ConstraintLayout mConstraintLayout  = (ConstraintLayout)findViewById(R.id.mainConstraint);
@@ -220,19 +220,19 @@ public class ConnectionDetailActivity extends AppCompatActivity {
         if(count < connectionDetails.getPassList().size() -1){
             // Erstellt Punkt für den Zwischenhalt
             ImageView dot = new ImageView(this);
-            LinearLayout.LayoutParams dotLayout = new LinearLayout.LayoutParams(dpTopixel(getApplicationContext(), 15), dpTopixel(getApplicationContext(), 15));
+            LinearLayout.LayoutParams dotLayout = new LinearLayout.LayoutParams(dpToPixel(getApplicationContext(), 15), dpToPixel(getApplicationContext(), 15));
             dot.setLayoutParams(dotLayout);
             dot.setBackgroundResource(R.drawable.ic_radio_button_checked_black_24dp);
             dot.setId(View.generateViewId());
             mConstraintLayout.addView(dot);
             // Constraint für den Punkt
             set.clone(mConstraintLayout);
-            set.connect(dot.getId(), ConstraintSet.LEFT, mConstraintLayout.getId(), ConstraintSet.LEFT, dpTopixel(getApplicationContext(), 69));
-            set.connect(dot.getId(), ConstraintSet.TOP, id, ConstraintSet.BOTTOM, dpTopixel(getApplicationContext(), 24));
+            set.connect(dot.getId(), ConstraintSet.LEFT, mConstraintLayout.getId(), ConstraintSet.LEFT, dpToPixel(getApplicationContext(), 69));
+            set.connect(dot.getId(), ConstraintSet.TOP, id, ConstraintSet.BOTTOM, dpToPixel(getApplicationContext(), 24));
             set.applyTo(mConstraintLayout);
 
             // Erstellt den TextView für die Abfahrtszeit
-            LinearLayout.LayoutParams TextLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpTopixel(getApplicationContext(), 15));
+            LinearLayout.LayoutParams TextLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpToPixel(getApplicationContext(), 15));
             TextView time = new TextView(this);
             time.setLayoutParams(TextLayout);
             if(connectionDetails.getPassList().get(count).getDeparture() != null)
@@ -242,7 +242,7 @@ public class ConnectionDetailActivity extends AppCompatActivity {
             mConstraintLayout.addView(time);
 
             // Erstellt den TextView für den Abfahrtsort
-            LinearLayout.LayoutParams Test = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpTopixel(getApplicationContext(), 16));
+            LinearLayout.LayoutParams Test = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dpToPixel(getApplicationContext(), 16));
             TextView name = new TextView(this);
             name.setLayoutParams(Test);
 
@@ -260,20 +260,20 @@ public class ConnectionDetailActivity extends AppCompatActivity {
 
             // Setzt die Constraints für den Haltepunkt auf der Linie
             set.clone(mConstraintLayout);
-            set.connect(dot.getId(), ConstraintSet.LEFT, mConstraintLayout.getId(), ConstraintSet.LEFT, dpTopixel(getApplicationContext(), 69));
-            set.connect(dot.getId(), ConstraintSet.TOP, id, ConstraintSet.BOTTOM, dpTopixel(getApplicationContext(), 24));
+            set.connect(dot.getId(), ConstraintSet.LEFT, mConstraintLayout.getId(), ConstraintSet.LEFT, dpToPixel(getApplicationContext(), 69));
+            set.connect(dot.getId(), ConstraintSet.TOP, id, ConstraintSet.BOTTOM, dpToPixel(getApplicationContext(), 24));
             set.applyTo(mConstraintLayout);
 
             // Setzt die Constraints für die Abfahrtszeit
             set.clone(mConstraintLayout);
-            set.connect(time.getId(), ConstraintSet.RIGHT, dot.getId(), ConstraintSet.LEFT, dpTopixel(getApplicationContext(), 2));
-            set.connect(time.getId(), ConstraintSet.TOP, dot.getId(), ConstraintSet.TOP, dpTopixel(getApplicationContext(), 0));
+            set.connect(time.getId(), ConstraintSet.RIGHT, dot.getId(), ConstraintSet.LEFT, dpToPixel(getApplicationContext(), 2));
+            set.connect(time.getId(), ConstraintSet.TOP, dot.getId(), ConstraintSet.TOP, dpToPixel(getApplicationContext(), 0));
             set.applyTo(mConstraintLayout);
 
             // Setzt die Constraints für den Abfahrtsort
             set.clone(mConstraintLayout);
-            set.connect(name.getId(), ConstraintSet.LEFT, dot.getId(), ConstraintSet.RIGHT, dpTopixel(getApplicationContext(), 2));
-            set.connect(name.getId(), ConstraintSet.TOP, dot.getId(), ConstraintSet.TOP, dpTopixel(getApplicationContext(), 0));
+            set.connect(name.getId(), ConstraintSet.LEFT, dot.getId(), ConstraintSet.RIGHT, dpToPixel(getApplicationContext(), 2));
+            set.connect(name.getId(), ConstraintSet.TOP, dot.getId(), ConstraintSet.TOP, dpToPixel(getApplicationContext(), 0));
             set.applyTo(mConstraintLayout);
 
             // Counter um ein erhöhren / durch Liste iterrieren
@@ -290,7 +290,7 @@ public class ConnectionDetailActivity extends AppCompatActivity {
      * @param dp Anzahl DP
      * @return  Anzahl Pixel
      */
-    public static int dpTopixel(Context c, float dp) {
+    public static int dpToPixel(Context c, float dp) {
         float density = c.getResources().getDisplayMetrics().density;
         float pixel = dp * density;
         return (int)pixel;
