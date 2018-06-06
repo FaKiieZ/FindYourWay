@@ -183,7 +183,7 @@ public class TransportOpendataJsonParser {
                 sectionList.add(homeConnection);
             }
 
-            list.add(new HomeConnectionDetail(from, to, duration, transfers, sectionList));
+            list.add(new HomeConnectionDetail(from, to, duration, transfers, sectionList, connectionJsonString));
         }
         return list;
     }

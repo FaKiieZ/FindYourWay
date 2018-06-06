@@ -57,4 +57,5 @@ public class HomeConnection {
     public void setWalkDuration(Integer walkDuration) {
         WalkDuration = walkDuration;
     }
+
 }

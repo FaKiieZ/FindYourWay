@@ -1,6 +1,7 @@
 package ch.bbcag.findyourway.views;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -89,9 +90,12 @@ public class HomeDetailActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     connectionListView.setAdapter(homeConnectionDetailListAdapter);
                     AdapterView.OnItemClickListener mListClickListener = (parent, view, position, id) -> {
-                        //TODO add intent to next activity
-                        //Intent intent = new Intent(getBaseContext(), )
+                        HomeConnectionDetail selected = (HomeConnectionDetail)parent.getItemAtPosition(position);
+                        Intent intent = new Intent(getBaseContext(), HomeConnectionDetailActivity.class);
+                        intent.putExtra("connection", selected.getJSON());
+                        startActivity(intent);
                     };
+                    connectionListView.setOnItemClickListener(mListClickListener);
                 }
                 catch (JSONException e){
                     generateAlertDialog();
