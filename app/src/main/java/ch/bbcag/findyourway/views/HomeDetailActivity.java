@@ -74,10 +74,10 @@ public class HomeDetailActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
             response -> {
                 try {
-                    List<HomeConnectionDetail> connections = TransportOpendataJsonParser.createDetailHomeConnectionFromJsonString(response);
-                    final ConnectionListAdapter connectionListAdapter = new ConnectionListAdapter(getBaseContext(), new ArrayList<>());
+                    List<HomeConnectionDetail> homeConnectionDetails = TransportOpendataJsonParser.createDetailHomeConnectionFromJsonString(response);
+                    final HomeConnectionDetailListAdapter homeConnectionDetailListAdapter = new HomeConnectionDetailListAdapter(getBaseContext(), homeConnectionDetails);
                     ListView connectionListView = findViewById(R.id.list);
-                    connectionListView.setAdapter(connectionListAdapter);
+                    connectionListView.setAdapter(homeConnectionDetailListAdapter);
                     AdapterView.OnItemClickListener mListClickListener = (parent, view, position, id) -> {
                         //TODO add intent to next activity
                         //Intent intent = new Intent(getBaseContext(), )
