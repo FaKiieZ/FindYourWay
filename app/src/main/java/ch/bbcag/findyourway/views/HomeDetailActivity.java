@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -90,10 +91,11 @@ public class HomeDetailActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     connectionListView.setAdapter(homeConnectionDetailListAdapter);
                     AdapterView.OnItemClickListener mListClickListener = (parent, view, position, id) -> {
-                        HomeConnectionDetail selected = (HomeConnectionDetail)parent.getItemAtPosition(position);
-                        Intent intent = new Intent(getBaseContext(), HomeConnectionDetailActivity.class);
-                        intent.putExtra("connection", selected.getJSON());
-                        startActivity(intent);
+                        Toast.makeText(this, "Diese Funktion ist noch in Arbeit... :P", Toast.LENGTH_LONG).show();
+//                        HomeConnectionDetail selected = (HomeConnectionDetail)parent.getItemAtPosition(position);
+//                        Intent intent = new Intent(getBaseContext(), HomeConnectionDetailActivity.class);
+//                        intent.putExtra("connection", selected.getJSON());
+//                        startActivity(intent);
                     };
                     connectionListView.setOnItemClickListener(mListClickListener);
                 }
