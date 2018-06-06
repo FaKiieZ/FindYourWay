@@ -14,9 +14,12 @@ import java.util.List;
 import ch.bbcag.findyourway.model.Connection;
 import ch.bbcag.findyourway.model.ConnectionDetail;
 import ch.bbcag.findyourway.model.Coordinates;
+import ch.bbcag.findyourway.model.HomeConnection;
 import ch.bbcag.findyourway.model.HomeConnectionDetail;
 import ch.bbcag.findyourway.model.Location;
 import ch.bbcag.findyourway.model.Stop;
+
+import static ch.bbcag.findyourway.helper.TransportOpendataJsonParser.createHomeConnectionFromJsonString;
 
 /**
  * Dient zum Parsen einer JSON-Antwort der "TransportOpendata" API
@@ -162,53 +165,47 @@ public class TransportOpendataJsonParser {
      * @return List mit Connection-Objekte
      * @throws JSONException Wirft JSONException beim Parsen des Strings
      */
-//    public static List<HomeConnectionDetail> createConnectionsForHomeFromJsonString(String connectionJsonString) throws JSONException {
-//        List <Connection> list = new ArrayList < > ();
-//        JSONObject jsonObject = new JSONObject(connectionJsonString);
-//        JSONArray connectionsJson = jsonObject.getJSONArray("connections");
-//        for (int i = 0; i < connectionsJson.length(); i++) {
-//            JSONObject row = connectionsJson.getJSONObject(i);
-//            String duration = row.getString("duration");
-//            JSONArray sectionsJson = row.getJSONArray("sections");
-//            for (int j = 0; j < sectionsJson.length(); j++){
-//                JSONObject sectionJson = sectionsJson.getJSONObject(j);
-//                JSONObject journeyJson = sectionJson.getJSONObject("journey");
-//                String category = journeyJson.getString("category");
-//                String number = journeyJson.getString("number");
-//                String to = journeyJson.getString("to");
-//                // create passlist
-//                List<Stop> passList = new ArrayList<>();
-//                JSONArray passListJson = journeyJson.getJSONArray("passList");
-//                for (int z = 0; z < passListJson.length(); z++) {
-//                    String stop = passListJson.get(z).toString();
-//                    passList.add(createStopFromJsonString(stop));
-//                }
-//                JSONObject walkJson = sectionJson.getJSONObject("walk");
-//            }
-//            String category = row.getString("category");
-//            String number = row.getString("number");
-//            String departureString = row.getJSONObject("stop").getString("departureTimestamp");
-//            String platform = row.getJSONObject("stop").getString("platform");
-//            Date departure = new Date(Long.parseLong(departureString) * 1000L);
-//            List <Stop> passList = new ArrayList < > ();
-//            // create passlist
-//            for (int z = 0; z < row.getJSONArray("passList").length(); z++) {
-//                String stop = row.getJSONArray("passList").get(z).toString();
-//                passList.add(createStopFromJsonString(stop));
-//            }
-//
-//            String delayString = row.getJSONObject("stop").getString("delay");
-//            Integer delay = 0;
-//            if (delayString != "null") {
-//                delay = Integer.parseInt(delayString);
-//            }
-//
-//            Coordinates coordinates = createCoordinatesFromJsonString(row.getJSONObject("stop").getJSONObject("station").getJSONObject("coordinate").toString());
-//
-//            list.add(new Connection(from, to, duration, service, departure, category, number, platform, row.toString(), delay, coordinates));
-//        }
-//        return list;
-//    }
+    public static List<HomeConnectionDetail> createDetailHomeConnectionFromJsonString(String connectionJsonString) throws JSONException {
+        List<HomeConnectionDetail> list = new ArrayList<>();
+        JSONObject jsonObject = new JSONObject(connectionJsonString);
+        JSONArray connectionsJson = jsonObject.getJSONArray("connections");
+        for (int i = 0; i < connectionsJson.length(); i++) {
+            JSONObject row = connectionsJson.getJSONObject(i);
+            Location from = createLocationFromJsonString(row.getString("from"));
+            Location to = createLocationFromJsonString(row.getString("to"));
+            Integer duration = row.getInt("duration");
+            Integer transfers = row.getInt("transfers");
+            List<HomeConnection> sectionList = new ArrayList<>();
+            JSONArray sectionsJson = row.getJSONArray("sections");
+            for (int j = 0; j < sectionsJson.length(); j++){
+                String sectionString = sectionsJson.get(j).toString();
+                HomeConnection homeConnection = createHomeConnectionFromJsonString(sectionString);
+                sectionList.add(homeConnection);
+            }
+
+            list.add(new HomeConnectionDetail(from, to, duration, transfers, sectionList));
+        }
+        return list;
+    }
+
+    public static HomeConnection createHomeConnectionFromJsonString(String sectionJsonString) throws JSONException {
+        JSONObject sectionJson = new JSONObject(sectionJsonString);
+        JSONObject journeyJson = sectionJson.getJSONObject("journey");
+        String category = journeyJson.getString("category");
+        String number = journeyJson.getString("number");
+        String to = journeyJson.getString("to");
+        // create passlist
+        List<Stop> passList = new ArrayList<>();
+        JSONArray passListJson = journeyJson.getJSONArray("passList");
+        for (int z = 0; z < passListJson.length(); z++) {
+            String stop = passListJson.get(z).toString();
+            passList.add(createStopFromJsonString(stop));
+        }
+        JSONObject walkJson = sectionJson.getJSONObject("walk");
+        Integer walkDuration = walkJson.getInt("duration");
+
+        return new HomeConnection(category, number, to, passList, walkDuration);
+    }
 
     /**
      * Erstellt ein ConnectionDetail-Objekt

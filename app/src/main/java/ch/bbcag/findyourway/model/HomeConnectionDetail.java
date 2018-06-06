@@ -1,105 +1,60 @@
 package ch.bbcag.findyourway.model;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 public class HomeConnectionDetail {
-    private String Category;
-    private String Number;
-    private String To;
-    private List<Stop> PassList;
-    private String From;
-    private String Platform;
-    private Date Departure;
-    private String Arrival;
-    private Date Duration;
+    private Location From;
+    private Location To;
+    private Integer DurationTotal;
+    private Integer Transfers;
+    private List<HomeConnection> Sections;
 
-
-    public HomeConnectionDetail(String category, String number, String to, List<Stop> passList, String from, String platform, Date departure, String arrival, Date duration){
-        setCategory(category);
-        setNumber(number);
-        setTo(to);
-        setPassList(passList);
-        setFrom(from);
-        setPlatform(platform);
-        setDeparture(departure);
-        setArrival(arrival);
-        setDuration(duration);
-    }
-
-    public String getNumber() {
-        return Number;
-    }
-
-    public void setNumber(String number) {
-        Number = number;
-    }
-
-    public String getTo() {
-        return To;
-    }
-
-    public void setTo(String to) {
+    public HomeConnectionDetail(Location from, Location to, Integer durationTotal, Integer transfers, List<HomeConnection> sections) {
+        From = from;
         To = to;
+        DurationTotal = durationTotal;
+        Transfers = transfers;
+        Sections = sections;
     }
 
-    public List<Stop> getPassList() {
-        return PassList;
-    }
-
-    public void setPassList(List<Stop> passList) {
-        PassList = passList;
-    }
-
-    public String getFrom() {
+    public Location getFrom() {
         return From;
     }
 
-    public void setFrom(String from) {
+    public void setFrom(Location from) {
         From = from;
     }
 
-    public String getPlatform() {
-        return Platform;
+    public Location getTo() {
+        return To;
     }
 
-    public void setPlatform(String plattform) {
-        Platform = plattform;
+    public void setTo(Location to) {
+        To = to;
     }
 
-    public String getDeparture() {
-        DateFormat df = new SimpleDateFormat("HH:mm");
-
-        return df.format(Departure);
+    public List<HomeConnection> getSections() {
+        return Sections;
     }
 
-    public void setDeparture(Date departure) {
-        Departure = departure;
+    public void setSections(List<HomeConnection> sections) {
+        Sections = sections;
     }
 
-    public String getArrival() {
-        return Arrival;
+    public Integer getDurationTotal() {
+        return DurationTotal;
     }
 
-    public void setArrival(String arrival) {
-        Arrival = arrival;
+    public void setDurationTotal(Integer durationTotal) {
+        DurationTotal = durationTotal;
     }
 
-    public Date getDuration() {
-        return Duration;
+    public Integer getTransfer() {
+        return Transfers;
     }
 
-    public void setDuration(Date duration) {
-        Duration = duration;
-    }
-
-    public String getCategory() {
-        return Category;
-    }
-
-    public void setCategory(String category) {
-        Category = category;
+    public void setTransfer(Integer transfer) {
+        Transfers = transfer;
     }
 }

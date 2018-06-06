@@ -20,6 +20,7 @@ import java.util.List;
 import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.helper.TransportOpendataJsonParser;
 import ch.bbcag.findyourway.model.Connection;
+import ch.bbcag.findyourway.model.HomeConnectionDetail;
 
 /**
  * Klasse dient dazu alle Verbindungen zwischen "from" und "to" zu suchen / Logik für View
@@ -72,7 +73,7 @@ public class HomeDetailActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
             response -> {
                 try {
-                    List<Connection> connections = TransportOpendataJsonParser.createConnectionsFromJsonString(response);
+                    List<HomeConnectionDetail> connections = TransportOpendataJsonParser.createDetailHomeConnectionFromJsonString(response);
                     final ConnectionListAdapter connectionListAdapter = new ConnectionListAdapter(getBaseContext(), connections);
                     ListView connectionListView = findViewById(R.id.list);
                     connectionListView.setAdapter(connectionListAdapter);
