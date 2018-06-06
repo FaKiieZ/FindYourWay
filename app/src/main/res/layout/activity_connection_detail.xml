@@ -5,6 +5,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".views.ConnectionDetailActivity">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <TextView
             android:id="@+id/locationName"
             android:layout_width="match_parent"

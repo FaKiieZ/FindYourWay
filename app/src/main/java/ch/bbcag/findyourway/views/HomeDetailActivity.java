@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -30,6 +32,7 @@ import ch.bbcag.findyourway.model.HomeConnectionDetail;
 public class HomeDetailActivity extends AppCompatActivity {
 
     private static final String TRANSPORT_OPENDATA_STATIONBOARD_API_URL = "http://transport.opendata.ch/v1/connections?from=";
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +44,11 @@ public class HomeDetailActivity extends AppCompatActivity {
         String fromName = getIntent().getStringExtra("fromName");
         String toName = getIntent().getStringExtra("toName");
 
-        TextView locationName = (TextView)findViewById(R.id.locationName);
+        TextView locationName = findViewById(R.id.locationName);
         locationName.setText(fromName + " nach " + toName);
 
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         getConnections(from, to);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -82,6 +87,7 @@ public class HomeDetailActivity extends AppCompatActivity {
                     List<HomeConnectionDetail> homeConnectionDetails = TransportOpendataJsonParser.createDetailHomeConnectionFromJsonString(response);
                     final HomeConnectionDetailListAdapter homeConnectionDetailListAdapter = new HomeConnectionDetailListAdapter(getBaseContext(), homeConnectionDetails);
                     ListView connectionListView = findViewById(R.id.list);
+                    progressBar.setVisibility(View.GONE);
                     connectionListView.setAdapter(homeConnectionDetailListAdapter);
                     AdapterView.OnItemClickListener mListClickListener = (parent, view, position, id) -> {
                         HomeConnectionDetail selected = (HomeConnectionDetail)parent.getItemAtPosition(position);
