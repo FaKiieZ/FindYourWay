@@ -3,6 +3,7 @@ package ch.bbcag.findyourway.views;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,13 +44,18 @@ public class ConnectionListAdapter extends ArrayAdapter<Connection> {
         ImageView icon = convertView.findViewById(R.id.imageViewDelay);
         TextView number = convertView.findViewById(R.id.textViewNumber);
         TextView destination = convertView.findViewById(R.id.textViewDestination);
+        TextView departure = convertView.findViewById(R.id.textViewDeparture);
         TextView time = convertView.findViewById(R.id.textViewTime);
         TextView plattformNumber = convertView.findViewById(R.id.textViewPlattformNumber);
         TextView plattform = convertView.findViewById(R.id.textViewPlattform);
         // set values
         if (connection.getDelay() != 0 && connection.getDelay() != null) {
             icon.setVisibility(View.VISIBLE);
+        }else{
+            icon.setVisibility(View.GONE);
         }
+
+        departure.setVisibility(View.GONE);
 
         String[] prefixes = {"RE", "R", "ICE", "EC", "IC"};
         boolean foundPrefix = false;

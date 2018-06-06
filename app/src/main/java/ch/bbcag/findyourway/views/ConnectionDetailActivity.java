@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import org.json.JSONException;
 import ch.bbcag.findyourway.R;
@@ -24,10 +25,13 @@ public class ConnectionDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection_detail);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
         String JsonConnection = getIntent().getStringExtra("connection");
         try {
+            progressBar.setVisibility(View.VISIBLE);
             ch.bbcag.findyourway.model.ConnectionDetail connection = TransportOpendataJsonParser.createConnectionDetailFromJsonString(JsonConnection);
             CreatePlan(connection);
+            progressBar.setVisibility(View.GONE);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -29,10 +31,14 @@ import ch.bbcag.findyourway.model.Connection;
  */
 public class LocationDetailActivity extends AppCompatActivity {
     private static final String TRANSPORT_OPENDATA_STATIONBOARD_API_URL = "http://transport.opendata.ch/v1/stationboard?station=";
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_station_detail);
+        setContentView(R.layout.activity_location_detail);
+
+        progressBar = findViewById(R.id.progressBar);
 
         int id = getIntent().getIntExtra("locationId", 0);
         String name = getIntent().getStringExtra("locationName");
@@ -43,6 +49,7 @@ public class LocationDetailActivity extends AppCompatActivity {
         TextView locationName = findViewById(R.id.locationName);
         locationName.setText(name);
 
+        progressBar.setVisibility(View.VISIBLE);
         getConnections(id, 20);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -105,6 +112,7 @@ public class LocationDetailActivity extends AppCompatActivity {
                         final ConnectionListAdapter connectionAdapter = new ConnectionListAdapter(getBaseContext(), connections);
                         //connectionAdapter.addAll(connections);
                         ListView connectionList = findViewById(R.id.list);
+                        progressBar.setVisibility(View.GONE);
                         connectionList.setAdapter(connectionAdapter);
                         AdapterView.OnItemClickListener mListClickedHandler = (parent, view, position, id1) -> {
                             Intent intent = new Intent(getBaseContext(), ConnectionDetailActivity.class);
