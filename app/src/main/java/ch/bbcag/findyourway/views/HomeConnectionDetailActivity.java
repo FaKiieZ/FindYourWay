@@ -104,7 +104,7 @@ public class HomeConnectionDetailActivity extends AppCompatActivity {
         return line.getId();
     }
 
-    private void CreateStops(int id, int count, HomeConnectionDetail connection){
+    private void CreateStops(int id, int count, HomeConnectionDetail connection, int parentId){
         //TODO create stops
     }
 
