@@ -164,7 +164,7 @@ public class TabSearchFragment extends android.support.v4.app.Fragment implement
                             StringRequest stringRequest1 = new StringRequest(Request.Method.GET, url1,
                                     response1 -> {
                                         try {
-                                            List < Connection > connections = TransportOpendataJsonParser.CreateConnectionsFromJsonString(response1);
+                                            List < Connection > connections = TransportOpendataJsonParser.createConnectionsFromJsonString(response1);
                                             if (connections.toArray().length > 0) {
                                                 Connection connection = (Connection) connections.toArray()[0];
                                                 SetLocationType(connection.getCategory(), location1);

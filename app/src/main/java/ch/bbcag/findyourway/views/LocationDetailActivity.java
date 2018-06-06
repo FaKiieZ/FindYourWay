@@ -101,7 +101,7 @@ public class LocationDetailActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
-                        List < Connection > connections = TransportOpendataJsonParser.CreateConnectionsFromJsonString(response);
+                        List < Connection > connections = TransportOpendataJsonParser.createConnectionsFromJsonString(response);
                         final ConnectionListAdapter connectionAdapter = new ConnectionListAdapter(getBaseContext(), connections);
                         //connectionAdapter.addAll(connections);
                         ListView connectionList = findViewById(R.id.list);

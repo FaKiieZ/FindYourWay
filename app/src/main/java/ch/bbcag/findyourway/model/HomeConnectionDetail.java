@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class ConnectionDetail {
+public class HomeConnectionDetail {
     private String Category;
     private String Number;
     private String To;
@@ -14,9 +14,10 @@ public class ConnectionDetail {
     private String Platform;
     private Date Departure;
     private String Arrival;
+    private Date Duration;
 
 
-    public ConnectionDetail(String category, String number, String to, List<Stop> passList, String from, String platform, Date departure, String arrival){
+    public HomeConnectionDetail(String category, String number, String to, List<Stop> passList, String from, String platform, Date departure, String arrival, Date duration){
         setCategory(category);
         setNumber(number);
         setTo(to);
@@ -25,6 +26,7 @@ public class ConnectionDetail {
         setPlatform(platform);
         setDeparture(departure);
         setArrival(arrival);
+        setDuration(duration);
     }
 
     public String getNumber() {
@@ -83,6 +85,14 @@ public class ConnectionDetail {
 
     public void setArrival(String arrival) {
         Arrival = arrival;
+    }
+
+    public Date getDuration() {
+        return Duration;
+    }
+
+    public void setDuration(Date duration) {
+        Duration = duration;
     }
 
     public String getCategory() {

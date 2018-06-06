@@ -1,7 +1,6 @@
 package ch.bbcag.findyourway.views;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -73,7 +72,7 @@ public class HomeDetailActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
             response -> {
                 try {
-                    List<Connection> connections = TransportOpendataJsonParser.CreateConnectionsFromJsonString(response);
+                    List<Connection> connections = TransportOpendataJsonParser.createConnectionsFromJsonString(response);
                     final ConnectionListAdapter connectionListAdapter = new ConnectionListAdapter(getBaseContext(), connections);
                     ListView connectionListView = findViewById(R.id.list);
                     connectionListView.setAdapter(connectionListAdapter);
