@@ -43,7 +43,7 @@ public class HomeConnectionDetail {
     }
 
     public String getDurationTotal() {
-        return "Dauer: " + DurationTotal.substring(3).substring(0, 5) + "h";
+        return DurationTotal.substring(3).substring(0, 5) + "h";
     }
 
     public void setDurationTotal(String durationTotal) {
