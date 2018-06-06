@@ -103,14 +103,19 @@ public class LocationDetailActivity extends AppCompatActivity {
      */
     public void getConnections(int id, int limit) {
         String url = TRANSPORT_OPENDATA_STATIONBOARD_API_URL + id + "&limit=" + limit;
-        //final ArrayAdapter<Connection> connectionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
-                        List < Connection > connections = TransportOpendataJsonParser.createConnectionsFromJsonString(response);
+                        List<Connection> connections = TransportOpendataJsonParser.createConnectionsFromJsonString(response);
+                        TextView noConnections = findViewById(R.id.noConnections);
+                        if (connections.size() == 0){
+                            noConnections.setVisibility(View.VISIBLE);
+                        }else{
+                            noConnections.setVisibility(View.GONE);
+                        }
+
                         final ConnectionListAdapter connectionAdapter = new ConnectionListAdapter(getBaseContext(), connections);
-                        //connectionAdapter.addAll(connections);
                         ListView connectionList = findViewById(R.id.list);
                         progressBar.setVisibility(View.GONE);
                         connectionList.setAdapter(connectionAdapter);
@@ -122,7 +127,6 @@ public class LocationDetailActivity extends AppCompatActivity {
                             startActivity(intent);
                         };
                         connectionList.setOnItemClickListener(mListClickedHandler);
-                        //progressBar.setVisibility(View.GONE);
                     } catch (JSONException e) {
                         generateAlertDialog();
                     }

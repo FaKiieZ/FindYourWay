@@ -83,6 +83,13 @@ public class HomeDetailActivity extends AppCompatActivity {
             response -> {
                 try {
                     List<HomeConnectionDetail> homeConnectionDetails = TransportOpendataJsonParser.createDetailHomeConnectionFromJsonString(response);
+                    TextView noConnections = findViewById(R.id.noConnections);
+                    if (homeConnectionDetails.size() == 0){
+                        noConnections.setVisibility(View.VISIBLE);
+                    }else{
+                        noConnections.setVisibility(View.GONE);
+                    }
+
                     final HomeConnectionDetailListAdapter homeConnectionDetailListAdapter = new HomeConnectionDetailListAdapter(getBaseContext(), homeConnectionDetails);
                     ListView connectionListView = findViewById(R.id.list);
                     progressBar.setVisibility(View.GONE);
