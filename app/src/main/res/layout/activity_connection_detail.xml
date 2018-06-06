@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".views.ConnectionDetail">
+        tools:context=".views.ConnectionDetailActivity">
         <TextView
             android:id="@+id/locationName"
             android:layout_width="match_parent"
@@ -38,7 +38,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:id="@+id/mainConstraint"
-            tools:context=".views.ConnectionDetail"
+            tools:context=".views.ConnectionDetailActivity"
             app:layout_constraintTop_toTopOf="@id/view">
 
             <ImageView

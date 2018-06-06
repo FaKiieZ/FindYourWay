@@ -18,7 +18,7 @@ import ch.bbcag.findyourway.model.Stop;
 /***
  * Diese Klasse beinhaltet die Logik zum Anzeigen der Detailansicht, einer Verbindung.
  */
-public class ConnectionDetail extends AppCompatActivity {
+public class ConnectionDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class ConnectionDetail extends AppCompatActivity {
 
     /***
      * Diese Funktion erstellt einen Plan mit allen Zwischenhalte einer Verbindung.
-     * @param connectionDetail ConnectionDetail von dem ein Plan erstellt werden soll.
+     * @param connectionDetail ConnectionDetailActivity von dem ein Plan erstellt werden soll.
      */
     private void CreatePlan(ch.bbcag.findyourway.model.ConnectionDetail connectionDetail){
         // ConstraintLayout um Constraints aus dem Code heraus zu setzten.
