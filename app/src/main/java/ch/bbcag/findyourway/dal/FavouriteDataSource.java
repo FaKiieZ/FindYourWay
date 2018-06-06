@@ -13,8 +13,6 @@ import ch.bbcag.findyourway.model.Location;
  * Diese Klasse dient zum Arbeiten mit der SQLite Datenbank
  */
 public class FavouriteDataSource {
-
-    private static final String LOG_TAG = FavouriteDataSource.class.getSimpleName();
     private String[] columns = {
             FavouriteDbHelper.COLUMN_TYP,
             FavouriteDbHelper.COLUMN_LOCATIONID,
@@ -48,7 +46,7 @@ public class FavouriteDataSource {
         values.put(FavouriteDbHelper.COLUMN_TYP, type);
         values.put(FavouriteDbHelper.COLUMN_NAME, name);
 
-        long insertId = database.insert(dbHelper.TABLE_NAME, null, values);
+        database.insert(dbHelper.TABLE_NAME, null, values);
     }
 
     public void deleteFavouriteLocation(Integer id) {
@@ -81,7 +79,6 @@ public class FavouriteDataSource {
      */
     public List < Location > getAllFavouriteLocations() {
         List < Location > locationList = new ArrayList < > ();
-        //dbHelper.dropDatabase();
         Cursor cursor = database.query(dbHelper.TABLE_NAME, columns, null, null, null, null, null);
         cursor.moveToFirst();
         Location location;

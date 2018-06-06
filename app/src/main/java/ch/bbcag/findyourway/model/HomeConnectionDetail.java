@@ -1,6 +1,5 @@
 package ch.bbcag.findyourway.model;
 
-import java.util.Date;
 import java.util.List;
 
 public class HomeConnectionDetail {

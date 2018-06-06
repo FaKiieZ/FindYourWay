@@ -13,8 +13,6 @@ import ch.bbcag.findyourway.model.Location;
  * Diese Klasse dient zum Arbeiten mit der SQLite Datenbank
  */
 public class HomeDataSource {
-
-    private static final String LOG_TAG = HomeDataSource.class.getSimpleName();
     private String[] columns = {
             HomeDbHelper.COLUMN_LOCATIONID,
             HomeDbHelper.COLUMN_NAME
@@ -45,7 +43,7 @@ public class HomeDataSource {
         values.put(dbHelper.COLUMN_LOCATIONID, locationId);
         values.put(dbHelper.COLUMN_NAME, name);
 
-        long insertId = database.insert(dbHelper.TABLE_NAME, null, values);
+        database.insert(dbHelper.TABLE_NAME, null, values);
     }
 
     public void deleteAll() {

@@ -1,6 +1,5 @@
 package ch.bbcag.findyourway.model;
 
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

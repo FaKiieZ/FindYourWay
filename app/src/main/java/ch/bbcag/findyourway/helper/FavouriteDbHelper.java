@@ -47,8 +47,4 @@ public class FavouriteDbHelper extends SQLiteOpenHelper{
         db.execSQL(SQL_DROP);
         onCreate(db);
     }
-
-    public void dropDatabase(){
-        context.deleteDatabase(DB_NAME);
-    }
 }
