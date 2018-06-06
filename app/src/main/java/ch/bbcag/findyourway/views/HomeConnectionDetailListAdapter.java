@@ -15,6 +15,9 @@ import java.util.List;
 import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.model.HomeConnectionDetail;
 
+/**
+ * ListAdapter für zum Darstellen der Verbindungen (einer Route)
+ */
 public class HomeConnectionDetailListAdapter extends ArrayAdapter<HomeConnectionDetail> {
 
     public HomeConnectionDetailListAdapter(Context context, List<HomeConnectionDetail> connections){
@@ -41,19 +44,22 @@ public class HomeConnectionDetailListAdapter extends ArrayAdapter<HomeConnection
         // set values
         String[] prefixes = {"RE", "R", "ICE", "EC", "IC"};
         boolean foundPrefix = false;
-        for (String prefix : prefixes){
-            if(connection.getSections().get(0).getNumber().startsWith(prefix)){
-                foundPrefix = true;
-                break;
-            }
-        }
+        String numberText = "Wert nicht vorhanden";
+        if(connection.getSections() != null){
 
-        String numberText;
-        if(foundPrefix){
-            numberText = connection.getSections().get(0).getNumber();
-        }
-        else {
-            numberText = connection.getSections().get(0).getCategory() + connection.getSections().get(0).getNumber();
+            for (String prefix : prefixes){
+                if(connection.getSections().get(0).getNumber().startsWith(prefix)){
+                    foundPrefix = true;
+                    break;
+                }
+            }
+
+            if(foundPrefix){
+                numberText = connection.getSections().get(0).getNumber();
+            }
+            else {
+                numberText = connection.getSections().get(0).getCategory() + connection.getSections().get(0).getNumber();
+            }
         }
         number.setText(numberText);
 
