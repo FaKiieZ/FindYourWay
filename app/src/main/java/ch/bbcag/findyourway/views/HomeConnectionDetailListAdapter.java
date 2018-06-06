@@ -9,34 +9,28 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.util.List;
 
 import ch.bbcag.findyourway.R;
-import ch.bbcag.findyourway.model.Connection;
 import ch.bbcag.findyourway.model.HomeConnectionDetail;
 
 /**
- * Custom ArrayAdapter um Connections in einem ListView anzeigen zu können
+ * ListAdapter für zum Darstellen der Verbindungen (einer Route)
  */
-public class ConnectionListAdapter extends ArrayAdapter<Connection> {
+public class HomeConnectionDetailListAdapter extends ArrayAdapter<HomeConnectionDetail> {
 
-    public ConnectionListAdapter(Context context, List<Connection> connections) {
+    public HomeConnectionDetailListAdapter(Context context, List<HomeConnectionDetail> connections){
         super(context, 0, connections);
     }
 
-    /**
-     * Wendet das Layout auf den ListView an
-     * @param position im Array
-     * @param convertView View welcher angepasst werden soll
-     * @param parent Parent-Element
-     * @return Angepasster View
-     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Connection connection = getItem(position);
-        // check view
-        if (convertView == null) {
+        HomeConnectionDetail connection = getItem(position);
+
+        // kontrolliere View
+        if(convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.connection_listitem, parent, false);
         }
         // Lookup view
@@ -46,38 +40,39 @@ public class ConnectionListAdapter extends ArrayAdapter<Connection> {
         TextView time = convertView.findViewById(R.id.textViewTime);
         TextView plattformNumber = convertView.findViewById(R.id.textViewPlattformNumber);
         TextView plattform = convertView.findViewById(R.id.textViewPlattform);
-        // set values
-        if (connection.getDelay() != 0 && connection.getDelay() != null) {
-            icon.setVisibility(View.VISIBLE);
-        }
 
+        // set values
         String[] prefixes = {"RE", "R", "ICE", "EC", "IC"};
         boolean foundPrefix = false;
-        for (String prefix : prefixes){
-            if(connection.getNumber().startsWith(prefix)){
-                foundPrefix = true;
-                break;
+        String numberText = "Wert nicht vorhanden";
+        if(connection.getSections() != null){
+
+            for (String prefix : prefixes){
+                if(connection.getSections().get(0).getNumber().startsWith(prefix)){
+                    foundPrefix = true;
+                    break;
+                }
+            }
+
+            if(foundPrefix){
+                numberText = connection.getSections().get(0).getNumber();
+            }
+            else {
+                numberText = connection.getSections().get(0).getCategory() + connection.getSections().get(0).getNumber();
             }
         }
-
-        String numberText;
-        if(foundPrefix){
-            numberText = connection.getNumber();
-        }
-        else {
-            numberText = connection.getCategory() + connection.getNumber();
-        }
-
         number.setText(numberText);
+
         String destinationText = "Richtung " + connection.getTo().getName();
         destination.setText(destinationText);
-        time.setText(connection.getDeparture());
-        String plattformText = connection.getPlatform();
-        if (plattformText != "null") {
+        time.setText(connection.getDurationTotal());
+        String platformText = connection.getFrom().getPlatform();
+        if (platformText != "null") {
             plattformNumber.setText(connection.getPlatform());
             plattform.setText(R.string.plattform);
         }
 
         return convertView;
+
     }
 }
