@@ -67,7 +67,25 @@ public class ConnectionDetail extends AppCompatActivity {
         TextView from = (TextView)findViewById(R.id.textViewFrom);
         TextView departure = (TextView)findViewById(R.id.textViewDeparture);
         TextView locationName = (TextView)findViewById(R.id.locationName);
-        locationName.setText(connectionDetail.getFrom() + " nach " + connectionDetail.getTo());
+
+        String[] prefixes = {"RE", "R", "ICE", "EC", "IC"};
+        boolean foundPrefix = false;
+        for (String prefix : prefixes){
+            if(connectionDetail.getNumber().startsWith(prefix)){
+                foundPrefix = true;
+                break;
+            }
+        }
+
+        String numberText;
+        if(foundPrefix){
+            numberText = connectionDetail.getNumber();
+        }
+        else {
+            numberText = connectionDetail.getCategory() + connectionDetail.getNumber();
+        }
+
+        locationName.setText(numberText+ " " +  connectionDetail.getFrom() + " nach " + connectionDetail.getTo());
         View line = (View)findViewById(R.id.line);
         line.getLayoutParams().height = 0;
 
