@@ -1,9 +1,12 @@
 package ch.bbcag.findyourway.views;
 
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.helper.FavouriteDbHelper;
@@ -14,6 +17,10 @@ import ch.bbcag.findyourway.helper.HomeDbHelper;
  */
 public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
+
+    private TabSearchFragment tabSearchFragment = new TabSearchFragment();
+    private TabFavouriteFragment tabFavouriteFragment = new TabFavouriteFragment();
+    private TabHomeFragment tabHomeFragment = new TabHomeFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +44,32 @@ public class MainActivity extends AppCompatActivity {
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
         // add the tabs
         // title is empty, because icons are used
-        adapter.addFragmnet(new TabSearchFragment(), "");
-        adapter.addFragmnet(new TabFavouriteFragment(), "");
-        adapter.addFragmnet(new TabHomeFragment(), "");
+        adapter.addFragmnet(tabSearchFragment, "");
+        adapter.addFragmnet(tabFavouriteFragment, "");
+        adapter.addFragmnet(tabHomeFragment, "");
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        tabSearchFragment.locationPermissionGranted = false;
+        switch (requestCode) {
+            case TabSearchFragment.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:
+            {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    tabSearchFragment.locationPermissionGranted = true;
+                    tabSearchFragment.updateLocationUI();
+                    tabSearchFragment.getDeviceLocation(true);
+                }
+
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED){
+                    Toast.makeText(this, "FindYourWay braucht die Berechtigung für den Standort des Gerätes!", Toast.LENGTH_LONG).show();
+                    finishAndRemoveTask();
+                }
+            }
+        }
     }
 }

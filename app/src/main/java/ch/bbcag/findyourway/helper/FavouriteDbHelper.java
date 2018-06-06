@@ -11,7 +11,7 @@ import android.util.Log;
 public class FavouriteDbHelper extends SQLiteOpenHelper{
     // Instanzvariablen
     private static final String DB_NAME = "favourite_location.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     public static final String TABLE_NAME = "favourite_location";
     private static final String COLUMN_ID = "id";
     public static final String COLUMN_TYP = "type";
@@ -25,6 +25,8 @@ public class FavouriteDbHelper extends SQLiteOpenHelper{
                     COLUMN_TYP + " INTEGER NOT NULL, " +
                     COLUMN_LOCATIONID + " INTEGER NOT NULL, "+
                     COLUMN_NAME + " TEXT NOT NULL);";
+    private static final String SQL_DROP =
+            "DROP TABLE IF EXISTS " + TABLE_NAME;
 
     public FavouriteDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -42,7 +44,8 @@ public class FavouriteDbHelper extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL(SQL_DROP);
+        onCreate(db);
     }
 
     public void dropDatabase(){

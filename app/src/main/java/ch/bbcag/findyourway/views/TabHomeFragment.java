@@ -4,14 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -22,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,6 +40,7 @@ import java.util.List;
 import ch.bbcag.findyourway.R;
 import ch.bbcag.findyourway.dal.HomeDataSource;
 import ch.bbcag.findyourway.helper.TransportOpendataJsonParser;
+import ch.bbcag.findyourway.model.Connection;
 import ch.bbcag.findyourway.model.Location;
 
 /**
@@ -50,14 +48,12 @@ import ch.bbcag.findyourway.model.Location;
  */
 public class TabHomeFragment extends android.support.v4.app.Fragment implements OnMapReadyCallback {
     private static final String TRANSPORT_OPENDATA_LOCATIONS_API_URL = "http://transport.opendata.ch/v1/locations";
-    private static final String TRANSPORT_OPENDATA_CONNECTIONS_API_URL = "http://transport.opendata.ch/v1/connections";
+    private static final String TRANSPORT_OPENDATA_STATIONBOARD_API_URL = "http://transport.opendata.ch/v1/stationboard?limit=1&station=";
 
-    private GoogleMap mGoogleMap;
-    protected MapView mMapView;
-    private View mView;
+    private GoogleMap googleMap;
+    protected MapView mapView;
+    private View view;
 
-    private boolean mLocationPermissionGranted;
-    private final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 111;
     private LocationManager locationManager;
 
     private android.location.Location lastLocation;
@@ -74,14 +70,12 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_home, container, false);
+        view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        getLocationPermission();
-
-        autoCompleteTextView = mView.findViewById(R.id.locationDropdown);
+        autoCompleteTextView = view.findViewById(R.id.locationDropdown);
         setHome();
 
-        return mView;
+        return view;
     }
 
     private void setupLocationDropdown() {
@@ -121,13 +115,18 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
 
     private AdapterView.OnItemClickListener createOnItemClickListenerForLocation() {
         return (parent, view, position, id) -> {
-            Intent intent = new Intent(getContext(), HomeDetailActivity.class);
-            Location selected = (Location)parent.getItemAtPosition(position);
-            intent.putExtra("fromId", selected.getId());
-            intent.putExtra("toId", to.getId());
-            intent.putExtra("fromName", selected.getName());
-            intent.putExtra("toName", to.getName());
-            startActivity(intent);
+            if (to == null) {
+                Toast.makeText(getContext(), "Es muss zuerst ein Ziel ausgewählt werden!", Toast.LENGTH_LONG).show();
+            }
+            else {
+                Intent intent = new Intent(getContext(), HomeDetailActivity.class);
+                Location selected = (Location) parent.getItemAtPosition(position);
+                intent.putExtra("fromId", selected.getId());
+                intent.putExtra("toId", to.getId());
+                intent.putExtra("fromName", selected.getName());
+                intent.putExtra("toName", to.getName());
+                startActivity(intent);
+            }
         };
     }
 
@@ -175,7 +174,6 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
         }
     }
 
-    // TODO: Change this from location to connection
     private void getConnectionsByCoordinates(android.location.Location location) {
         if (getContext() == null || getView() == null) {
             return;
@@ -183,6 +181,7 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
 
         Context context = getContext();
         View view = getView();
+        ListView locationList = view.findViewById(R.id.locationList);
 
         String url = TRANSPORT_OPENDATA_LOCATIONS_API_URL + "?x=" + location.getLongitude() + "&y=" + location.getLatitude();
         final RequestQueue queue = Volley.newRequestQueue(context);
@@ -190,15 +189,30 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
                 response -> {
                     try {
                         final List<Location> locations = TransportOpendataJsonParser.createLocationsFromJsonString(response);
-                        mGoogleMap.clear();
+                        googleMap.clear();
                         for (final Location location1: locations) {
-                            // TODO: Change this no foreach only on click
-                            //AddMarkerOnMap(location1);$
-                            locationListAdapter = new LocationListAdapter(context, locations);
-                            ListView locationList = view.findViewById(R.id.locationList);
-                            locationList.setAdapter(locationListAdapter);
-                            locationListAdapter.notifyDataSetChanged();
-                            locationList.setOnItemClickListener(createOnItemClickListenerForLocation());
+                            addMarkerOnMap(location1);
+                            String url1 = TRANSPORT_OPENDATA_STATIONBOARD_API_URL + location1.getName();
+                            StringRequest stringRequest1 = new StringRequest(Request.Method.GET, url1,
+                                    response1 -> {
+                                        try {
+                                            List<Connection> connections = TransportOpendataJsonParser.createConnectionsFromJsonString(response1);
+                                            if (connections.toArray().length > 0) {
+                                                Connection connection = (Connection) connections.toArray()[0];
+                                                setLocationType(connection.getCategory(), location1);
+                                            } else {
+                                                locations.remove(location1);
+                                                locationListAdapter.notifyDataSetChanged();
+                                            }
+                                            locationListAdapter = new LocationListAdapter(context, locations);
+                                            locationList.setAdapter(locationListAdapter);
+                                            locationListAdapter.notifyDataSetChanged();
+                                            locationList.setOnItemClickListener(createOnItemClickListenerForLocation());
+                                        } catch (JSONException e) {
+                                            generateAlertDialog();
+                                        }
+                                    }, error -> generateAlertDialog());
+                            queue.add(stringRequest1);
                         }
                     } catch (JSONException e) {
                         generateAlertDialog();
@@ -207,8 +221,8 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
         queue.add(stringRequest);
     }
 
-    private void AddMarkerOnMap(Location location) {
-        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.getCoordinates().getX(), location.getCoordinates().getY())).title(location.getName()));
+    private void addMarkerOnMap(Location location) {
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(location.getCoordinates().getX(), location.getCoordinates().getY())).title(location.getName()));
     }
 
     private void generateAlertDialog() {
@@ -228,11 +242,11 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mMapView = mView.findViewById(R.id.mapView);
-        if (mMapView != null) {
-            mMapView.onCreate(null);
-            mMapView.onResume();
-            mMapView.getMapAsync(this);
+        mapView = this.view.findViewById(R.id.mapView);
+        if (mapView != null) {
+            mapView.onCreate(null);
+            mapView.onResume();
+            mapView.getMapAsync(this);
         }
 
         setupLocationDropdown();
@@ -247,7 +261,7 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
 
         MapsInitializer.initialize(getContext());
 
-        mGoogleMap = googleMap;
+        this.googleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         updateLocationUI();
@@ -255,56 +269,13 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
         getDeviceLocation(true);
     }
 
-    private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
-        if (ContextCompat.checkSelfPermission(getContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mLocationPermissionGranted = true;
-        } else {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[] {
-                            android.Manifest.permission.ACCESS_FINE_LOCATION
-                    },
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
-        mLocationPermissionGranted = false;
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:
-            {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationPermissionGranted = true;
-                }
-            }
-        }
-
-        updateLocationUI();
-    }
-
     private void updateLocationUI() {
-        if (mGoogleMap == null) {
+        if (googleMap == null) {
             return;
         }
         try {
-            if (mLocationPermissionGranted) {
-                mGoogleMap.setMyLocationEnabled(true);
-                mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
-            } else {
-                mGoogleMap.setMyLocationEnabled(false);
-                mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                lastLocation = null;
-                getLocationPermission();
-            }
+            googleMap.setMyLocationEnabled(true);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
@@ -320,37 +291,35 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
          * cases when a location is not available.
          */
         try {
-            if (mLocationPermissionGranted) {
-                if (locationManager != null) {
-                    android.location.Location passiveLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-                    if (passiveLocation != null) {
-                        android.location.Location loc = passiveLocation;
-                        lastLocation = loc;
-                        if (setCamera) {
-                            setCameraOnMap(lastLocation, 16);
-                        }
-                    } else {
-                        lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);;
-                        if (setCamera) {
-                            setCameraOnMap(lastLocation, 16);
-                        }
+            if (locationManager != null) {
+                android.location.Location passiveLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+                if (passiveLocation != null) {
+                    android.location.Location loc = passiveLocation;
+                    lastLocation = loc;
+                    if (setCamera) {
+                        setCameraOnMap(lastLocation, 16);
                     }
-
-                    getConnectionsByCoordinates(lastLocation);
                 } else {
-                    // standard location
-                    lastLocation = null;
+                    lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);;
+                    if (setCamera) {
+                        setCameraOnMap(lastLocation, 16);
+                    }
                 }
 
-                firstTimeCallingLocation = false;
+                getConnectionsByCoordinates(lastLocation);
+            } else {
+                // standard location
+                lastLocation = null;
             }
+
+            firstTimeCallingLocation = false;
         } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
 
     private void setCameraOnMap(android.location.Location location, int zoom) {
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(location.getLatitude(),
                         location.getLongitude()), zoom));
     }
@@ -385,9 +354,7 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
             }
         };
 
-        if (mLocationPermissionGranted) {
-            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 30000, 10, locationListener);
-        }
+        locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 30000, 10, locationListener);
     }
 
     @Override
@@ -412,12 +379,14 @@ public class TabHomeFragment extends android.support.v4.app.Fragment implements 
         }
     }
 
+
+
     /**
      * Setzt den Type der Location anhand seines Präfix
      * @param str Stations Name
      * @param location Location auf dem der Type gesetzt werden soll
      */
-    private void SetLocationType(String str, Location location) {
+    private void setLocationType(String str, Location location) {
         String[] trains = {
                 "I",
                 "R",

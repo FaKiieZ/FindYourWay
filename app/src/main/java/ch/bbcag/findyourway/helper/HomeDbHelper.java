@@ -23,6 +23,8 @@ public class HomeDbHelper extends SQLiteOpenHelper{
                     "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_LOCATIONID + " INTEGER NOT NULL, "+
                     COLUMN_NAME + " TEXT NOT NULL);";
+    private static final String SQL_DROP =
+            "DROP TABLE IF EXISTS " + TABLE_NAME;
 
     public HomeDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -40,7 +42,8 @@ public class HomeDbHelper extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL(SQL_DROP);
+        onCreate(db);
     }
 
     public void dropDatabase(){
