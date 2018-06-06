@@ -208,9 +208,9 @@ public class TransportOpendataJsonParser {
     }
 
     /**
-     * Erstellt ein ConnectionDetail-Objekt
+     * Erstellt ein ConnectionDetailActivity-Objekt
      * @param connectionString JSON String einer Connection
-     * @return ConnectionDetail-Objekt
+     * @return ConnectionDetailActivity-Objekt
      * @throws JSONException
      */
     public static ConnectionDetail createConnectionDetailFromJsonString(String connectionString) throws JSONException {

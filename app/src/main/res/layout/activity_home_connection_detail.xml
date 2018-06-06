@@ -5,19 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".views.HomeConnectionDetailActivity">
+
     <TextView
         android:id="@+id/locationName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="21dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textAppearance="@style/TextAppearance.Widget.AppCompat.ExpandedMenu.Item"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:ellipsize="end"
-        android:maxLines="1"
-        tools:text="Bern, Bahnhof" />
+        tools:text="S44 Bern, Bahnhof nach Thun" />
 
     <View
         android:id="@+id/view"
@@ -30,7 +31,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
         android:paddingBottom="10dp">
 
         <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -39,7 +40,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:id="@+id/mainConstraint"
-            tools:context=".views.ConnectionDetail"
+            tools:context=".views.ConnectionDetailActivity"
             app:layout_constraintTop_toTopOf="@id/view">
 
             <ImageView
@@ -117,4 +118,32 @@
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Dauer:  0:40"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="65dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="65dp"
+        tools:text="3" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/textView2"
+        tools:layout_editor_absoluteY="65dp"
+        tools:text="Umsteigen:" />
 </android.support.constraint.ConstraintLayout>

@@ -59,8 +59,8 @@ public class FavouriteDataSource {
 
     /**
      * Liest mit Hilfe des Cursor-Objektes die Datenbankabfrage
-     * @param cursor
-     * @return
+     * @param cursor Objekt mir aktueller Position
+     * @return Location an der Cursorposition
      */
     private Location cursorToFavouriteLocation(Cursor cursor) {
         int _locationId = cursor.getColumnIndex(dbHelper.COLUMN_LOCATIONID);
@@ -81,7 +81,6 @@ public class FavouriteDataSource {
      */
     public List < Location > getAllFavouriteLocations() {
         List < Location > locationList = new ArrayList < > ();
-
         Cursor cursor = database.query(dbHelper.TABLE_NAME, columns, null, null, null, null, null);
         cursor.moveToFirst();
         Location location;

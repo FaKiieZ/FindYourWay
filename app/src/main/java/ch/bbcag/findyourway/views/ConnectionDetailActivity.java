@@ -18,7 +18,7 @@ import ch.bbcag.findyourway.model.Stop;
 /***
  * Diese Klasse beinhaltet die Logik zum Anzeigen der Detailansicht, einer Verbindung.
  */
-public class ConnectionDetail extends AppCompatActivity {
+public class ConnectionDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class ConnectionDetail extends AppCompatActivity {
 
     /***
      * Diese Funktion erstellt einen Plan mit allen Zwischenhalte einer Verbindung.
-     * @param connectionDetail ConnectionDetail von dem ein Plan erstellt werden soll.
+     * @param connectionDetail ConnectionDetailActivity von dem ein Plan erstellt werden soll.
      */
     private void CreatePlan(ch.bbcag.findyourway.model.ConnectionDetail connectionDetail){
         // ConstraintLayout um Constraints aus dem Code heraus zu setzten.
@@ -67,7 +67,25 @@ public class ConnectionDetail extends AppCompatActivity {
         TextView from = (TextView)findViewById(R.id.textViewFrom);
         TextView departure = (TextView)findViewById(R.id.textViewDeparture);
         TextView locationName = (TextView)findViewById(R.id.locationName);
-        locationName.setText(connectionDetail.getFrom() + " nach " + connectionDetail.getTo());
+
+        String[] prefixes = {"RE", "R", "ICE", "EC", "IC"};
+        boolean foundPrefix = false;
+        for (String prefix : prefixes){
+            if(connectionDetail.getNumber().startsWith(prefix)){
+                foundPrefix = true;
+                break;
+            }
+        }
+
+        String numberText;
+        if(foundPrefix){
+            numberText = connectionDetail.getNumber();
+        }
+        else {
+            numberText = connectionDetail.getCategory() + connectionDetail.getNumber();
+        }
+
+        locationName.setText(numberText+ " " +  connectionDetail.getFrom() + " nach " + connectionDetail.getTo());
         View line = (View)findViewById(R.id.line);
         line.getLayoutParams().height = 0;
 

@@ -107,7 +107,7 @@ public class LocationDetailActivity extends AppCompatActivity {
                         ListView connectionList = findViewById(R.id.list);
                         connectionList.setAdapter(connectionAdapter);
                         AdapterView.OnItemClickListener mListClickedHandler = (parent, view, position, id1) -> {
-                            Intent intent = new Intent(getBaseContext(), ConnectionDetail.class);
+                            Intent intent = new Intent(getBaseContext(), ConnectionDetailActivity.class);
                             Connection selected = (Connection) parent.getItemAtPosition(position);
                             intent.putExtra("connection", selected.getJsonString());
                             intent.putExtra("stationId", selected.getFrom().getId());

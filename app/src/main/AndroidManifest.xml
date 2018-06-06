@@ -33,7 +33,7 @@
             android:value="AIzaSyD0IqJlPkU8bXIMhZzsQqV2f129iR5fGMM" />
 
         <activity android:name=".views.LocationDetailActivity" />
-        <activity android:name=".views.ConnectionDetail" />
+        <activity android:name=".views.ConnectionDetailActivity" />
         <activity android:name=".views.HomeDetailActivity" />
         <activity android:name=".views.HomeConnectionDetailActivity"></activity>
     </application>
