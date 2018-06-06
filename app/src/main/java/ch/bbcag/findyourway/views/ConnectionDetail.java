@@ -26,7 +26,7 @@ public class ConnectionDetail extends AppCompatActivity {
         setContentView(R.layout.activity_connection_detail);
         String JsonConnection = getIntent().getStringExtra("connection");
         try {
-            ch.bbcag.findyourway.model.ConnectionDetail connection = TransportOpendataJsonParser.CreateConnectionDetailFromJsonString(JsonConnection);
+            ch.bbcag.findyourway.model.ConnectionDetail connection = TransportOpendataJsonParser.createConnectionDetailFromJsonString(JsonConnection);
             CreatePlan(connection);
         } catch (JSONException e) {
             e.printStackTrace();
