@@ -63,12 +63,12 @@ public class HomeConnectionDetailListAdapter extends ArrayAdapter<HomeConnection
         }
         number.setText(numberText);
 
-        String destinationText = "Richtung " + connection.getTo().getName();
+        String destinationText = "Richtung " + connection.getTo();
         destination.setText(destinationText);
         time.setText(connection.getDurationTotal());
         String platformText = connection.getFrom().getPlatform();
         if (platformText != "null") {
-            plattformNumber.setText(connection.getPlatform());
+            plattformNumber.setText(connection.getFrom().getPlatform());
             plattform.setText(R.string.plattform);
         }
 
